@@ -24,7 +24,6 @@ O app mostra os fatos de forma neutra. O julgamento é do Pedro.
 - Nada de sequências que "quebram", troféus, confete, notificações de cobrança.
 - Sem vermelho gritando para o que não foi feito. Os números aparecem como foram: "4 de 5 treinos", "quarto arrumado 3 de 7 dias".
 - Tudo que é reflexão (fechamento do dia, resumo, resgate de pensamentos) é **opcional e discreto**. Nunca um botão chamativo. Se o Pedro ignorar, nada acontece.
-- Funções pequenas e bem-feitas valem mais que funções grandiosas.
 
 ## O dia é a unidade
 
@@ -149,4 +148,4 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 - [ ] Lembrete discreto de backup
 - [ ] Sono via Atalhos do iOS
 
-(Adicionar novas ideias no fim. O Pedro quer estar sempre incrementando o app com funções pequenas.)
+(Adicionar novas ideias no fim. O Pedro quer estar sempre incrementando o app: sugestões grandes/essenciais e pequenas são bem-vindas; nenhuma ideia deve ser descartada por parecer irrelevante.)
