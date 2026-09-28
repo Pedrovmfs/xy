@@ -43,7 +43,7 @@ A rotina inicial do Pedro está em `VISAO.md` (seção "Rotina atual") e deve se
 
 ## Referência: app `treino`
 
-O app antigo de treino do Pedro (<https://github.com/Pedrovmfs/treino>) é referência **de lógica** para a ramificação Treino (cálculos em `src/calc.js`, formato do backup em `src/db.js`, backlog em `BACKLOG.md`). **Não copie o layout/design.**
+O app antigo de treino do Pedro (<https://github.com/Pedrovmfs/treino>) é referência **de lógica** para a ramificação Treino (cálculos em `src/calc.js`, backlog em `BACKLOG.md`; não é preciso importar os dados dele). **Não copie o layout/design.**
 
 ## Fluxo de trabalho
 

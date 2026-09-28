@@ -79,8 +79,9 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 ### Treino
 - Já existe um app de treino do Pedro: <https://github.com/Pedrovmfs/treino> (PWA em JS puro, IndexedDB). Serve de **referência de lógica** (registro de séries, tipos aquec/prep/válida, 1RM Epley, PRs, volume semanal, timer de descanso, backlog). O **layout/design dele não é referência**.
 - No xy, o bloco "Academia" abre o treino do dia. Terminou o treino, o bloco marca sozinho.
-- Meta semanal (5 treinos). Dados do app antigo devem poder ser importados pelo backup JSON dele.
-- Foco grande nessa parte.
+- Meta semanal (5 treinos).
+- O app antigo já é bem customizável; a ideia é **retrabalhar e aprimorar** essa base, não só copiar. Foco grande nessa parte.
+- **Não é preciso importar** os dados do app antigo (quase nada registrado).
 
 ### Nutrição
 - Dieta própria, nos termos do Pedro, flexível e com **muitas opções de pouco preparo** (ele tem preguiça de cozinhar).
@@ -146,7 +147,6 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 - [ ] "Nesse dia, há um ano" — gostou, mas **precisa refinar** antes de fazer
 - [ ] Revisão mensal de hábitos ("isso te incomoda?")
 - [ ] Lembrete discreto de backup
-- [ ] Importar dados do app `treino`
 - [ ] Sono via Atalhos do iOS
 
 (Adicionar novas ideias no fim. O Pedro quer estar sempre incrementando o app com funções pequenas.)
