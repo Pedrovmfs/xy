@@ -1,0 +1,9 @@
+/* Inter (pacote @fontsource-variable/inter), só o subconjunto latino: cobre todo o
+   português e evita colocar no app ~90 KB de cirílico/grego/vietnamita que nunca seriam usados. */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2-variations');
+}
