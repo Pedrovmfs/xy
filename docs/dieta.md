@@ -11,7 +11,7 @@ O Pedro **não é regrado** e não quer ser: nada de horários fixos, número fi
 |---|---|
 | **Proteína** | bater **~190–200 g/dia** (o objetivo principal) |
 | **Calorias** | não passar de **~1.960 kcal/dia** (déficit) |
-| Refeições livres | 2 por semana |
+| Refeições livres | sem limite fixo; entram no **saldo semanal** (ver seção própria) |
 
 A dieta é o **conjunto do dia**, não cada refeição: existem infinitas combinações que fecham a meta. Vai ter dia com fome antes de dormir, dia sem fome antes da academia, dia com almoço atrasado e já cheio. **Qualquer opção do cardápio vale a qualquer hora.** Buscar flexibilidade e praticidade, nunca regra.
 
@@ -118,6 +118,25 @@ Pra quando o dia está chegando ao fim e falta proteína:
 | Creme de whey (de colher) | ~20 g | ~120 kcal | 1 |
 | +50 g de frango desfiado no sanduíche | ~16 g | ~80 kcal | 0 |
 | +50 g de proteína crua no almoço | ~10–12 g | ~60–85 kcal | 0 |
+
+## Refeições livres e saldo semanal
+
+**O que costumam ser** (variam de dia, sem padrão fixo):
+
+| Refeição livre | Estimativa | Proteína |
+|---|---|---|
+| Pizza grande de calabresa (8 pedaços), comida em casa em 2–3 refeições | ~2.300–2.600 kcal a pizza toda (~800–870 por refeição, se dividida em 3) | ~100 g a pizza toda |
+| Frango frito, porção M (delivery) | ~250–290 kcal a cada 100 g (falta o peso da porção) | ~22 g a cada 100 g |
+| Marmita de churrasco (almoço, em dias específicos) | ~1.000–1.400 kcal | ~60–80 g |
+
+**No app:** a refeição é marcada como **"livre"**, com um campo de calorias preenchido **à mão** (o Pedro consulta o Claude pra estimar antes). Sem descrição obrigatória.
+
+**Regra (proposta, parâmetros ajustáveis):**
+- **Calorias contam por semana:** meta de **~13.700 kcal** (1.960 × 7). A **proteína continua por dia.**
+- **Saldo mínimo:** os dias que ainda faltam na semana ficam reservados com um **piso de ~1.700 kcal/dia**. O app mostra o **espaço livre** = meta da semana − já consumido − (dias restantes × piso). Antes de pedir uma pizza, dá pra ver se ela cabe.
+- **Dívida:** se a semana fechar acima da meta, o excesso vira **dívida** pra semana seguinte.
+- **Pagar a dívida com limites:** no máximo **~200 kcal/dia** a menos, nunca abaixo do piso, e **sem cortar proteína**. O que não couber em **2 semanas** é perdoado (zera) — a dívida não vira bola de neve nem castigo.
+- **Espelho:** o app mostra quantas livres aconteceram e o histórico de dívida, sem limite fixo de quantidade e sem alarme.
 
 ## Nutrientes além de proteína e calorias
 
