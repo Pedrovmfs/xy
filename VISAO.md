@@ -86,10 +86,11 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 > Plano alimentar completo, gostos e regras de estoque: **[`docs/dieta.md`](docs/dieta.md)** (seed da Nutrição).
 
 - Dieta própria, nos termos do Pedro, flexível e com **muitas opções de pouco preparo**. O problema dele não é enjoar (come o mesmo jantar por 2 semanas), é a **preguiça de repor o estoque**.
-- Meta diária (~1.960 kcal, 190–200 g de proteína). Registro do que comeu vs. o que deveria comer.
-- Sem café da manhã. Refeições: almoço, lanche/pré-treino, jantar, ceia.
+- **Meta, não grade.** O Pedro não é regrado: só existem duas regras, bater **~190–200 g de proteína** e não passar de **~1.960 kcal**. Sem horários fixos nem número fixo de refeições. O app mostra o progresso ("faltam 60 g") e sugere **fechadores de proteína** fáceis; nunca cobra refeição pulada.
+- Não quer muitos momentos de comer no dia nem comer depois do Attual.
 - **Refeições como molde**: estrutura fixa + espaço variável. Ex.: jantar = pão de forma + mussarela + **proteína**; almoço = arroz + **proteína**. Quando um ingrediente acaba, o molde continua e só troca o recheio.
-- **Banco de opções por refeição**, cada uma com calorias, proteína e **nível de preparo**: 0 = pronto, 1 = ~5 min, 2 = cozinhar. Filtro "sem cozinhar hoje" e "o que dá pra fazer com o que tenho".
+- **Cardápio de consulta** (não plano), cada opção com calorias, proteína e **esforço = preparo + louça** (0 = sem louça, 1 = micro-ondas, 2 = frigideira/airfryer + lavar, 3 = cozinhar). Filtro "o que dá pra fazer com o que tenho".
+- **Ingredientes "da casa" vs. "meus":** leite e iogurte são da casa e podem sumir (a irmã consome muito); nenhuma opção depende deles. O estoque controlado é só o dele.
 - Variar pelo **molho** e pelo **jeito de fazer** (frio, sanduicheira, airfryer), não só pela proteína.
 - **Estoque** em porções: proteína crua porcionada (~300 g) ao voltar do mercado mensal; frango desfiado e carne moída do domingo. O app mostra quanto resta e avisa **antes** de acabar.
 - **Plano B automático**: quando o estoque acaba, mostra as opções que não dependem dele.
