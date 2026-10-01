@@ -71,16 +71,19 @@ Base: **4 fatias de pão de forma (2 sanduíches) + proteína + mussarela.** Var
 
 Molhos (opcionais; normalmente não usa, mas gosta de quase todos): requeijão, barbecue, ketchup, molho de tomate (+20–50 kcal). **Maionese** pesa: ~100 kcal por colher.
 
-### Coisas rápidas (antes da academia ou quando der vontade)
+### Pré-treino (antes da academia)
 
-| Opção | Valores | Esforço |
+Rápido, pouca louça, sem leite, sem whey bebido, leve pra digerir. Aprovadas pelo Pedro:
+
+| Opção | Valores | Louça |
 |---|---|---|
-| 1 pão com frango desfiado 100 g e mussarela (frio ou micro-ondas) | ~410 kcal · ~42 g | 0–1 |
-| Pão com doce de leite + whey com água | ~335 kcal · ~29 g | 0 |
-| Snow Flakes na mão + whey com água | ~270 kcal · ~26 g | 0 |
-| Bolo de caneca de banana com canela (ovo + whey + banana) | ~280 kcal · ~32 g | 1 |
-| Panqueca salgada (2 ovos + aveia, frango e mussarela) | ~420 kcal · ~46 g | 2 |
-| *Se tiver leite:* leite + Snow Flakes + whey | ~420 kcal · ~33 g | 1 |
+| Sanduíche de pão de forma com frango desfiado 100 g e mussarela (frio ou 30 s no micro-ondas) | ~390 kcal · ~44 g | nenhuma |
+| Wrap (Rap10) de frango com mussarela, frio | ~350 kcal · ~39 g | nenhuma |
+| Frango cremoso no pote (100 g) + 1 pão | ~405 kcal · ~41 g | pote e garfo |
+| **Creme de banana:** banana amassada + whey misturado, Snow Flakes por cima | ~285 kcal · ~26 g | pote e garfo |
+| Creme de whey com Snow Flakes + 1 banana | ~320 kcal · ~27 g | copo e colher |
+| Bolo de caneca de banana com canela | ~280 kcal · ~32 g | caneca e garfo |
+| **Mínimo (dia sem fome):** 1 banana + café | ~90 kcal · ~1 g | nenhuma |
 
 Café 30–40 min antes do treino funciona como pré-treino.
 
