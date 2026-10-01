@@ -13,9 +13,12 @@ O Pedro **não é regrado** e não quer ser: nada de horários fixos, número fi
 | **Calorias** | não passar de **~1.960 kcal/dia** (déficit) |
 | Refeições livres | 2 por semana |
 
+A dieta é o **conjunto do dia**, não cada refeição: existem infinitas combinações que fecham a meta. Vai ter dia com fome antes de dormir, dia sem fome antes da academia, dia com almoço atrasado e já cheio. **Qualquer opção do cardápio vale a qualquer hora.** Buscar flexibilidade e praticidade, nunca regra.
+
 Como, quando e em quantas refeições ele chega lá é livre. O app:
 - mostra o progresso do dia ("faltam 60 g de proteína, sobram 700 kcal");
 - sugere jeitos fáceis de **fechar a proteína** com o que tem em casa;
+- filtra **"o que cabe agora"**: opções que encaixam na proteína e nas calorias que ainda restam no dia;
 - nunca cobra horário ou refeição pulada.
 
 O que é comum hoje (não é regra): sem café da manhã (acorda no limite pra faculdade), almoço depois da aula, às vezes algo antes da academia, jantar depois da academia e antes do Attual (19:30). Ele quase nunca sente fome e cresceu fazendo só almoço e jantar. **Não quer comer depois do Attual** nem ter muitos momentos de comer no dia.
