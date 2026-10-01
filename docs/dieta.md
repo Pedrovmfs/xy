@@ -131,12 +131,15 @@ Pra quando o dia está chegando ao fim e falta proteína:
 
 **No app:** a refeição é marcada como **"livre"**, com um campo de calorias preenchido **à mão** (o Pedro consulta o Claude pra estimar antes). Sem descrição obrigatória.
 
-**Regra (proposta, parâmetros ajustáveis):**
-- **Calorias contam por semana:** meta de **~13.700 kcal** (1.960 × 7). A **proteína continua por dia.**
-- **Saldo mínimo:** os dias que ainda faltam na semana ficam reservados com um **piso de ~1.700 kcal/dia**. O app mostra o **espaço livre** = meta da semana − já consumido − (dias restantes × piso). Antes de pedir uma pizza, dá pra ver se ela cabe.
-- **Dívida:** se a semana fechar acima da meta, o excesso vira **dívida** pra semana seguinte.
-- **Pagar a dívida com limites:** no máximo **~200 kcal/dia** a menos, nunca abaixo do piso, e **sem cortar proteína**. O que não couber em **2 semanas** é perdoado (zera) — a dívida não vira bola de neve nem castigo.
-- **Espelho:** o app mostra quantas livres aconteceram e o histórico de dívida, sem limite fixo de quantidade e sem alarme.
+**Regra: espaço de refeições livres pelo déficit semanal** (modelo do Pedro):
+
+1. **Déficit da semana:** gasto estimado **~2.900 kcal/dia** (Mifflin-St Jeor × atividade; estimativa) − ~1.960 consumidas ≈ **~6.600 kcal/semana**.
+2. **Déficit mínimo:** **4.500 kcal/semana** (escolha do Pedro). Não se abre mão disso.
+3. **Espaço livre da semana** = déficit planejado − déficit mínimo ≈ **~2.100 kcal**.
+4. **Só o extra conta:** uma refeição livre substitui uma refeição normal, então o que sai do espaço é **calorias da livre − calorias da refeição normal que ela substituiu**. Ex.: pizza inteira em 3 refeições ≈ +550; churrasco no almoço ≈ +500; frango frito M no jantar ≈ +1.000. Na prática, ~2 a 4 livres por semana.
+5. **Passou do espaço?** O excesso **sai do espaço da semana seguinte** (menos livres). **Os dias normais nunca mudam** — nada de comer menos pra compensar.
+6. **Proteína continua por dia.** Sem limite fixo de quantidade de livres; o app mostra quantas aconteceram e o espaço restante, sem alarme.
+7. **Calibração:** com o peso registrado (média de 7 dias), o app estima o gasto **real** depois de algumas semanas (~7.700 kcal por kg) e ajusta o gasto de 2.900.
 
 ## Nutrientes além de proteína e calorias
 

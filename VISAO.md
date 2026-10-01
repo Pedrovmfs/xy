@@ -157,7 +157,8 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 - [ ] "O que cabe agora": filtrar o cardápio pelo que ainda resta de proteína e calorias no dia
 - [ ] Planejador do domingo: no sábado, o app diz quanto frango comprar e cozinhar, com base no consumo real das últimas semanas
 - [ ] Lista de compras em duas partes: mensal (mercado grande) e semanal (mercadinho)
-- [ ] Saldo semanal de calorias com piso diário, "espaço livre" pra refeição livre e dívida com pagamento limitado (ver docs/dieta.md)
+- [ ] Espaço semanal de refeições livres pelo déficit (mínimo 4.500 kcal/semana; só o extra conta; excesso reduz o espaço da semana seguinte) — ver docs/dieta.md
+- [ ] Calibrar o gasto calórico real pela tendência de peso
 - [ ] Aviso de estoque acabando + sugestão de repor no próximo domingo
 
 (Adicionar novas ideias no fim. O Pedro quer estar sempre incrementando o app: sugestões grandes/essenciais e pequenas são bem-vindas; nenhuma ideia deve ser descartada por parecer irrelevante.)
