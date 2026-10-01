@@ -126,14 +126,15 @@ A base da dieta (arroz branco, carne, pão branco, mussarela, cereal) tem **pouc
 | Ponto | Situação | Solução escolhida / sugerida |
 |---|---|---|
 | **Fibra** | estimada em ~6–10 g/dia (recomendado ~25–38 g) | **Psyllium** (escolha do Pedro): começar com 1 colher de chá (~5 g) por dia, subir pra ~10 g depois de 1–2 semanas. **Sempre com um copo cheio de água.** Separar ~2 h de remédios. Vai bem no bolo de caneca, no creme de banana/whey, ou com água. Feijão quando tiver também ajuda muito. |
-| **Água** | proteína alta + psyllium + treino aumentam a necessidade | ~3 L/dia como referência; contador no app |
-| **Cálcio** | leite é "da casa" (some), sem iogurte; só a mussarela ajuda | ver no exame de sangue/com médico |
-| **Ômega-3 e vitamina D** | sem peixe; vitamina D costuma ser baixa em quem fica muito em ambiente fechado | ver no exame; chia ou suplemento só se precisar |
-| **Sódio** | mussarela, requeijão, pão de forma, linguiça somam bastante | temperar o frango do domingo com pouco sal |
-| **Vitaminas de fruta e vegetal** | quase ausentes | banana do pré-treino, feijão; opção futura: legumes congelados no micro-ondas |
+| **Água** | o Pedro já bebe bastante | ok; ~3 L/dia como referência, contador no app |
+| **Cálcio** | continua tomando leite e iogurte quando tem, mas não dá pra contar com eles | **monitorar**; ver no exame se cair |
+| **Ômega-3 e vitamina D** | sem peixe; vitamina D costuma ser baixa em quem fica muito em ambiente fechado | **monitorar**; ver no exame; chia ou suplemento só se precisar |
+| **Sódio** | mussarela, requeijão, pão de forma, linguiça somam bastante | **monitorar**; temperar o frango do domingo com pouco sal |
+| **Vitaminas de fruta e vegetal** | quase ausentes | **monitorar**; banana do pré-treino, feijão; opção futura: legumes congelados no micro-ondas |
 
 - **Exame de sangue básico** no começo da mudança, como ponto de partida, em vez de chutar suplementos.
-- **Creatina (opcional):** 3–5 g por dia, sem gosto, barata e com boa evidência pra treino de força. Pode ir junto com o psyllium na água.
+- **Creatina:** o Pedro decidiu ir atrás. 3–5 g por dia, sem gosto, barata e com boa evidência pra treino de força. Pode ir junto com o psyllium na água.
+- Os pontos marcados como **monitorar** não exigem ação agora, mas devem ser revistos se algo mudar (exame, sintomas, dieta).
 - No app: contador discreto de água e, opcional, de porções de fruta/vegetal. Sem cobrança.
 
 ## Plano B (estoque acabou)
@@ -181,7 +182,7 @@ A base da dieta (arroz branco, carne, pão branco, mussarela, cereal) tem **pouc
 
 | Compra | Onde / quando | O quê | Onde fica |
 |---|---|---|---|
-| **Mensal** | mercado grande | carne bovina (contrafilé, coxão mole moído), linguiça, secos (Rap10, Snow, whey, doce de leite, goma de tapioca, requeijão, psyllium) | carne no **freezer**, porcionada em saquinhos achatados de ~300 g |
+| **Mensal** | mercado grande | carne bovina (contrafilé, coxão mole moído), linguiça, secos (Rap10, Snow, whey, doce de leite, goma de tapioca, requeijão, psyllium, creatina) | carne no **freezer**, porcionada em saquinhos achatados de ~300 g |
 | **Semanal** | mercadinho perto, sábado ou domingo | frango, pão de forma, mussarela, banana | frango vira o lote do domingo |
 
 - O freezer fica **reservado pra carne bovina** (que precisa durar o mês) e pra poucos saquinhos de frango desfiado do fim da semana.
