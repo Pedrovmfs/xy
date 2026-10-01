@@ -83,15 +83,20 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - **Não é preciso importar** os dados do app antigo (quase nada registrado).
 
 ### Nutrição
-- Dieta própria, nos termos do Pedro, flexível e com **muitas opções de pouco preparo** (ele tem preguiça de cozinhar).
-- Meta diária (calorias + proteína). Registro do que comeu vs. o que deveria comer.
-- **Banco de opções por refeição** (café, almoço, lanche, janta), cada uma com calorias, proteína e **nível de preparo**: 0 = pronto, 1 = ~5 min, 2 = cozinhar. Filtro "sem cozinhar hoje".
-- **Alternativas equivalentes** para diversificar sem sair da meta.
-- **Receitas** que ele faz com frequência.
-- **Domingo de cozinha** (14h–16h): marmitas viram estoque e descontam ao comer.
-- **Lista de compras** gerada a partir do que foi comido/planejado na semana.
-- Registro rápido: "repetir ontem", favoritos, receitas como porção pronta.
-- Alimentos avulsos pela **tabela TACO**, embutida no app (offline).
+> Plano alimentar completo, gostos e regras de estoque: **[`docs/dieta.md`](docs/dieta.md)** (seed da Nutrição).
+
+- Dieta própria, nos termos do Pedro, flexível e com **muitas opções de pouco preparo**. O problema dele não é enjoar (come o mesmo jantar por 2 semanas), é a **preguiça de repor o estoque**.
+- Meta diária (~1.960 kcal, 190–200 g de proteína). Registro do que comeu vs. o que deveria comer.
+- Sem café da manhã. Refeições: almoço, lanche/pré-treino, jantar, ceia.
+- **Refeições como molde**: estrutura fixa + espaço variável. Ex.: jantar = pão de forma + mussarela + **proteína**; almoço = arroz + **proteína**. Quando um ingrediente acaba, o molde continua e só troca o recheio.
+- **Banco de opções por refeição**, cada uma com calorias, proteína e **nível de preparo**: 0 = pronto, 1 = ~5 min, 2 = cozinhar. Filtro "sem cozinhar hoje" e "o que dá pra fazer com o que tenho".
+- Variar pelo **molho** e pelo **jeito de fazer** (frio, sanduicheira, airfryer), não só pela proteína.
+- **Estoque** em porções: proteína crua porcionada (~300 g) ao voltar do mercado mensal; frango desfiado e carne moída do domingo. O app mostra quanto resta e avisa **antes** de acabar.
+- **Plano B automático**: quando o estoque acaba, mostra as opções que não dependem dele.
+- **Domingo de cozinha** (14h–16h): o item no calendário abre a lista do que preparar; o que foi feito vira estoque.
+- **Lista de compras** gerada a partir do que foi comido/planejado (compra mensal).
+- Registro rápido: "repetir ontem", favoritos, opções do banco como porção pronta. Pesagem: arroz pronto, proteína **crua**.
+- Alimentos avulsos pela **tabela TACO**, embutida no app (offline); produtos industrializados pelo rótulo.
 
 ### Corpo
 - Água (contador), peso, sono.
@@ -147,5 +152,7 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 - [ ] Revisão mensal de hábitos ("isso te incomoda?")
 - [ ] Lembrete discreto de backup
 - [ ] Sono via Atalhos do iOS
+- [ ] Lista de "comidas pra experimentar" (ex.: salmão), pra abrir o paladar aos poucos
+- [ ] Aviso de estoque acabando + sugestão de repor no próximo domingo
 
 (Adicionar novas ideias no fim. O Pedro quer estar sempre incrementando o app: sugestões grandes/essenciais e pequenas são bem-vindas; nenhuma ideia deve ser descartada por parecer irrelevante.)

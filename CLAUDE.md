@@ -40,6 +40,7 @@ Ajuste se necessário, mas mantenha a ideia de "o dia é a unidade" (datas como 
 - `meta` — configurações e data do último backup
 
 A rotina inicial do Pedro está em `VISAO.md` (seção "Rotina atual") e deve ser o seed.
+O plano alimentar em `docs/dieta.md` é o seed da ramificação Nutrição (refeições, banco de opções, gostos, regras de estoque).
 
 ## Referência: app `treino`
 
