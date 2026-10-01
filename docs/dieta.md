@@ -84,13 +84,28 @@ Molhos (opcionais; normalmente não usa, mas gosta de quase todos): requeijão, 
 
 Café 30–40 min antes do treino funciona como pré-treino.
 
+### Ceia (fome antes de dormir, depois do Attual)
+
+Pouca louça, sem leite, sem whey bebido. Aprovadas pelo Pedro:
+
+| Opção | Valores | Louça |
+|---|---|---|
+| **Frango cremoso no pote:** frango desfiado 150 g + 1 colher de requeijão + mussarela, 1 min no micro-ondas, come no pote | ~365 kcal · ~55 g | pote e garfo |
+| Carne moída 100 g + mussarela no pote, micro-ondas | ~320 kcal · ~40 g | pote e garfo |
+| Sanduíche de frango com mussarela, frio ou 30 s no micro-ondas | ~300 kcal · ~35 g | nenhuma |
+| **Creme de whey:** whey + 2–3 colheres de água, mexido até virar creme grosso, Snow Flakes por cima (come de colher) | ~195 kcal · ~25 g | copo e colher |
+| Bolo de caneca de banana com canela | ~280 kcal · ~32 g | caneca e garfo |
+
+Descartada: pão com doce de leite sozinho (gostoso, mas quase sem proteína). Se quiser o doce: pão com mussarela derretida e doce de leite ("romeu e julieta"), ~290 kcal · ~14 g.
+
 ### Fechadores de proteína
 
 Pra quando o dia está chegando ao fim e falta proteína:
 
 | Fechador | Proteína | Calorias | Esforço |
 |---|---|---|---|
-| Whey com água (junto de qualquer refeição) | ~24 g | ~120 kcal | 0 (coqueteleira) |
+| Whey com água (junto de qualquer refeição; ele não curte muito) | ~24 g | ~120 kcal | 0 (coqueteleira) |
+| Creme de whey (de colher) | ~24 g | ~120 kcal | 1 |
 | +50 g de frango desfiado no sanduíche | ~16 g | ~80 kcal | 0 |
 | +50 g de proteína crua no almoço | ~10–12 g | ~60–85 kcal | 0 |
 
