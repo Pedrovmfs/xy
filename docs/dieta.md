@@ -140,7 +140,8 @@ Pra quando o dia está chegando ao fim e falta proteína:
 5. **Passou do espaço?** O excesso **sai do espaço da semana seguinte** (menos livres). **Os dias normais nunca mudam** — nada de comer menos pra compensar.
 6. **Proteína continua por dia.** Sem limite fixo de quantidade de livres; o app mostra quantas aconteceram e o espaço restante, sem alarme.
 7. **Calibração:** com o peso registrado (média de 7 dias), o app estima o gasto **real** depois de algumas semanas (~7.700 kcal por kg) e substitui o valor conservador de 2.750 depois de 3–4 semanas.
-8. **Ritmo esperado:** o mínimo de 4.500/semana garante **~2,5 kg de gordura por mês**; semanas sem livres chegam a ~3 kg+. A balança oscila (água), por isso o app usa a média de 7 dias.
+8. **Passos:** o Pedro anda em média **~15 mil passos/dia** (meta pessoal, quer aumentar). A estimativa de 2.900 não considera isso; com os passos, o gasto provável é ~3.100–3.300. **Decisão: manter 2.750 e deixar os dados de peso decidirem.** Atenção a sinais de déficit agressivo demais (cansaço fora do normal, treino rendendo menos, fome forte): se aparecerem, comer mais nos dias normais.
+9. **Ritmo esperado:** o mínimo de 4.500/semana garante **~2,5 kg de gordura por mês**; semanas sem livres chegam a ~3 kg+. A balança oscila (água), por isso o app usa a média de 7 dias.
 
 ## Nutrientes além de proteína e calorias
 
