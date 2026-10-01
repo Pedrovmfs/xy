@@ -133,8 +133,8 @@ Pra quando o dia está chegando ao fim e falta proteína:
 
 ## Compras, estoque e preparo
 
-- Mercado **uma vez por mês**; proteína vai pro freezer.
-- **Ao chegar do mercado, porcionar a proteína em ~300 g antes de congelar.** Descongelar só a porção do dia seguinte na geladeira.
+- Mercado grande **uma vez por mês** (carne bovina e secos); **mercadinho semanal** pro frango e perecíveis.
+- **Ao chegar do mercado, porcionar a carne em ~300 g, em saquinhos achatados, antes de congelar.** Descongelar só a porção do dia seguinte na geladeira.
 - Segurança: carne crua descongelada na geladeira dura **1–2 dias** (frango e carne moída) ou **3–5 dias** (bife). Não voltar pro freezer depois disso.
 - **Domingo de cozinha (14h–16h):** frango desfiado e carne moída. Cozido dura **3–4 dias na geladeira**; o resto congela em porções. Opcional: já deixar sanduíches montados e embrulhados pra comer frios ou no micro-ondas.
 - Whey atual: **cookies and cream**, 1 medida por dose; pretende comprar baunilha.
@@ -156,10 +156,17 @@ Pra quando o dia está chegando ao fim e falta proteína:
 
 **Domingo:** cozinhar ~2,3 kg de peito, desfiar e dividir em **saquinhos de 150 g** (porção de uma refeição). ~4 ficam na geladeira (até quarta); o resto congela. Na noite anterior, passar um saquinho do freezer pra geladeira.
 
-**Espaço:** proteína total ≈ **5 kg crus por semana (~20 kg/mês)**, o que não cabe numa compra mensal com pouco freezer. Alternativas em discussão: comprar proteína a cada 1–2 semanas (secos continuam mensais); congelar tudo em **saquinhos achatados** empilhados na vertical, sem as bandejas do mercado.
+**Espaço e compras (decidido):** o freezer é pequeno e dividido com a casa. Carne bovina só se compra no mercado grande, ~1 vez por mês; frango tem num mercadinho perto de casa, fácil de comprar a qualquer hora. Então são **duas fontes**:
+
+| Compra | Onde / quando | O quê | Onde fica |
+|---|---|---|---|
+| **Mensal** | mercado grande | carne bovina (contrafilé, coxão mole moído), linguiça, secos (Rap10, Snow, whey, doce de leite, goma de tapioca, requeijão) | carne no **freezer**, porcionada em saquinhos achatados de ~300 g |
+| **Semanal** | mercadinho perto, sábado ou domingo | frango, pão de forma, mussarela, banana | frango vira o lote do domingo |
+
+- O freezer fica **reservado pra carne bovina** (que precisa durar o mês) e pra poucos saquinhos de frango desfiado do fim da semana.
+- Frango não ocupa freezer por semanas: é comprado e cozido na mesma semana.
 
 ## Pendências
 
-- [ ] Quanto compra por mês de cada proteína ("3–5 kg": cada uma ou total? só o almoço consome ~9 kg/mês)
 - [ ] Marca/rótulo do whey e do pão de forma
 - [ ] Se come sanduíche frio ou de micro-ondas de boa

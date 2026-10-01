@@ -155,6 +155,8 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 - [ ] Sono via Atalhos do iOS
 - [ ] Lista de "comidas pra experimentar" (ex.: salmão), pra abrir o paladar aos poucos
 - [ ] "O que cabe agora": filtrar o cardápio pelo que ainda resta de proteína e calorias no dia
+- [ ] Planejador do domingo: no sábado, o app diz quanto frango comprar e cozinhar, com base no consumo real das últimas semanas
+- [ ] Lista de compras em duas partes: mensal (mercado grande) e semanal (mercadinho)
 - [ ] Aviso de estoque acabando + sugestão de repor no próximo domingo
 
 (Adicionar novas ideias no fim. O Pedro quer estar sempre incrementando o app: sugestões grandes/essenciais e pequenas são bem-vindas; nenhuma ideia deve ser descartada por parecer irrelevante.)
