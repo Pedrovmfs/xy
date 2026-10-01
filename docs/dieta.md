@@ -52,6 +52,9 @@ O critério de "fácil" inclui **a louça**. Frigideira = preparar + esperar + l
 | Coxão mole moído | ~765 kcal · ~69 g |
 | Linguiça fininha Perdigão/Sadia (200 g, rara) | ~710 kcal · ~37 g |
 | + 1 concha de feijão | +75 kcal · +5 g |
+| *Opção:* frango desfiado do domingo 220 g (pronto) + arroz 200 g | ~615 kcal · ~74 g |
+
+O frango desfiado no almoço é **só uma opção** (zero preparo), não substitui o peito feito na hora. Se o Pedro usar, o lote do domingo aumenta; o planejador do app aprende pelo consumo real.
 
 Mais perto de 350 g de proteína crua = +~10 g de proteína.
 
