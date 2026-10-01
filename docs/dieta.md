@@ -133,13 +133,14 @@ Pra quando o dia está chegando ao fim e falta proteína:
 
 **Regra: espaço de refeições livres pelo déficit semanal** (modelo do Pedro):
 
-1. **Déficit da semana:** gasto estimado **~2.900 kcal/dia** (Mifflin-St Jeor × atividade; estimativa) − ~1.960 consumidas ≈ **~6.600 kcal/semana**.
+1. **Déficit da semana:** gasto **conservador de ~2.750 kcal/dia** no começo (a estimativa com treino 5x/semana é ~2.900, mas pode ser ~2.600 se o dia a dia for parado) − ~1.960 consumidas ≈ **~5.500 kcal/semana**.
 2. **Déficit mínimo:** **4.500 kcal/semana** (escolha do Pedro). Não se abre mão disso.
-3. **Espaço livre da semana** = déficit planejado − déficit mínimo ≈ **~2.100 kcal**.
-4. **Só o extra conta:** uma refeição livre substitui uma refeição normal, então o que sai do espaço é **calorias da livre − calorias da refeição normal que ela substituiu**. Ex.: pizza inteira em 3 refeições ≈ +550; churrasco no almoço ≈ +500; frango frito M no jantar ≈ +1.000. Na prática, ~2 a 4 livres por semana.
+3. **Espaço livre da semana** = déficit planejado − déficit mínimo ≈ **~1.000 kcal** no começo (sobe pra ~2.100 se o gasto real confirmar ~2.900).
+4. **Só o extra conta:** uma refeição livre substitui uma refeição normal, então o que sai do espaço é **calorias da livre − calorias da refeição normal que ela substituiu**. Ex.: pizza inteira em 3 refeições ≈ +550; churrasco no almoço ≈ +500; frango frito M no jantar ≈ +1.000. Na prática, ~1 a 2 livres por semana no começo.
 5. **Passou do espaço?** O excesso **sai do espaço da semana seguinte** (menos livres). **Os dias normais nunca mudam** — nada de comer menos pra compensar.
 6. **Proteína continua por dia.** Sem limite fixo de quantidade de livres; o app mostra quantas aconteceram e o espaço restante, sem alarme.
-7. **Calibração:** com o peso registrado (média de 7 dias), o app estima o gasto **real** depois de algumas semanas (~7.700 kcal por kg) e ajusta o gasto de 2.900.
+7. **Calibração:** com o peso registrado (média de 7 dias), o app estima o gasto **real** depois de algumas semanas (~7.700 kcal por kg) e substitui o valor conservador de 2.750 depois de 3–4 semanas.
+8. **Ritmo esperado:** o mínimo de 4.500/semana garante **~2,5 kg de gordura por mês**; semanas sem livres chegam a ~3 kg+. A balança oscila (água), por isso o app usa a média de 7 dias.
 
 ## Nutrientes além de proteína e calorias
 
