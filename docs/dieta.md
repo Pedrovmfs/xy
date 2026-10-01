@@ -55,7 +55,7 @@ O critério de "fácil" inclui **a louça**. Frigideira = preparar + esperar + l
 
 Mais perto de 350 g de proteína crua = +~10 g de proteína.
 
-### Sanduíches e afins (jantar comum)
+### Jantar
 
 Base: **4 fatias de pão de forma (2 sanduíches) + proteína + mussarela.** Variar pelo **molho** e pelo **jeito de fazer**, não pela proteína.
 
@@ -68,6 +68,10 @@ Base: **4 fatias de pão de forma (2 sanduíches) + proteína + mussarela.** Var
 | Pizza de pão de forma (molho de tomate, mussarela, frango) | ~615 kcal · ~63 g | 2 (airfryer 8 min) |
 | Wrap (Rap10) de frango com mussarela | ~585 kcal · ~60 g | 0 / 2 |
 | Tapioca de frango ou carne moída com queijo | ~400–535 kcal · ~36–43 g | 2 |
+| **Sobra do almoço:** preparar o dobro da proteína no almoço e guardar metade com arroz | ~500 kcal · ~48 g | prato |
+| Frango cremoso no pote, versão grande (200 g + requeijão + mussarela) + 2 fatias de pão | ~605 kcal · ~79 g | pote e garfo |
+| Quesadilla: 2 Rap10 com frango e mussarela na sanduicheira | ~615 kcal · ~62 g | sanduicheira |
+| Cachorro-quente de frango: pão de cachorro-quente, frango desfiado, molho de tomate, mussarela | ~645 kcal · ~63 g | 0 (micro-ondas) / airfryer |
 
 Molhos (opcionais; normalmente não usa, mas gosta de quase todos): requeijão, barbecue, ketchup, molho de tomate (+20–50 kcal). **Maionese** pesa: ~100 kcal por colher.
 
@@ -135,6 +139,24 @@ Pra quando o dia está chegando ao fim e falta proteína:
 - **Domingo de cozinha (14h–16h):** frango desfiado e carne moída. Cozido dura **3–4 dias na geladeira**; o resto congela em porções. Opcional: já deixar sanduíches montados e embrulhados pra comer frios ou no micro-ondas.
 - Whey atual: **cookies and cream**, 1 medida por dose; pretende comprar baunilha.
 - Equipamentos: airfryer, sanduicheira, micro-ondas (panela de pressão e batedeira: a confirmar).
+
+## Quantidades da semana (estimativa inicial)
+
+> Chute inicial pra começar. O app deve recalcular com o consumo **real** das últimas semanas.
+
+| Item | Por semana | Base do cálculo |
+|---|---|---|
+| Frango desfiado (pronto) | **~1,7 kg** (≈ 2,3 kg de peito cru) | pré-treino 4×100 g + jantar 5×170 g + ceia 3×150 g |
+| Proteína crua do almoço | **~2,7 kg** | 7×300 g + 2 dias em dobro (sobra pro jantar) |
+| Pão de forma | ~1 pacote grande | jantar 4 fatias + pré-treino 2 fatias |
+| Mussarela | ~400 g | ~30–40 g por uso |
+| Rap10 | ~meio pacote | |
+| Banana | ~4–5 | pré-treino e bolo de caneca |
+| Whey | ~1 dose/dia em média | pote de ~900 g dura ~1 mês |
+
+**Domingo:** cozinhar ~2,3 kg de peito, desfiar e dividir em **saquinhos de 150 g** (porção de uma refeição). ~4 ficam na geladeira (até quarta); o resto congela. Na noite anterior, passar um saquinho do freezer pra geladeira.
+
+**Espaço:** proteína total ≈ **5 kg crus por semana (~20 kg/mês)**, o que não cabe numa compra mensal com pouco freezer. Alternativas em discussão: comprar proteína a cada 1–2 semanas (secos continuam mensais); congelar tudo em **saquinhos achatados** empilhados na vertical, sem as bandejas do mercado.
 
 ## Pendências
 
