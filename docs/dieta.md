@@ -164,7 +164,7 @@ A base da dieta (arroz branco, carne, pão branco, mussarela, cereal) tem **pouc
 ## Plano B (estoque acabou)
 
 - **Frango desfiado pronto congelado** de mercado (Seara, Sadia…): dura meses no freezer.
-- **Ovos cremosos no pote** (quando tem pouca coisa em casa): bater 3 ovos + 1 colher de requeijão + pitada de sal no pote; micro-ondas 1 min, mexer, mais 30–40 s; mussarela 30 g por cima e 20 s. ~370 kcal · ~29 g. Opcional: +50 g de frango desfiado (+~16 g de proteína) ou 2 fatias de pão (+~125 kcal). Louça: pote e garfo. O requeijão e o queijo disfarçam o gosto de ovo.
+- **Ovos cremosos no pote** (quando tem pouca coisa em casa): bater 3 ovos + pitada de sal no pote; micro-ondas em rodadas de **30 s, mexendo com o garfo entre cada uma** (3–4 rodadas), parando ainda mole; misturar 1 colher de requeijão, mussarela 30 g por cima e 20 s. Rodadas longas sem mexer viram panqueca. Versão de frigideira: fogo no mínimo, sem pré-aquecer, mexendo sem parar desde o início (~3–4 min), requeijão no final fora do fogo. ~370 kcal · ~29 g. Opcional: +50 g de frango desfiado (+~16 g de proteína) ou 2 fatias de pão (+~125 kcal). Louça: pote e garfo. O requeijão e o queijo disfarçam o gosto de ovo.
 - Último recurso: presunto ou peito de peru (come, mas não é fã).
 - **Sem frutos do mar.**
 
