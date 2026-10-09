@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type Area } from '../db'
-import { diaDaSemana, formatarDataLonga, hoje, somarDias, type DataISO } from '../lib/datas'
-import { useEntriesDoDia, useItensDoDia, type ItemDoDia } from '../lib/dia'
+import { formatarDataLonga, hoje, somarDias, type DataISO } from '../lib/datas'
+import { useEntriesDoDia, useItensDoDia, valeNoDia, type ItemDoDia } from '../lib/dia'
 import { Agenda } from '../componentes/Agenda'
 import { FolhaItem } from '../componentes/FolhaItem'
+import { EditorItem } from '../componentes/EditorItem'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
 
 // A partir de que hora aparece "anotar algo sobre hoje"
@@ -13,6 +14,7 @@ const HORA_DA_NOITE = 18
 export function Hoje() {
   const [data, setData] = useState<DataISO>(hoje)
   const [aberto, setAberto] = useState<ItemDoDia | null>(null)
+  const [novoAvulso, setNovoAvulso] = useState(false)
 
   const itens = useItensDoDia(data)
   const entries = useEntriesDoDia(data)
@@ -42,7 +44,13 @@ export function Hoje() {
 
       <Agenda date={data} blocos={blocos} entries={entries} areas={areas} ehHoje={data === diaDeHoje} aoAbrir={setAberto} />
 
+      <button className="adicionar-no-dia" onClick={() => setNovoAvulso(true)}>
+        + adicionar algo neste dia
+      </button>
+
       <ComentarioDoDia data={data} diaDeHoje={diaDeHoje} />
+
+      {novoAvulso && <EditorItem tipo="avulso" dataInicial={data} aoFechar={() => setNovoAvulso(false)} />}
 
       {aberto && (
         <FolhaItem key={aberto.id} item={aberto} date={data} entry={entries.get(aberto.id)} aoFechar={() => setAberto(null)} />
@@ -78,12 +86,11 @@ function NavegacaoDia({ data, diaDeHoje, setData }: { data: DataISO; diaDeHoje: 
 
 function LinhaHabitos({ data }: { data: DataISO }) {
   const dados = useLiveQuery(async () => {
-    const dia = diaDaSemana(data)
     const [habitos, logs] = await Promise.all([
       db.habits.orderBy('order').toArray(),
       db.habitLogs.where('date').equals(data).toArray(),
     ])
-    return { habitos: habitos.filter((h) => h.weekdays.includes(dia)), feitos: new Set(logs.map((l) => l.habitId)) }
+    return { habitos: habitos.filter((h) => valeNoDia(h, data)), feitos: new Set(logs.map((l) => l.habitId)) }
   }, [data])
 
   if (!dados || dados.habitos.length === 0) return null

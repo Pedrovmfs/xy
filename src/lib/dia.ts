@@ -25,17 +25,25 @@ export function ordenarPorHorario(a: ItemDoDia, b: ItemDoDia) {
   return (a.start ?? '99').localeCompare(b.start ?? '99') || a.title.localeCompare(b.title)
 }
 
+/** O item (da rotina ou hábito) vale nessa data? Dia da semana + vigência. */
+export function valeNoDia(x: { weekdays: number[]; startsOn?: DataISO; until?: DataISO }, date: DataISO): boolean {
+  return (
+    x.weekdays.includes(diaDaSemana(date)) &&
+    (!x.startsOn || date >= x.startsOn) &&
+    (!x.until || date < x.until)
+  )
+}
+
 /** Itens do dia (rotina que vale naquele dia da semana + avulsos da data). */
 export function useItensDoDia(date: DataISO): ItemDoDia[] | undefined {
   return useLiveQuery(async () => {
-    const dia = diaDaSemana(date)
     const [rotina, avulsos] = await Promise.all([
       db.routine.toArray(),
       db.oneoffs.where('date').equals(date).toArray(),
     ])
     const itens: ItemDoDia[] = [
       ...rotina
-        .filter((r) => r.weekdays.includes(dia))
+        .filter((r) => valeNoDia(r, date))
         .map((r) => ({ ...r, origem: 'rotina' as const })),
       ...avulsos.map((o) => ({ ...o, origem: 'avulso' as const })),
     ]

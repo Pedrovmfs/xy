@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { IconeAjustes, IconeAreas, IconeHoje, IconePensamentos, IconeSemana, IconeVoltar } from './icones'
+import { IconeAjustes, IconeAreas, IconeHoje, IconePensamentos, IconeSemana } from './icones'
 import { Hoje } from './telas/Hoje'
 import { Semana } from './telas/Semana'
 import { Pensamentos } from './telas/Pensamentos'
@@ -23,16 +23,7 @@ export function App() {
   if (ajustesAbertos) {
     return (
       <div className="app" data-abas={false}>
-        <header className="topo">
-          <button className="botao-icone" onClick={() => setAjustesAbertos(false)} aria-label="Voltar">
-            <IconeVoltar />
-          </button>
-          <h1 className="topo-titulo">Ajustes</h1>
-          <span className="botao-icone" />
-        </header>
-        <main className="conteudo">
-          <Ajustes />
-        </main>
+        <Ajustes aoSair={() => setAjustesAbertos(false)} />
         <CapturaPensamento />
       </div>
     )
