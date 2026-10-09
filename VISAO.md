@@ -120,11 +120,17 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 ### Pensamentos (e registros pra terapia)
 - Pensamentos que agregam e poderiam ser esquecidos. O Pedro tem um caderno físico, mas nem sempre está com ele.
 - O Pedro faz **terapia**. A captura também serve pra anotar, ao longo da semana, **sensações, dores e pensamentos** que ele quer levar pra sessão.
-- **Captura em 1 toque de qualquer tela** (botão pequeno fixo → só um campo de texto). Opcional na hora: um **tipo** (pensamento / sensação / dor) e uma marquinha **"levar pra terapia"**.
+- **Captura em 1 toque de qualquer tela** (botão pequeno fixo → só um campo de texto). Opcional na hora: um **tipo** (pensamento / sentimento / sensação / dor) e uma marquinha **"levar pra terapia"**. Dor é **só texto** (sem local ou intensidade).
 - Cada registro guarda data/hora e fica ligado ao dia.
 - Aba própria com busca e etiquetas opcionais.
 - **Resgate opcional, escolhido na hora de salvar**: "me lembra disso em 1 semana / 1 mês / 3 meses / 6 meses / 1 ano". Quando chega a data, o pensamento aparece discreto no Hoje (uma linha pequena, que some se ignorar).
 - **Modo terapia:** uma tela pra abrir **durante a sessão**, com tudo desde a última sessão, agrupado por dia, com os marcados "levar pra terapia" em destaque. Depois da sessão, dá pra marcar o que foi conversado e anotar algo da sessão. A sessão de terapia é um item recorrente no calendário (**toda quarta, 17:00–18:00**), e "desde a última sessão" sai dele.
+- Na terapia o Pedro fala da **cabeça e dos sentimentos**, não da semana prática: **nada de resumo de treino/hábitos/sono** no modo terapia.
+- **Pauta pronta:** na quarta, o modo terapia abre já montado: primeiro os marcados "levar pra terapia", depois as atividades da semana e como foram, depois o resto dos registros.
+- **Modo sessão:** tela limpa, letra grande, sem as outras abas; tocar no que já foi conversado.
+- **Histórico das sessões** com notas e atividades; com etiquetas dá pra ver como um tema evoluiu.
+- Algo que surgiu na sessão pode usar o **resgate** ("me lembra disso em 1 mês").
+- Na quarta, uma linha discreta no Hoje: "sessão às 17h · 4 registros".
 - **Atividades da terapia:** o que a terapeuta passa na sessão vira uma lista de atividades da semana. Elas aparecem discretas no Hoje (como tarefas, com checkbox e nota) até a próxima sessão, e no modo terapia aparecem de novo pra revisar o que foi feito e como foi. O Pedro costuma esquecer essas atividades; esse é o problema a resolver.
 - Conteúdo sensível: fica só no aparelho (como tudo). Ideia futura: bloqueio opcional com código só nessa aba. Lembrar que o backup JSON também contém esses registros.
 - Possibilidade de passar para o app o que está no caderno físico.
