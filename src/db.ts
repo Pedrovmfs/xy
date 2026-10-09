@@ -24,6 +24,10 @@ export interface RoutineItem {
   weekdays: number[]
   start?: Horario
   end?: Horario
+  /** Vigência: o item vale a partir de `startsOn` e até o dia anterior a `until`.
+   *  "Apagar" um item com histórico só preenche `until`, para os dias passados não mudarem. */
+  startsOn?: DataISO
+  until?: DataISO
   createdAt: string
 }
 
@@ -59,6 +63,9 @@ export interface Habit {
   name: string
   weekdays: number[]
   order: number
+  /** Mesma vigência dos itens da rotina. */
+  startsOn?: DataISO
+  until?: DataISO
 }
 
 /** Existe = marcado naquele dia. id = `${date}|${habitId}`. */

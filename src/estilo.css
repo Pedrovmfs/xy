@@ -615,3 +615,119 @@ button.nav-dia-rel {
   min-height: 44px;
   font-size: 14px;
 }
+
+/* ---------- Ajustes ---------- */
+
+.linha {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 6px 0;
+  text-align: left;
+  border-bottom: 1px solid var(--linha);
+}
+.linha > svg {
+  margin-left: auto;
+  color: var(--texto-suave);
+  width: 18px;
+  height: 18px;
+}
+.linha-texto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.linha-sub {
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+.botao-novo,
+.adicionar-no-dia {
+  min-height: 44px;
+  color: var(--destaque);
+}
+.botao-novo {
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.adicionar-no-dia {
+  display: block;
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+.secao-titulo {
+  margin: 24px 0 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--texto-suave);
+}
+.botao-apagar {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 8px;
+  color: var(--texto-suave);
+  font-size: 15px;
+}
+.nota-discreta {
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+.centro {
+  text-align: center;
+  margin-top: 12px;
+}
+.aviso {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+.entrada-curta {
+  width: 96px;
+}
+.dias {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.dia {
+  aspect-ratio: 1;
+  min-height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--linha);
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+.dia[aria-pressed='true'] {
+  background: var(--texto);
+  border-color: var(--texto);
+  color: var(--fundo);
+  font-weight: 600;
+}
+.cores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.cor {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  padding: 3px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.cor[aria-pressed='true'] {
+  border-color: var(--texto);
+}
+.campo .segmentado {
+  margin-top: 0;
+}
+.ficha {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
