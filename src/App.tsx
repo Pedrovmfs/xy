@@ -5,6 +5,7 @@ import { Semana } from './telas/Semana'
 import { Pensamentos } from './telas/Pensamentos'
 import { Areas } from './telas/Areas'
 import { Ajustes } from './telas/Ajustes'
+import { CapturaPensamento } from './componentes/CapturaPensamento'
 
 type Aba = 'hoje' | 'semana' | 'pensamentos' | 'areas'
 
@@ -21,7 +22,7 @@ export function App() {
 
   if (ajustesAbertos) {
     return (
-      <div className="app">
+      <div className="app" data-abas={false}>
         <header className="topo">
           <button className="botao-icone" onClick={() => setAjustesAbertos(false)} aria-label="Voltar">
             <IconeVoltar />
@@ -32,6 +33,7 @@ export function App() {
         <main className="conteudo">
           <Ajustes />
         </main>
+        <CapturaPensamento />
       </div>
     )
   }
@@ -66,6 +68,7 @@ export function App() {
           </button>
         ))}
       </nav>
+      <CapturaPensamento />
     </div>
   )
 }

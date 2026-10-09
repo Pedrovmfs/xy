@@ -61,3 +61,21 @@ export const IconeVoltar = () => (
     <path d="m15 5-7 7 7 7" />
   </Svg>
 )
+
+export const IconeAvancar = () => (
+  <Svg>
+    <path d="m9 5 7 7-7 7" />
+  </Svg>
+)
+
+export const IconeFeito = () => (
+  <Svg>
+    <path d="m5 12.5 4.5 4.5L19 7.5" />
+  </Svg>
+)
+
+export const IconeEscrever = () => (
+  <Svg>
+    <path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3ZM14 8l2.5 2.5" />
+  </Svg>
+)
