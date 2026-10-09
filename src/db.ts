@@ -48,6 +48,9 @@ export interface Entry {
   status?: Estado
   reason?: string
   note?: string
+  /** Horário só deste dia (o bloco foi arrastado/editado); a rotina-modelo não muda. */
+  start?: Horario
+  end?: Horario
   updatedAt: string
 }
 

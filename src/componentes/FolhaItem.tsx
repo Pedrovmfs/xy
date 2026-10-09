@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Entry, Estado } from '../db'
-import { salvarEntry, type ItemDoDia } from '../lib/dia'
+import { horarioDoDia, minutos, paraHorario, salvarEntry, type ItemDoDia } from '../lib/dia'
 import type { DataISO } from '../lib/datas'
 import { Folha } from './Folha'
 
@@ -17,17 +17,15 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
   const [status, setStatus] = useState<Estado | undefined>(entry?.status)
   const [reason, setReason] = useState(entry?.reason ?? '')
   const [note, setNote] = useState(entry?.note ?? '')
+  const horario = horarioDoDia(item, entry)
 
   // O estado é salvo na hora do toque; motivo e nota, ao sair do campo e ao fechar.
-  const salvar = (mudancas: { status?: Estado; reason?: string; note?: string } = {}) =>
+  const salvar = (mudancas: Partial<Pick<Entry, 'status' | 'reason' | 'note'>> = {}) =>
     salvarEntry(date, item.id, { status, reason, note, ...mudancas })
 
   function escolher(novo: Estado | undefined) {
-    // "Limpar" e "Feito" descartam o motivo; a nota fica.
-    const novoMotivo = novo === 'skipped' ? reason : ''
     setStatus(novo)
-    setReason(novoMotivo)
-    void salvar({ status: novo, reason: novoMotivo })
+    void salvar({ status: novo })
   }
 
   function fechar() {
@@ -35,11 +33,36 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
     aoFechar()
   }
 
-  const horario = item.start ? `${item.start}${item.end ? `–${item.end}` : ''}` : 'no dia'
+  // Mudar o início mantém a duração; mudar o fim muda a duração.
+  function mudarInicio(valor: string) {
+    if (!valor || !horario.start) return
+    const duracao = horario.end ? minutos(horario.end) - minutos(horario.start) : 60
+    const fim = Math.min(minutos(valor) + duracao, 24 * 60 - 1)
+    void salvarEntry(date, item.id, { start: valor, end: paraHorario(fim) })
+  }
+  function mudarFim(valor: string) {
+    if (!valor || !horario.start || minutos(valor) <= minutos(horario.start)) return
+    void salvarEntry(date, item.id, { start: horario.start, end: valor })
+  }
 
   return (
     <Folha aberta aoFechar={fechar} titulo={item.title}>
-      <p className="folha-sub">{horario}{item.origem === 'avulso' ? ' · avulso' : ''}</p>
+      {horario.start ? (
+        <div className="horario-do-dia">
+          <input type="time" className="entrada entrada-hora" aria-label="Início" value={horario.start}
+            onChange={(e) => mudarInicio(e.target.value)} />
+          <span>–</span>
+          <input type="time" className="entrada entrada-hora" aria-label="Fim" value={horario.end ?? ''}
+            onChange={(e) => mudarFim(e.target.value)} />
+          {horario.ajustado && (
+            <button className="link horario-voltar" onClick={() => void salvarEntry(date, item.id, { start: undefined, end: undefined })}>
+              voltar para {item.start}
+            </button>
+          )}
+        </div>
+      ) : (
+        <p className="folha-sub">no dia{item.origem === 'avulso' ? ' · avulso' : ''}</p>
+      )}
 
       <div className="segmentado" role="group" aria-label="Estado">
         <button aria-pressed={status === 'done'} onClick={() => escolher('done')}>Feito</button>
