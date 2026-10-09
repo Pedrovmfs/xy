@@ -295,6 +295,16 @@ p {
   border-radius: 18px 18px 0 0;
   animation: subir 0.2s ease-out;
 }
+.folha-topo {
+  /* área de segurar para puxar a folha para baixo */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  min-height: 44px;
+  margin: -8px calc(-1 * max(16px, env(safe-area-inset-left))) 0;
+  padding: 8px max(16px, env(safe-area-inset-left)) 4px;
+  cursor: grab;
+}
 .folha-alca {
   width: 36px;
   height: 5px;
