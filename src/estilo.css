@@ -845,3 +845,36 @@ button.nav-dia-rel {
   font-size: 13px;
   color: var(--texto-suave);
 }
+
+/* ---------- Aviso (desfazer / guardado) ---------- */
+
+.aviso-barra {
+  position: fixed;
+  z-index: 60;
+  left: max(16px, env(safe-area-inset-left));
+  right: calc(max(16px, env(safe-area-inset-right)) + 56px);
+  bottom: calc(var(--altura-abas) + env(safe-area-inset-bottom) + 12px);
+  max-width: 420px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px 0 14px;
+  border-radius: 12px;
+  background: var(--texto);
+  color: var(--fundo);
+  font-size: 14px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.15);
+  animation: subir 0.2s ease-out;
+}
+.app[data-abas='false'] .aviso-barra {
+  bottom: calc(env(safe-area-inset-bottom) + 16px);
+}
+.aviso-desfazer {
+  min-height: 44px;
+  padding: 0 10px;
+  font-weight: 600;
+  color: var(--fundo);
+  opacity: 0.85;
+}

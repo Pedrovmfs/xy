@@ -4,6 +4,7 @@ import { formatarDataLonga, hoje, type DataISO } from '../lib/datas'
 import { novoId } from '../lib/id'
 import { extrairEtiquetas, RESGATES, TIPOS } from '../lib/pensamentos'
 import { Folha } from './Folha'
+import { avisar } from '../lib/aviso'
 
 // Captura (pensamento novo) e edição. O texto vem primeiro; tipo, terapia e resgate
 // são opcionais, logo abaixo, pequenos. Etiquetas = #hashtags do texto.
@@ -17,7 +18,6 @@ export function EditorPensamento({ pensamento, aberta, aoFechar }: {
   const [forTherapy, setForTherapy] = useState(!!pensamento?.forTherapy)
   const [resurfaceAt, setResurfaceAt] = useState<DataISO | undefined>(pensamento?.resurfaceAt)
   const [resgateEscolhido, setResgateEscolhido] = useState<string | null>(null)
-  const [confirmarApagar, setConfirmarApagar] = useState(false)
 
   function limpar() {
     setText('')
@@ -45,19 +45,18 @@ export function EditorPensamento({ pensamento, aberta, aoFechar }: {
         resurfaceDismissed: mudouResgate ? undefined : pensamento.resurfaceDismissed,
       })
     } else {
-      await db.thoughts.add({ id: novoId(), ...campos, createdAt: new Date().toISOString(), date: hoje() })
+      const id = novoId()
+      await db.thoughts.add({ id, ...campos, createdAt: new Date().toISOString(), date: hoje() })
       limpar()
+      avisar('Guardado', () => db.thoughts.delete(id))
     }
     aoFechar()
   }
 
   async function apagar() {
     if (!pensamento) return
-    if (!confirmarApagar) {
-      setConfirmarApagar(true)
-      return
-    }
     await db.thoughts.delete(pensamento.id)
+    avisar('Apagado', () => db.thoughts.put(pensamento))
     aoFechar()
   }
 
@@ -129,7 +128,7 @@ export function EditorPensamento({ pensamento, aberta, aoFechar }: {
       </button>
       {pensamento && (
         <button className="botao-apagar" onClick={apagar}>
-          {confirmarApagar ? 'Tocar de novo para apagar' : 'Apagar'}
+          Apagar
         </button>
       )}
     </Folha>
