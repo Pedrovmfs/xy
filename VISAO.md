@@ -124,7 +124,8 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - Cada registro guarda data/hora e fica ligado ao dia.
 - Aba própria com busca e etiquetas opcionais.
 - **Resgate opcional, escolhido na hora de salvar**: "me lembra disso em 1 semana / 1 mês / 3 meses / 6 meses / 1 ano". Quando chega a data, o pensamento aparece discreto no Hoje (uma linha pequena, que some se ignorar).
-- **Modo terapia:** uma tela pra abrir **durante a sessão**, com tudo desde a última sessão, agrupado por dia, com os marcados "levar pra terapia" em destaque. Depois da sessão, dá pra marcar o que foi conversado e anotar algo da sessão. A sessão de terapia é um item recorrente no calendário, e "desde a última sessão" sai dele.
+- **Modo terapia:** uma tela pra abrir **durante a sessão**, com tudo desde a última sessão, agrupado por dia, com os marcados "levar pra terapia" em destaque. Depois da sessão, dá pra marcar o que foi conversado e anotar algo da sessão. A sessão de terapia é um item recorrente no calendário (**toda quarta, 17:00–18:00**), e "desde a última sessão" sai dele.
+- **Atividades da terapia:** o que a terapeuta passa na sessão vira uma lista de atividades da semana. Elas aparecem discretas no Hoje (como tarefas, com checkbox e nota) até a próxima sessão, e no modo terapia aparecem de novo pra revisar o que foi feito e como foi. O Pedro costuma esquecer essas atividades; esse é o problema a resolver.
 - Conteúdo sensível: fica só no aparelho (como tudo). Ideia futura: bloqueio opcional com código só nessa aba. Lembrar que o backup JSON também contém esses registros.
 - Possibilidade de passar para o app o que está no caderno físico.
 
@@ -138,7 +139,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 |---|---|
 | Segunda | Academia 16:30–18:00 · Attual 19:30–21:00 · tarefas: Spaço Eventos, trabalhos do pai |
 | Terça | Aula 8:10–10:40 · Academia 16:30–18:00 · Attual 19:30–21:00 |
-| Quarta | Aula 9:00–11:30 · Academia 16:30–18:00 · Attual 19:30–21:00 |
+| Quarta | Aula 9:00–11:30 · Academia 16:30–18:00 (conflita com a terapia, a resolver) · **Terapia 17:00–18:00** · Attual 19:30–21:00 |
 | Quinta | Aula 9:00–11:30 · Attual 19:30–21:00 (descanso da academia no papel) |
 | Sexta | Aula 10:40–13:10 · Academia 16:30–18:00 · Attual 19:30–21:00 |
 | Sábado | Academia ~14:00–15:30 (horário livre) · tarefas: Spaço Eventos, trabalhos do pai |
@@ -169,7 +170,7 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 - [ ] Lista de compras em duas partes: mensal (mercado grande) e semanal (mercadinho)
 - [ ] Espaço semanal de refeições livres pelo déficit (mínimo 4.500 kcal/semana; só o extra conta; excesso reduz o espaço da semana seguinte) — ver docs/dieta.md
 - [ ] Calibrar o gasto calórico real pela tendência de peso
-- [ ] Modo terapia: registros desde a última sessão, "levar pra terapia", notas da sessão
+- [ ] Modo terapia: registros desde a última sessão, "levar pra terapia", notas da sessão, atividades passadas pela terapeuta
 - [ ] Bloqueio opcional com código na aba Pensamentos
 - [ ] Aviso de estoque acabando + sugestão de repor no próximo domingo
 
