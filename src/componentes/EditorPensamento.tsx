@@ -5,6 +5,9 @@ import { novoId } from '../lib/id'
 import { extrairEtiquetas, RESGATES, TIPOS } from '../lib/pensamentos'
 import { Folha } from './Folha'
 import { avisar } from '../lib/aviso'
+import { rascunho } from '../lib/atraso'
+
+const CHAVE_RASCUNHO = 'xy:rascunho-pensamento'
 
 // Captura (pensamento novo) e edição. O texto vem primeiro; tipo, terapia e resgate
 // são opcionais, logo abaixo, pequenos. Etiquetas = #hashtags do texto.
@@ -13,7 +16,12 @@ export function EditorPensamento({ pensamento, aberta, aoFechar }: {
   aberta: boolean
   aoFechar: () => void
 }) {
-  const [text, setText] = useState(pensamento?.text ?? '')
+  // pensamento novo: o rascunho fica guardado no aparelho e sobrevive ao app ser fechado
+  const [text, setText] = useState(pensamento?.text ?? rascunho.ler(CHAVE_RASCUNHO))
+  function mudarTexto(v: string) {
+    setText(v)
+    if (!pensamento) rascunho.gravar(CHAVE_RASCUNHO, v)
+  }
   const [kind, setKind] = useState<TipoPensamento | undefined>(pensamento?.kind)
   const [forTherapy, setForTherapy] = useState(!!pensamento?.forTherapy)
   const [resurfaceAt, setResurfaceAt] = useState<DataISO | undefined>(pensamento?.resurfaceAt)
@@ -21,6 +29,7 @@ export function EditorPensamento({ pensamento, aberta, aoFechar }: {
 
   function limpar() {
     setText('')
+    rascunho.gravar(CHAVE_RASCUNHO, '')
     setKind(undefined)
     setForTherapy(false)
     setResurfaceAt(undefined)
@@ -70,7 +79,7 @@ export function EditorPensamento({ pensamento, aberta, aoFechar }: {
         autoFocus={!pensamento}
         value={text}
         placeholder="O que passou pela cabeça? (#etiquetas são opcionais)"
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => mudarTexto(e.target.value)}
       />
       {etiquetas.length > 0 && (
         <p className="etiquetas-previa">{etiquetas.map((t) => `#${t}`).join(' ')}</p>

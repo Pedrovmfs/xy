@@ -7,6 +7,7 @@ import { Agenda } from '../componentes/Agenda'
 import { FolhaItem } from '../componentes/FolhaItem'
 import { EditorItem } from '../componentes/EditorItem'
 import { Resgates } from '../componentes/Resgates'
+import { useComAtraso } from '../lib/atraso'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
 
 // A partir de que hora aparece "anotar algo sobre hoje"
@@ -149,6 +150,16 @@ function ComentarioDoDia({ data, diaDeHoje }: { data: DataISO; diaDeHoje: DataIS
   const [editando, setEditando] = useState(false)
   const [texto, setTexto] = useState('')
 
+  async function gravar(valor: string) {
+    const limpo = valor.trim() || undefined
+    await db.transaction('rw', db.days, async () => {
+      const atual = await db.days.get(data)
+      await db.days.put({ ...atual, date: data, comment: limpo })
+    })
+  }
+  // salva enquanto digita (meio segundo depois de parar), além de ao sair do campo
+  const gravarDepois = useComAtraso(gravar)
+
   const comentario = dia?.comment
   // Só à noite no dia de hoje; em dias passados, sempre; no futuro, nunca.
   // Se já existe comentário, ele sempre aparece.
@@ -156,13 +167,9 @@ function ComentarioDoDia({ data, diaDeHoje }: { data: DataISO; diaDeHoje: DataIS
     !!comentario || data < diaDeHoje || (data === diaDeHoje && new Date().getHours() >= HORA_DA_NOITE)
   if (!visivel) return null
 
-  async function salvar() {
+  function salvar() {
     setEditando(false)
-    const limpo = texto.trim() || undefined
-    await db.transaction('rw', db.days, async () => {
-      const atual = await db.days.get(data)
-      await db.days.put({ ...atual, date: data, comment: limpo })
-    })
+    void gravar(texto)
   }
 
   if (editando) {
@@ -174,7 +181,10 @@ function ComentarioDoDia({ data, diaDeHoje }: { data: DataISO; diaDeHoje: DataIS
           autoFocus
           value={texto}
           placeholder="Algo sobre hoje…"
-          onChange={(e) => setTexto(e.target.value)}
+          onChange={(e) => {
+            setTexto(e.target.value)
+            gravarDepois(e.target.value)
+          }}
           onBlur={salvar}
         />
       </div>
