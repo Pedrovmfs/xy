@@ -99,6 +99,13 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - Registro rápido: "repetir ontem", favoritos, opções do banco como porção pronta. Pesagem: arroz pronto, proteína **crua**.
 - Alimentos avulsos pela **tabela TACO**, embutida no app (offline); produtos industrializados pelo rótulo.
 
+#### Primeira versão da Nutrição (v1, pode ser adiantada)
+1. No Hoje, uma barra discreta com **proteína e calorias do dia** (190–200 g; até ~1.960 kcal), mostrando quanto falta.
+2. Registrar o que comeu tocando numa opção do cardápio do `docs/dieta.md` (calorias e proteína de lá), ou digitando nome, kcal e proteína à mão.
+3. Marcar uma refeição como **"livre"**, com campo de calorias manual.
+4. Ver e apagar os registros do dia.
+5. Sem estoque, lista de compras ou saldo semanal nesta versão. Tudo no backup JSON. Nada de vermelho ao passar da meta.
+
 ### Corpo
 - Água (contador), peso, sono.
 - Peso com média móvel de 7 dias (o peso diário oscila).
@@ -110,12 +117,15 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - Cada área mostra o histórico de notas dos itens dela — para **reconhecer os próprios trabalhos**.
 - **Próximo passo** por área: guarda só a próxima ação, para nunca abrir e pensar "onde parei?".
 
-### Pensamentos
-- Não é diário de sentimentos: são pensamentos que agregam e poderiam ser esquecidos. O Pedro tem um caderno físico, mas nem sempre está com ele.
-- **Captura em 1 toque de qualquer tela** (botão pequeno fixo → só um campo de texto).
-- Cada pensamento guarda data/hora e fica ligado ao dia.
+### Pensamentos (e registros pra terapia)
+- Pensamentos que agregam e poderiam ser esquecidos. O Pedro tem um caderno físico, mas nem sempre está com ele.
+- O Pedro faz **terapia**. A captura também serve pra anotar, ao longo da semana, **sensações, dores e pensamentos** que ele quer levar pra sessão.
+- **Captura em 1 toque de qualquer tela** (botão pequeno fixo → só um campo de texto). Opcional na hora: um **tipo** (pensamento / sensação / dor) e uma marquinha **"levar pra terapia"**.
+- Cada registro guarda data/hora e fica ligado ao dia.
 - Aba própria com busca e etiquetas opcionais.
-- **Resgate opcional, escolhido na hora de salvar**: "me lembra disso em 1 semana / 1 mês / 3 meses...". Quando chega a data, aparece discreto no Hoje.
+- **Resgate opcional, escolhido na hora de salvar**: "me lembra disso em 1 semana / 1 mês / 3 meses / 6 meses / 1 ano". Quando chega a data, o pensamento aparece discreto no Hoje (uma linha pequena, que some se ignorar).
+- **Modo terapia:** uma tela pra abrir **durante a sessão**, com tudo desde a última sessão, agrupado por dia, com os marcados "levar pra terapia" em destaque. Depois da sessão, dá pra marcar o que foi conversado e anotar algo da sessão. A sessão de terapia é um item recorrente no calendário, e "desde a última sessão" sai dele.
+- Conteúdo sensível: fica só no aparelho (como tudo). Ideia futura: bloqueio opcional com código só nessa aba. Lembrar que o backup JSON também contém esses registros.
 - Possibilidade de passar para o app o que está no caderno físico.
 
 ### Semana
@@ -159,6 +169,8 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 - [ ] Lista de compras em duas partes: mensal (mercado grande) e semanal (mercadinho)
 - [ ] Espaço semanal de refeições livres pelo déficit (mínimo 4.500 kcal/semana; só o extra conta; excesso reduz o espaço da semana seguinte) — ver docs/dieta.md
 - [ ] Calibrar o gasto calórico real pela tendência de peso
+- [ ] Modo terapia: registros desde a última sessão, "levar pra terapia", notas da sessão
+- [ ] Bloqueio opcional com código na aba Pensamentos
 - [ ] Aviso de estoque acabando + sugestão de repor no próximo domingo
 
 (Adicionar novas ideias no fim. O Pedro quer estar sempre incrementando o app: sugestões grandes/essenciais e pequenas são bem-vindas; nenhuma ideia deve ser descartada por parecer irrelevante.)
