@@ -81,9 +81,19 @@ export interface Thought {
   createdAt: string
   /** Dia a que o pensamento fica ligado. */
   date: DataISO
+  /** Etiquetas: as #hashtags do texto (sem o #, minúsculas). */
   tags: string[]
+  /** Tipo opcional do registro. */
+  kind?: TipoPensamento
+  /** Marquinha "levar pra terapia". */
+  forTherapy?: boolean
+  /** Resgate: dia em que volta a aparecer discreto no Hoje. */
   resurfaceAt?: DataISO
+  /** O resgate já foi visto/dispensado no Hoje. */
+  resurfaceDismissed?: boolean
 }
+
+export type TipoPensamento = 'pensamento' | 'sentimento' | 'sensacao' | 'dor'
 
 export interface Day {
   date: DataISO
