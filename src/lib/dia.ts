@@ -51,14 +51,39 @@ export function useEntriesDoDia(date: DataISO): Map<string, Entry> | undefined {
   }, [date])
 }
 
-/** Grava o estado de um item; se ficou tudo vazio, apaga o registro. */
-export async function salvarEntry(date: DataISO, itemId: string, dados: Pick<Entry, 'status' | 'reason' | 'note'>) {
+/** 'HH:MM' a partir de minutos desde 00:00 */
+export function paraHorario(min: number): string {
+  return `${String(Math.floor(min / 60)).padStart(2, '0')}:${String(min % 60).padStart(2, '0')}`
+}
+
+/** Horário que vale no dia: o ajustado naquele dia, se houver, senão o da rotina. */
+export function horarioDoDia(item: ItemDoDia, entry?: Entry): { start?: string; end?: string; ajustado: boolean } {
+  if (entry?.start) return { start: entry.start, end: entry.end, ajustado: true }
+  return { start: item.start, end: item.end, ajustado: false }
+}
+
+type CamposEntry = Pick<Entry, 'status' | 'reason' | 'note' | 'start' | 'end'>
+
+/**
+ * Altera só os campos passados do estado de um item no dia (o resto continua como
+ * está). Se ficou tudo vazio, apaga o registro.
+ */
+export async function salvarEntry(date: DataISO, itemId: string, mudancas: Partial<CamposEntry>) {
   const id = idEntry(date, itemId)
-  const reason = dados.reason?.trim() || undefined
-  const note = dados.note?.trim() || undefined
-  if (!dados.status && !reason && !note) {
-    await db.entries.delete(id)
-    return
-  }
-  await db.entries.put({ id, date, itemId, status: dados.status, reason, note, updatedAt: new Date().toISOString() })
+  await db.transaction('rw', db.entries, async () => {
+    const atual = await db.entries.get(id)
+    const m = { ...atual, ...mudancas }
+    const campos: CamposEntry = {
+      status: m.status,
+      reason: m.status === 'skipped' ? m.reason?.trim() || undefined : undefined,
+      note: m.note?.trim() || undefined,
+      start: m.start || undefined,
+      end: m.start ? m.end : undefined,
+    }
+    if (Object.values(campos).every((v) => v === undefined)) {
+      await db.entries.delete(id)
+      return
+    }
+    await db.entries.put({ id, date, itemId, ...campos, updatedAt: new Date().toISOString() })
+  })
 }

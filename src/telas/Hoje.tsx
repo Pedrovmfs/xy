@@ -40,7 +40,7 @@ export function Hoje() {
         </ul>
       )}
 
-      <Agenda blocos={blocos} entries={entries} areas={areas} ehHoje={data === diaDeHoje} aoAbrir={setAberto} />
+      <Agenda date={data} blocos={blocos} entries={entries} areas={areas} ehHoje={data === diaDeHoje} aoAbrir={setAberto} />
 
       <ComentarioDoDia data={data} diaDeHoje={diaDeHoje} />
 
