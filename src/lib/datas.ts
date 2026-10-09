@@ -37,3 +37,24 @@ export const NOMES_DIAS_CURTOS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sá
 export function formatarDataLonga(s: DataISO): string {
   return deDataISO(s).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })
 }
+
+export function somarMeses(s: DataISO, meses: number): DataISO {
+  const d = deDataISO(s)
+  const dia = d.getDate()
+  d.setDate(1)
+  d.setMonth(d.getMonth() + meses)
+  // 31/jan + 1 mês = 28 ou 29/fev (e não 3/mar)
+  const ultimo = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate()
+  d.setDate(Math.min(dia, ultimo))
+  return paraDataISO(d)
+}
+
+/** "há 3 semanas", "há 1 mês", "ontem"… a partir de uma data ISO até hoje. */
+export function haQuantoTempo(s: DataISO): string {
+  const dias = Math.round((deDataISO(hoje()).getTime() - deDataISO(s).getTime()) / 86_400_000)
+  const rtf = new Intl.RelativeTimeFormat('pt-BR', { numeric: 'auto' })
+  if (dias < 7) return rtf.format(-dias, 'day')
+  if (dias < 30) return rtf.format(-Math.round(dias / 7), 'week')
+  if (dias < 365) return rtf.format(-Math.round(dias / 30), 'month')
+  return rtf.format(-Math.round(dias / 365), 'year')
+}

@@ -6,6 +6,7 @@ import { useEntriesDoDia, useItensDoDia, valeNoDia, type ItemDoDia } from '../li
 import { Agenda } from '../componentes/Agenda'
 import { FolhaItem } from '../componentes/FolhaItem'
 import { EditorItem } from '../componentes/EditorItem'
+import { Resgates } from '../componentes/Resgates'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
 
 // A partir de que hora aparece "anotar algo sobre hoje"
@@ -32,6 +33,8 @@ export function Hoje() {
       <NavegacaoDia data={data} diaDeHoje={diaDeHoje} setData={setData} />
 
       <LinhaHabitos data={data} />
+
+      {data === diaDeHoje && <Resgates />}
 
       {tarefas.length > 0 && (
         <ul className="tarefas" aria-label="No dia, sem horário">
