@@ -7,6 +7,8 @@ import { Agenda } from '../componentes/Agenda'
 import { FolhaItem } from '../componentes/FolhaItem'
 import { EditorItem } from '../componentes/EditorItem'
 import { Resgates } from '../componentes/Resgates'
+import { CalendarioMes } from '../componentes/CalendarioMes'
+import { useDeslizar } from '../lib/deslizar'
 import { useComAtraso } from '../lib/atraso'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
 
@@ -18,6 +20,9 @@ export function Hoje() {
   const [aberto, setAberto] = useState<ItemDoDia | null>(null)
   // false = fechado; true = sem horário escolhido; objeto = criado segurando na agenda
   const [novoAvulso, setNovoAvulso] = useState<boolean | { start: string; end: string }>(false)
+
+  // deslizar para a esquerda = dia seguinte; para a direita = dia anterior
+  const deslize = useDeslizar({ sentidos: [1, -1], aoConfirmar: (sentido) => setData((d) => somarDias(d, -sentido)) })
 
   const itens = useItensDoDia(data)
   const entries = useEntriesDoDia(data)
@@ -31,8 +36,10 @@ export function Hoje() {
   const diaDeHoje = hoje()
 
   return (
-    <section className="hoje">
+    <section className="hoje" {...deslize.handlers}>
       <NavegacaoDia data={data} diaDeHoje={diaDeHoje} setData={setData} />
+
+      <div ref={deslize.alvo} className="hoje-dia">
 
       <LinhaHabitos data={data} />
 
@@ -55,6 +62,7 @@ export function Hoje() {
       </button>
 
       <ComentarioDoDia data={data} diaDeHoje={diaDeHoje} />
+      </div>
 
       {novoAvulso && (
         <EditorItem
@@ -73,6 +81,7 @@ export function Hoje() {
 }
 
 function NavegacaoDia({ data, diaDeHoje, setData }: { data: DataISO; diaDeHoje: DataISO; setData: (d: DataISO) => void }) {
+  const [calendario, setCalendario] = useState(false)
   const relativo =
     data === diaDeHoje ? 'hoje' : data === somarDias(diaDeHoje, -1) ? 'ontem' : data === somarDias(diaDeHoje, 1) ? 'amanhã' : null
   return (
@@ -81,7 +90,9 @@ function NavegacaoDia({ data, diaDeHoje, setData }: { data: DataISO; diaDeHoje: 
         <IconeVoltar />
       </button>
       <div className="nav-dia-meio">
-        <span className="nav-dia-data">{formatarDataLonga(data)}</span>
+        <button className="nav-dia-data" onClick={() => setCalendario(true)} aria-label="Escolher dia no calendário">
+          {formatarDataLonga(data)}
+        </button>
         {data === diaDeHoje ? (
           <span className="nav-dia-rel">hoje</span>
         ) : (
@@ -93,6 +104,7 @@ function NavegacaoDia({ data, diaDeHoje, setData }: { data: DataISO; diaDeHoje: 
       <button className="botao-icone" onClick={() => setData(somarDias(data, 1))} aria-label="Próximo dia">
         <IconeAvancar />
       </button>
+      {calendario && <CalendarioMes selecionada={data} aoEscolher={setData} aoFechar={() => setCalendario(false)} />}
     </div>
   )
 }

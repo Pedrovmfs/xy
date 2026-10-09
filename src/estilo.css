@@ -917,3 +917,82 @@ button.nav-dia-rel {
   color: var(--fundo);
   opacity: 0.85;
 }
+
+/* ---------- Deslizar para o lado ---------- */
+/* pan-y: o navegador cuida da rolagem vertical; o arrasto horizontal fica com o app.
+   A linha de hábitos fica de fora porque rola de lado sozinha. */
+.nav-dia,
+.resgates,
+.tarefas,
+.agenda,
+.adicionar-no-dia,
+.comentario,
+.ajustes {
+  touch-action: pan-y;
+}
+.hoje,
+.ajustes {
+  overflow-x: clip;
+  min-height: 70dvh; /* área para deslizar mesmo em dia vazio */
+}
+.hoje-dia {
+  will-change: transform;
+}
+
+/* Calendário do mês */
+button.nav-dia-data {
+  min-height: 32px;
+  font: inherit;
+  font-weight: 600;
+}
+.cal-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.cal-mes {
+  font-weight: 600;
+}
+.cal-mes::first-letter {
+  text-transform: uppercase;
+}
+.cal-grade {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-top: 8px;
+  text-align: center;
+}
+.cal-semana {
+  font-size: 12px;
+  color: var(--texto-suave);
+  padding: 4px 0;
+}
+.cal-dia {
+  min-height: 44px;
+  border-radius: 50%;
+  font-variant-numeric: tabular-nums;
+  aspect-ratio: 1;
+}
+.cal-dia[data-hoje] {
+  color: var(--destaque);
+  font-weight: 700;
+}
+.cal-dia[aria-pressed='true'] {
+  background: var(--texto);
+  color: var(--fundo);
+}
+.cal-hoje {
+  display: block;
+  margin: 8px auto 0;
+}
+
+.botao-captura {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.botao-captura[data-escondido] {
+  transform: translateY(24px);
+  opacity: 0;
+  pointer-events: none;
+}

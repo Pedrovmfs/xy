@@ -8,6 +8,7 @@ import { EditorItem } from '../componentes/EditorItem'
 import { EditorHabito } from '../componentes/EditorHabito'
 import { EditorArea } from '../componentes/EditorArea'
 import { IconeAvancar, IconeVoltar } from '../icones'
+import { useDeslizar } from '../lib/deslizar'
 
 type Secao = 'rotina' | 'avulsos' | 'habitos' | 'areas'
 
@@ -21,17 +22,25 @@ const SECOES: { id: Secao; nome: string; descricao: string }[] = [
 export function Ajustes({ aoSair }: { aoSair: () => void }) {
   const [secao, setSecao] = useState<Secao | null>(null)
   const atual = SECOES.find((s) => s.id === secao)
+  const voltar = () => (secao ? setSecao(null) : aoSair())
+  // deslizar da borda esquerda para a direita = voltar (como nos apps do iPhone)
+  const deslize = useDeslizar({
+    podeComecar: (e) => e.clientX < 32,
+    sentidos: [1],
+    aoConfirmar: voltar,
+  })
 
   return (
     <>
       <header className="topo">
-        <button className="botao-icone" onClick={() => (secao ? setSecao(null) : aoSair())} aria-label="Voltar">
+        <button className="botao-icone" onClick={voltar} aria-label="Voltar">
           <IconeVoltar />
         </button>
         <h1 className="topo-titulo">{atual?.nome ?? 'Ajustes'}</h1>
         <span className="botao-icone" />
       </header>
-      <main className="conteudo">
+      <main className="conteudo ajustes" {...deslize.handlers}>
+        <div ref={deslize.alvo}>
         {!secao && (
           <ul className="lista">
             {SECOES.map((s) => (
@@ -51,6 +60,7 @@ export function Ajustes({ aoSair }: { aoSair: () => void }) {
         {secao === 'avulsos' && <ListaAvulsos />}
         {secao === 'habitos' && <ListaHabitos />}
         {secao === 'areas' && <ListaAreas />}
+        </div>
       </main>
     </>
   )
