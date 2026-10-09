@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, type Area } from '../db'
+import { db, type Area, type Entry } from '../db'
 import { formatarDataLonga, hoje, somarDias, type DataISO } from '../lib/datas'
-import { useEntriesDoDia, useItensDoDia, valeNoDia, type ItemDoDia } from '../lib/dia'
+import { alternarFeito, useEntriesDoDia, useItensDoDia, valeNoDia, type ItemDoDia } from '../lib/dia'
 import { Agenda } from '../componentes/Agenda'
 import { FolhaItem } from '../componentes/FolhaItem'
 import { EditorItem } from '../componentes/EditorItem'
@@ -16,7 +16,8 @@ const HORA_DA_NOITE = 18
 export function Hoje() {
   const [data, setData] = useState<DataISO>(hoje)
   const [aberto, setAberto] = useState<ItemDoDia | null>(null)
-  const [novoAvulso, setNovoAvulso] = useState(false)
+  // false = fechado; true = sem horário escolhido; objeto = criado segurando na agenda
+  const [novoAvulso, setNovoAvulso] = useState<boolean | { start: string; end: string }>(false)
 
   const itens = useItensDoDia(data)
   const entries = useEntriesDoDia(data)
@@ -40,13 +41,14 @@ export function Hoje() {
       {tarefas.length > 0 && (
         <ul className="tarefas" aria-label="No dia, sem horário">
           {tarefas.map((t) => (
-            <Tarefa key={t.id} item={t} status={entries.get(t.id)?.status} area={t.areaId ? areas.get(t.areaId) : undefined}
-              nota={entries.get(t.id)?.note} aoAbrir={() => setAberto(t)} />
+            <Tarefa key={t.id} item={t} entry={entries.get(t.id)} area={t.areaId ? areas.get(t.areaId) : undefined}
+              aoAbrir={() => setAberto(t)} aoMarcar={() => void alternarFeito(data, t, entries.get(t.id))} />
           ))}
         </ul>
       )}
 
-      <Agenda date={data} blocos={blocos} entries={entries} areas={areas} ehHoje={data === diaDeHoje} aoAbrir={setAberto} />
+      <Agenda date={data} blocos={blocos} entries={entries} areas={areas} ehHoje={data === diaDeHoje} aoAbrir={setAberto}
+        aoCriar={(start, end) => setNovoAvulso({ start, end })} />
 
       <button className="adicionar-no-dia" onClick={() => setNovoAvulso(true)}>
         + adicionar algo neste dia
@@ -54,7 +56,14 @@ export function Hoje() {
 
       <ComentarioDoDia data={data} diaDeHoje={diaDeHoje} />
 
-      {novoAvulso && <EditorItem tipo="avulso" dataInicial={data} aoFechar={() => setNovoAvulso(false)} />}
+      {novoAvulso && (
+        <EditorItem
+          tipo="avulso"
+          dataInicial={data}
+          horarioInicial={typeof novoAvulso === 'object' ? novoAvulso : undefined}
+          aoFechar={() => setNovoAvulso(false)}
+        />
+      )}
 
       {aberto && (
         <FolhaItem key={aberto.id} item={aberto} date={data} entry={entries.get(aberto.id)} aoFechar={() => setAberto(null)} />
@@ -117,29 +126,37 @@ function LinhaHabitos({ data }: { data: DataISO }) {
   )
 }
 
-function Tarefa({ item, status, area, nota, aoAbrir }: {
+// A bolinha marca feito com um toque; o nome abre a folha completa (motivo, nota).
+function Tarefa({ item, entry, area, aoAbrir, aoMarcar }: {
   item: ItemDoDia
-  status?: 'done' | 'skipped'
+  entry?: Entry
   area?: Area
-  nota?: string
   aoAbrir: () => void
+  aoMarcar: () => void
 }) {
+  const status = entry?.status
+  const nota = entry?.note
   return (
-    <li>
-      <button className="tarefa" data-estado={status} onClick={aoAbrir}>
-        <span className="tarefa-marca" style={{ ['--cor-area' as string]: area?.color ?? 'var(--texto-suave)' }}>
+    <li className="tarefa" data-estado={status}>
+      <button
+        className="tarefa-check"
+        aria-label={status === 'done' ? 'Desmarcar feito' : 'Marcar feito'}
+        aria-pressed={status === 'done'}
+        onClick={aoMarcar}
+      >
+        <span className="marca" data-estado={status} style={{ ['--cor-area' as string]: area?.color ?? 'var(--texto-suave)' }}>
           {status === 'done' && <IconeFeito />}
         </span>
-        <span className="tarefa-texto">
-          <span>{item.title}</span>
-          {(status === 'skipped' || nota) && (
-            <span className="tarefa-sub">
-              {status === 'skipped' ? 'não feito' : ''}
-              {status === 'skipped' && nota ? ' · ' : ''}
-              {nota}
-            </span>
-          )}
-        </span>
+      </button>
+      <button className="tarefa-texto" onClick={aoAbrir}>
+        <span>{item.title}</span>
+        {(status === 'skipped' || nota) && (
+          <span className="tarefa-sub">
+            {status === 'skipped' ? 'não feito' : ''}
+            {status === 'skipped' && nota ? ' · ' : ''}
+            {nota}
+          </span>
+        )}
       </button>
     </li>
   )

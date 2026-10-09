@@ -17,12 +17,14 @@ export function Folha({ aberta, aoFechar, titulo, children }: {
   const folha = useRef<HTMLDivElement>(null)
   const fundo = useRef<HTMLDivElement>(null)
   const fechando = useRef(false)
+  const abertaEm = useRef(0)
   const arrasto = useRef<{ y0: number; dy: number; ultimoY: number; ultimoT: number; velocidade: number } | null>(null)
 
   // trava a rolagem da página enquanto a folha está aberta
   useEffect(() => {
     if (!aberta) return
     fechando.current = false
+    abertaEm.current = performance.now()
     const antes = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => {
@@ -92,7 +94,15 @@ export function Folha({ aberta, aoFechar, titulo, children }: {
 
   if (!aberta) return null
   return createPortal(
-    <div className="folha-fundo" ref={fundo} onClick={fecharAnimado}>
+    <div
+      className="folha-fundo"
+      ref={fundo}
+      onClick={() => {
+        // o "clique" do mesmo toque que abriu a folha (ex.: soltar depois de segurar
+        // na agenda) pode cair no fundo: ignora os primeiros instantes
+        if (performance.now() - abertaEm.current > 400) fecharAnimado()
+      }}
+    >
       <div className="folha" ref={folha} role="dialog" aria-label={titulo} onClick={(e) => e.stopPropagation()}>
         <div
           className="folha-topo"

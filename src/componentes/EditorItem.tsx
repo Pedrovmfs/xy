@@ -9,7 +9,7 @@ import { Segmentado, SeletorArea, SeletorDias } from './Campos'
 
 type Props =
   | { tipo: 'rotina'; item?: RoutineItem; aoFechar: () => void }
-  | { tipo: 'avulso'; item?: Oneoff; dataInicial?: DataISO; aoFechar: () => void }
+  | { tipo: 'avulso'; item?: Oneoff; dataInicial?: DataISO; horarioInicial?: { start: string; end: string }; aoFechar: () => void }
 
 // Criar/editar um item da rotina (recorrente) ou um avulso (numa data).
 export function EditorItem(props: Props) {
@@ -17,8 +17,9 @@ export function EditorItem(props: Props) {
   const [title, setTitle] = useState(item?.title ?? '')
   const [kind, setKind] = useState<TipoItem>(item?.kind ?? 'block')
   const [areaId, setAreaId] = useState(item?.areaId)
-  const [start, setStart] = useState(item?.start ?? '')
-  const [end, setEnd] = useState(item?.end ?? '')
+  const inicial = props.tipo === 'avulso' ? props.horarioInicial : undefined
+  const [start, setStart] = useState(item?.start ?? inicial?.start ?? '')
+  const [end, setEnd] = useState(item?.end ?? inicial?.end ?? '')
   const [weekdays, setWeekdays] = useState<number[]>(
     tipo === 'rotina' ? (props.item?.weekdays ?? []) : [],
   )
