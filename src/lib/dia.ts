@@ -1,6 +1,7 @@
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type Entry, type TipoItem } from '../db'
 import { diaDaSemana, type DataISO } from './datas'
+import { avisar } from './aviso'
 
 /** Um item que acontece num dia, venha da rotina ou de um avulso. */
 export interface ItemDoDia {
@@ -93,5 +94,19 @@ export async function salvarEntry(date: DataISO, itemId: string, mudancas: Parti
       return
     }
     await db.entries.put({ id, date, itemId, ...campos, updatedAt: new Date().toISOString() })
+  })
+}
+
+/**
+ * Toque rápido no círculo: marca feito (ou desmarca, se já estava feito), com
+ * "desfazer" que devolve exatamente o estado anterior.
+ */
+export async function alternarFeito(date: DataISO, item: ItemDoDia, entry?: Entry) {
+  const anterior = entry ? { ...entry } : undefined
+  const novo = entry?.status === 'done' ? undefined : 'done'
+  await salvarEntry(date, item.id, { status: novo })
+  avisar(novo ? `${item.title}: feito` : `${item.title}: desmarcado`, async () => {
+    if (anterior) await db.entries.put(anterior)
+    else await db.entries.delete(idEntry(date, item.id))
   })
 }

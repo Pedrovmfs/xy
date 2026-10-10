@@ -3,13 +3,13 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type Area } from '../db'
 import { novoId } from '../lib/id'
 import { Folha } from './Folha'
+import { avisar } from '../lib/aviso'
 import { CORES, SeletorCor } from './Campos'
 
 export function EditorArea({ area, aoFechar }: { area?: Area; aoFechar: () => void }) {
   const [name, setName] = useState(area?.name ?? '')
   const [color, setColor] = useState(area?.color ?? CORES[0])
   const [meta, setMeta] = useState(area?.weeklyGoal ? String(area.weeklyGoal) : '')
-  const [confirmarApagar, setConfirmarApagar] = useState(false)
 
   // Área em uso por algum item não pode ser apagada (os itens ficariam órfãos).
   const emUso = useLiveQuery(async () => {
@@ -34,11 +34,8 @@ export function EditorArea({ area, aoFechar }: { area?: Area; aoFechar: () => vo
 
   async function apagar() {
     if (!area || emUso) return
-    if (!confirmarApagar) {
-      setConfirmarApagar(true)
-      return
-    }
     await db.areas.delete(area.id)
+    avisar('Área apagada', () => db.areas.put(area))
     aoFechar()
   }
 
@@ -74,7 +71,7 @@ export function EditorArea({ area, aoFechar }: { area?: Area; aoFechar: () => vo
           </p>
         ) : (
           <button className="botao-apagar" onClick={apagar}>
-            {confirmarApagar ? 'Tocar de novo para apagar' : 'Apagar'}
+            Apagar
           </button>
         ))}
     </Folha>

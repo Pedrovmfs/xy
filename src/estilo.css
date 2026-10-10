@@ -295,6 +295,16 @@ p {
   border-radius: 18px 18px 0 0;
   animation: subir 0.2s ease-out;
 }
+.folha-topo {
+  /* área de segurar para puxar a folha para baixo */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  min-height: 44px;
+  margin: -8px calc(-1 * max(16px, env(safe-area-inset-left))) 0;
+  padding: 8px max(16px, env(safe-area-inset-left)) 4px;
+  cursor: grab;
+}
 .folha-alca {
   width: 36px;
   height: 5px;
@@ -412,40 +422,27 @@ button.nav-dia-rel {
 .tarefa {
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 100%;
-  min-height: 48px;
-  text-align: left;
   border-bottom: 1px solid var(--linha);
 }
-.tarefa-marca {
+.tarefa-check {
   flex: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 2px solid var(--cor-area);
   display: grid;
   place-items: center;
+  width: 44px;
+  min-height: 48px;
+  margin-left: -11px;
 }
-.tarefa-marca svg {
-  width: 14px;
-  height: 14px;
-  stroke-width: 2.6;
-}
-.tarefa[data-estado='done'] .tarefa-marca {
-  background: var(--cor-area);
-  color: var(--superficie);
-}
-.tarefa[data-estado='skipped'] .tarefa-marca {
-  border-style: dashed;
+.tarefa-texto {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 48px;
+  text-align: left;
 }
 .tarefa[data-estado] .tarefa-texto > span:first-child {
   color: var(--texto-suave);
-}
-.tarefa-texto {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
 }
 .tarefa-sub {
   font-size: 13px;
@@ -453,6 +450,29 @@ button.nav-dia-rel {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Bolinha de estado (tarefas e blocos): vazia, feita (cheia com ✓) ou não feita (tracejada) */
+.marca {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--cor-area);
+  display: grid;
+  place-items: center;
+  transition: background-color 0.15s;
+}
+.marca svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.6;
+}
+.marca[data-estado='done'] {
+  background: var(--cor-area);
+  color: var(--superficie);
+}
+.marca[data-estado='skipped'] {
+  border-style: dashed;
 }
 
 /* Agenda: grade de horas */
@@ -516,6 +536,40 @@ button.nav-dia-rel {
   border-left: 3px solid var(--cor-area);
   background: color-mix(in srgb, var(--cor-area) 16%, var(--fundo));
 }
+.bloco {
+  cursor: pointer;
+}
+.bloco-check {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+}
+.bloco-check .marca {
+  width: 20px;
+  height: 20px;
+}
+.bloco-titulo,
+.bloco-sub {
+  padding-right: 30px;
+}
+.bloco-fantasma {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  padding: 5px 8px;
+  border-radius: 8px;
+  border: 1.5px dashed var(--texto-suave);
+  background: color-mix(in srgb, var(--superficie) 70%, transparent);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto-suave);
+  pointer-events: none;
+}
 .bloco-titulo {
   display: flex;
   align-items: center;
@@ -523,11 +577,6 @@ button.nav-dia-rel {
   font-size: 14px;
   font-weight: 600;
   line-height: 1.25;
-}
-.bloco-feito svg {
-  width: 16px;
-  height: 16px;
-  stroke-width: 2.4;
 }
 .bloco-sub,
 .bloco-nota {
@@ -834,4 +883,116 @@ button.nav-dia-rel {
   min-height: 44px;
   font-size: 13px;
   color: var(--texto-suave);
+}
+
+/* ---------- Aviso (desfazer / guardado) ---------- */
+
+.aviso-barra {
+  position: fixed;
+  z-index: 60;
+  left: max(16px, env(safe-area-inset-left));
+  right: calc(max(16px, env(safe-area-inset-right)) + 56px);
+  bottom: calc(var(--altura-abas) + env(safe-area-inset-bottom) + 12px);
+  max-width: 420px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px 0 14px;
+  border-radius: 12px;
+  background: var(--texto);
+  color: var(--fundo);
+  font-size: 14px;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.15);
+  animation: subir 0.2s ease-out;
+}
+.app[data-abas='false'] .aviso-barra {
+  bottom: calc(env(safe-area-inset-bottom) + 16px);
+}
+.aviso-desfazer {
+  min-height: 44px;
+  padding: 0 10px;
+  font-weight: 600;
+  color: var(--fundo);
+  opacity: 0.85;
+}
+
+/* ---------- Deslizar para o lado ---------- */
+/* pan-y: o navegador cuida da rolagem vertical; o arrasto horizontal fica com o app.
+   A linha de hábitos fica de fora porque rola de lado sozinha. */
+.nav-dia,
+.resgates,
+.tarefas,
+.agenda,
+.adicionar-no-dia,
+.comentario,
+.ajustes {
+  touch-action: pan-y;
+}
+.hoje,
+.ajustes {
+  overflow-x: clip;
+  min-height: 70dvh; /* área para deslizar mesmo em dia vazio */
+}
+.hoje-dia {
+  will-change: transform;
+}
+
+/* Calendário do mês */
+button.nav-dia-data {
+  min-height: 32px;
+  font: inherit;
+  font-weight: 600;
+}
+.cal-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+.cal-mes {
+  font-weight: 600;
+}
+.cal-mes::first-letter {
+  text-transform: uppercase;
+}
+.cal-grade {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-top: 8px;
+  text-align: center;
+}
+.cal-semana {
+  font-size: 12px;
+  color: var(--texto-suave);
+  padding: 4px 0;
+}
+.cal-dia {
+  min-height: 44px;
+  border-radius: 50%;
+  font-variant-numeric: tabular-nums;
+  aspect-ratio: 1;
+}
+.cal-dia[data-hoje] {
+  color: var(--destaque);
+  font-weight: 700;
+}
+.cal-dia[aria-pressed='true'] {
+  background: var(--texto);
+  color: var(--fundo);
+}
+.cal-hoje {
+  display: block;
+  margin: 8px auto 0;
+}
+
+.botao-captura {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.botao-captura[data-escondido] {
+  transform: translateY(24px);
+  opacity: 0;
+  pointer-events: none;
 }

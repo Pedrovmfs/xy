@@ -4,11 +4,12 @@ import { hoje, somarDias, type DataISO } from '../lib/datas'
 import { novoId } from '../lib/id'
 import { minutos } from '../lib/dia'
 import { Folha } from './Folha'
+import { avisar } from '../lib/aviso'
 import { Segmentado, SeletorArea, SeletorDias } from './Campos'
 
 type Props =
   | { tipo: 'rotina'; item?: RoutineItem; aoFechar: () => void }
-  | { tipo: 'avulso'; item?: Oneoff; dataInicial?: DataISO; aoFechar: () => void }
+  | { tipo: 'avulso'; item?: Oneoff; dataInicial?: DataISO; horarioInicial?: { start: string; end: string }; aoFechar: () => void }
 
 // Criar/editar um item da rotina (recorrente) ou um avulso (numa data).
 export function EditorItem(props: Props) {
@@ -16,15 +17,15 @@ export function EditorItem(props: Props) {
   const [title, setTitle] = useState(item?.title ?? '')
   const [kind, setKind] = useState<TipoItem>(item?.kind ?? 'block')
   const [areaId, setAreaId] = useState(item?.areaId)
-  const [start, setStart] = useState(item?.start ?? '')
-  const [end, setEnd] = useState(item?.end ?? '')
+  const inicial = props.tipo === 'avulso' ? props.horarioInicial : undefined
+  const [start, setStart] = useState(item?.start ?? inicial?.start ?? '')
+  const [end, setEnd] = useState(item?.end ?? inicial?.end ?? '')
   const [weekdays, setWeekdays] = useState<number[]>(
     tipo === 'rotina' ? (props.item?.weekdays ?? []) : [],
   )
   const [date, setDate] = useState<DataISO>(
     tipo === 'avulso' ? (props.item?.date ?? props.dataInicial ?? hoje()) : hoje(),
   )
-  const [confirmarApagar, setConfirmarApagar] = useState(false)
 
   const problema = !title.trim()
     ? 'Dê um nome.'
@@ -60,17 +61,23 @@ export function EditorItem(props: Props) {
 
   async function apagar() {
     if (!item) return
-    if (!confirmarApagar) {
-      setConfirmarApagar(true)
-      return
-    }
     if (tipo === 'avulso') {
+      const avulso = props.item!
+      const marcacoes = await db.entries.where('itemId').equals(avulso.id).toArray()
       await db.transaction('rw', db.oneoffs, db.entries, async () => {
-        await db.entries.where('itemId').equals(item.id).delete()
-        await db.oneoffs.delete(item.id)
+        await db.entries.where('itemId').equals(avulso.id).delete()
+        await db.oneoffs.delete(avulso.id)
       })
+      avisar('Avulso apagado', () =>
+        db.transaction('rw', db.oneoffs, db.entries, async () => {
+          await db.oneoffs.put(avulso)
+          await db.entries.bulkPut(marcacoes)
+        }),
+      )
     } else {
-      await encerrarItemDaRotina(item.id)
+      const original = props.item!
+      const encerrado = await encerrarItemDaRotina(original.id)
+      avisar(encerrado ? 'Tirado da rotina de hoje em diante' : 'Apagado', () => db.routine.put(original))
     }
     aoFechar()
   }
@@ -127,18 +134,9 @@ export function EditorItem(props: Props) {
       </button>
 
       {item && (
-        <>
-          <button className="botao-apagar" onClick={apagar}>
-            {confirmarApagar ? 'Tocar de novo para apagar' : 'Apagar'}
-          </button>
-          {confirmarApagar && (
-            <p className="nota-discreta">
-              {tipo === 'rotina'
-                ? 'Some de hoje em diante. Os dias passados continuam como estão.'
-                : 'Apaga o avulso, com a marcação e a nota dele.'}
-            </p>
-          )}
-        </>
+        <button className="botao-apagar" onClick={apagar}>
+          Apagar
+        </button>
       )}
     </Folha>
   )
@@ -147,16 +145,18 @@ export function EditorItem(props: Props) {
 /**
  * Tira um item da rotina sem reescrever o passado: se ele nunca foi marcado, apaga;
  * senão só encerra a vigência (some de hoje em diante, ou de amanhã se hoje já foi marcado).
+ * Devolve true se encerrou (havia histórico), false se apagou.
  */
-export async function encerrarItemDaRotina(id: string) {
-  await db.transaction('rw', db.routine, db.entries, async () => {
+export async function encerrarItemDaRotina(id: string): Promise<boolean> {
+  return db.transaction('rw', db.routine, db.entries, async () => {
     const marcacoes = await db.entries.where('itemId').equals(id).toArray()
     if (marcacoes.length === 0) {
       await db.routine.delete(id)
-      return
+      return false
     }
     const h = hoje()
     const until = marcacoes.some((e) => e.date === h) ? somarDias(h, 1) : h
     await db.routine.update(id, { until })
+    return true
   })
 }

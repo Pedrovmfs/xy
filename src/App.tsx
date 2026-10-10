@@ -6,6 +6,7 @@ import { Pensamentos } from './telas/Pensamentos'
 import { Areas } from './telas/Areas'
 import { Ajustes } from './telas/Ajustes'
 import { CapturaPensamento } from './componentes/CapturaPensamento'
+import { Aviso } from './componentes/Aviso'
 
 type Aba = 'hoje' | 'semana' | 'pensamentos' | 'areas'
 
@@ -25,6 +26,7 @@ export function App() {
       <div className="app" data-abas={false}>
         <Ajustes aoSair={() => setAjustesAbertos(false)} />
         <CapturaPensamento />
+        <Aviso />
       </div>
     )
   }
@@ -60,6 +62,7 @@ export function App() {
         ))}
       </nav>
       <CapturaPensamento />
+      <Aviso />
     </div>
   )
 }

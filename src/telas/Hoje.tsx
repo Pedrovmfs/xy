@@ -1,12 +1,15 @@
 import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, type Area } from '../db'
+import { db, type Area, type Entry } from '../db'
 import { formatarDataLonga, hoje, somarDias, type DataISO } from '../lib/datas'
-import { useEntriesDoDia, useItensDoDia, valeNoDia, type ItemDoDia } from '../lib/dia'
+import { alternarFeito, useEntriesDoDia, useItensDoDia, valeNoDia, type ItemDoDia } from '../lib/dia'
 import { Agenda } from '../componentes/Agenda'
 import { FolhaItem } from '../componentes/FolhaItem'
 import { EditorItem } from '../componentes/EditorItem'
 import { Resgates } from '../componentes/Resgates'
+import { CalendarioMes } from '../componentes/CalendarioMes'
+import { useDeslizar } from '../lib/deslizar'
+import { useComAtraso } from '../lib/atraso'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
 
 // A partir de que hora aparece "anotar algo sobre hoje"
@@ -15,7 +18,11 @@ const HORA_DA_NOITE = 18
 export function Hoje() {
   const [data, setData] = useState<DataISO>(hoje)
   const [aberto, setAberto] = useState<ItemDoDia | null>(null)
-  const [novoAvulso, setNovoAvulso] = useState(false)
+  // false = fechado; true = sem horário escolhido; objeto = criado segurando na agenda
+  const [novoAvulso, setNovoAvulso] = useState<boolean | { start: string; end: string }>(false)
+
+  // deslizar para a esquerda = dia seguinte; para a direita = dia anterior
+  const deslize = useDeslizar({ sentidos: [1, -1], aoConfirmar: (sentido) => setData((d) => somarDias(d, -sentido)) })
 
   const itens = useItensDoDia(data)
   const entries = useEntriesDoDia(data)
@@ -29,8 +36,10 @@ export function Hoje() {
   const diaDeHoje = hoje()
 
   return (
-    <section className="hoje">
+    <section className="hoje" {...deslize.handlers}>
       <NavegacaoDia data={data} diaDeHoje={diaDeHoje} setData={setData} />
+
+      <div ref={deslize.alvo} className="hoje-dia">
 
       <LinhaHabitos data={data} />
 
@@ -39,21 +48,30 @@ export function Hoje() {
       {tarefas.length > 0 && (
         <ul className="tarefas" aria-label="No dia, sem horário">
           {tarefas.map((t) => (
-            <Tarefa key={t.id} item={t} status={entries.get(t.id)?.status} area={t.areaId ? areas.get(t.areaId) : undefined}
-              nota={entries.get(t.id)?.note} aoAbrir={() => setAberto(t)} />
+            <Tarefa key={t.id} item={t} entry={entries.get(t.id)} area={t.areaId ? areas.get(t.areaId) : undefined}
+              aoAbrir={() => setAberto(t)} aoMarcar={() => void alternarFeito(data, t, entries.get(t.id))} />
           ))}
         </ul>
       )}
 
-      <Agenda date={data} blocos={blocos} entries={entries} areas={areas} ehHoje={data === diaDeHoje} aoAbrir={setAberto} />
+      <Agenda date={data} blocos={blocos} entries={entries} areas={areas} ehHoje={data === diaDeHoje} aoAbrir={setAberto}
+        aoCriar={(start, end) => setNovoAvulso({ start, end })} />
 
       <button className="adicionar-no-dia" onClick={() => setNovoAvulso(true)}>
         + adicionar algo neste dia
       </button>
 
       <ComentarioDoDia data={data} diaDeHoje={diaDeHoje} />
+      </div>
 
-      {novoAvulso && <EditorItem tipo="avulso" dataInicial={data} aoFechar={() => setNovoAvulso(false)} />}
+      {novoAvulso && (
+        <EditorItem
+          tipo="avulso"
+          dataInicial={data}
+          horarioInicial={typeof novoAvulso === 'object' ? novoAvulso : undefined}
+          aoFechar={() => setNovoAvulso(false)}
+        />
+      )}
 
       {aberto && (
         <FolhaItem key={aberto.id} item={aberto} date={data} entry={entries.get(aberto.id)} aoFechar={() => setAberto(null)} />
@@ -63,6 +81,7 @@ export function Hoje() {
 }
 
 function NavegacaoDia({ data, diaDeHoje, setData }: { data: DataISO; diaDeHoje: DataISO; setData: (d: DataISO) => void }) {
+  const [calendario, setCalendario] = useState(false)
   const relativo =
     data === diaDeHoje ? 'hoje' : data === somarDias(diaDeHoje, -1) ? 'ontem' : data === somarDias(diaDeHoje, 1) ? 'amanhã' : null
   return (
@@ -71,7 +90,9 @@ function NavegacaoDia({ data, diaDeHoje, setData }: { data: DataISO; diaDeHoje: 
         <IconeVoltar />
       </button>
       <div className="nav-dia-meio">
-        <span className="nav-dia-data">{formatarDataLonga(data)}</span>
+        <button className="nav-dia-data" onClick={() => setCalendario(true)} aria-label="Escolher dia no calendário">
+          {formatarDataLonga(data)}
+        </button>
         {data === diaDeHoje ? (
           <span className="nav-dia-rel">hoje</span>
         ) : (
@@ -83,6 +104,7 @@ function NavegacaoDia({ data, diaDeHoje, setData }: { data: DataISO; diaDeHoje: 
       <button className="botao-icone" onClick={() => setData(somarDias(data, 1))} aria-label="Próximo dia">
         <IconeAvancar />
       </button>
+      {calendario && <CalendarioMes selecionada={data} aoEscolher={setData} aoFechar={() => setCalendario(false)} />}
     </div>
   )
 }
@@ -116,29 +138,37 @@ function LinhaHabitos({ data }: { data: DataISO }) {
   )
 }
 
-function Tarefa({ item, status, area, nota, aoAbrir }: {
+// A bolinha marca feito com um toque; o nome abre a folha completa (motivo, nota).
+function Tarefa({ item, entry, area, aoAbrir, aoMarcar }: {
   item: ItemDoDia
-  status?: 'done' | 'skipped'
+  entry?: Entry
   area?: Area
-  nota?: string
   aoAbrir: () => void
+  aoMarcar: () => void
 }) {
+  const status = entry?.status
+  const nota = entry?.note
   return (
-    <li>
-      <button className="tarefa" data-estado={status} onClick={aoAbrir}>
-        <span className="tarefa-marca" style={{ ['--cor-area' as string]: area?.color ?? 'var(--texto-suave)' }}>
+    <li className="tarefa" data-estado={status}>
+      <button
+        className="tarefa-check"
+        aria-label={status === 'done' ? 'Desmarcar feito' : 'Marcar feito'}
+        aria-pressed={status === 'done'}
+        onClick={aoMarcar}
+      >
+        <span className="marca" data-estado={status} style={{ ['--cor-area' as string]: area?.color ?? 'var(--texto-suave)' }}>
           {status === 'done' && <IconeFeito />}
         </span>
-        <span className="tarefa-texto">
-          <span>{item.title}</span>
-          {(status === 'skipped' || nota) && (
-            <span className="tarefa-sub">
-              {status === 'skipped' ? 'não feito' : ''}
-              {status === 'skipped' && nota ? ' · ' : ''}
-              {nota}
-            </span>
-          )}
-        </span>
+      </button>
+      <button className="tarefa-texto" onClick={aoAbrir}>
+        <span>{item.title}</span>
+        {(status === 'skipped' || nota) && (
+          <span className="tarefa-sub">
+            {status === 'skipped' ? 'não feito' : ''}
+            {status === 'skipped' && nota ? ' · ' : ''}
+            {nota}
+          </span>
+        )}
       </button>
     </li>
   )
@@ -149,6 +179,16 @@ function ComentarioDoDia({ data, diaDeHoje }: { data: DataISO; diaDeHoje: DataIS
   const [editando, setEditando] = useState(false)
   const [texto, setTexto] = useState('')
 
+  async function gravar(valor: string) {
+    const limpo = valor.trim() || undefined
+    await db.transaction('rw', db.days, async () => {
+      const atual = await db.days.get(data)
+      await db.days.put({ ...atual, date: data, comment: limpo })
+    })
+  }
+  // salva enquanto digita (meio segundo depois de parar), além de ao sair do campo
+  const gravarDepois = useComAtraso(gravar)
+
   const comentario = dia?.comment
   // Só à noite no dia de hoje; em dias passados, sempre; no futuro, nunca.
   // Se já existe comentário, ele sempre aparece.
@@ -156,13 +196,9 @@ function ComentarioDoDia({ data, diaDeHoje }: { data: DataISO; diaDeHoje: DataIS
     !!comentario || data < diaDeHoje || (data === diaDeHoje && new Date().getHours() >= HORA_DA_NOITE)
   if (!visivel) return null
 
-  async function salvar() {
+  function salvar() {
     setEditando(false)
-    const limpo = texto.trim() || undefined
-    await db.transaction('rw', db.days, async () => {
-      const atual = await db.days.get(data)
-      await db.days.put({ ...atual, date: data, comment: limpo })
-    })
+    void gravar(texto)
   }
 
   if (editando) {
@@ -174,7 +210,10 @@ function ComentarioDoDia({ data, diaDeHoje }: { data: DataISO; diaDeHoje: DataIS
           autoFocus
           value={texto}
           placeholder="Algo sobre hoje…"
-          onChange={(e) => setTexto(e.target.value)}
+          onChange={(e) => {
+            setTexto(e.target.value)
+            gravarDepois(e.target.value)
+          }}
           onBlur={salvar}
         />
       </div>

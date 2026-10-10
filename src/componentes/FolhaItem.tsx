@@ -3,6 +3,7 @@ import type { Entry, Estado } from '../db'
 import { horarioDoDia, minutos, paraHorario, salvarEntry, type ItemDoDia } from '../lib/dia'
 import type { DataISO } from '../lib/datas'
 import { Folha } from './Folha'
+import { useComAtraso } from '../lib/atraso'
 
 const ATALHOS_MOTIVO = ['doente', 'trabalho', 'cansaço', 'imprevisto', 'sem vontade']
 
@@ -22,6 +23,9 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
   // O estado é salvo na hora do toque; motivo e nota, ao sair do campo e ao fechar.
   const salvar = (mudancas: Partial<Pick<Entry, 'status' | 'reason' | 'note'>> = {}) =>
     salvarEntry(date, item.id, { status, reason, note, ...mudancas })
+
+  // enquanto digita, salva meio segundo depois de parar (se o iOS fechar o app, não perde)
+  const salvarDepois = useComAtraso((mudancas: Partial<Pick<Entry, 'reason' | 'note'>>) => salvar(mudancas))
 
   function escolher(novo: Estado | undefined) {
     setStatus(novo)
@@ -93,7 +97,10 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
             className="entrada"
             placeholder="ou escreva…"
             value={ATALHOS_MOTIVO.includes(reason) ? '' : reason}
-            onChange={(e) => setReason(e.target.value)}
+            onChange={(e) => {
+              setReason(e.target.value)
+              salvarDepois({ reason: e.target.value })
+            }}
             onBlur={() => void salvar()}
           />
         </div>
@@ -106,7 +113,10 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
           rows={3}
           placeholder={`Ex.: ${item.title}: o que rolou hoje`}
           value={note}
-          onChange={(e) => setNote(e.target.value)}
+          onChange={(e) => {
+            setNote(e.target.value)
+            salvarDepois({ note: e.target.value })
+          }}
           onBlur={() => void salvar()}
         />
       </label>
