@@ -5,6 +5,8 @@ import { FolhaComida } from './FolhaComida'
 
 // Linha discreta no Hoje: proteína e calorias do dia, com quanto falta.
 // Nada de vermelho: passou das calorias, a barra só fica cheia e o número aparece.
+// O extra de uma refeição livre aparece num trecho mais claro da barra: entra no
+// total do que foi comido, mas não tira do que sobra no dia (vai para o espaço semanal).
 export function BarraNutricao({ date }: { date: DataISO }) {
   const dia = useComidaDoDia(date)
   const metas = useMetasNutricao()
@@ -12,7 +14,9 @@ export function BarraNutricao({ date }: { date: DataISO }) {
   if (!dia || !metas) return null
 
   const faltaProteina = Math.max(0, metas.proteinaMin - dia.proteina)
-  const sobraKcal = metas.kcalMax - dia.kcal
+  // o número é tudo o que foi comido; o que sobra é pela parte normal do dia
+  const sobraKcal = metas.kcalMax - dia.kcalDia
+  const escala = Math.max(metas.kcalMax, dia.kcal)
 
   return (
     <>
@@ -30,7 +34,8 @@ export function BarraNutricao({ date }: { date: DataISO }) {
         <span className="nutricao-linha">
           <span className="nutricao-nome">calorias</span>
           <span className="barra-neutra nutricao-trilho">
-            <span style={{ width: `${Math.min(100, (dia.kcal / metas.kcalMax) * 100)}%` }} />
+            <span style={{ width: `${(dia.kcalDia / escala) * 100}%` }} />
+            {dia.extraLivre > 0 && <span className="nutricao-livre" style={{ width: `${(dia.extraLivre / escala) * 100}%` }} />}
           </span>
           <span className="nutricao-num">
             {formatarKcal(dia.kcal)}

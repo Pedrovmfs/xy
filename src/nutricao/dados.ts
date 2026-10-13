@@ -16,12 +16,15 @@ export function useMetasNutricao(): MetasNutricao | undefined {
 }
 export const salvarMetasNutricao = (m: MetasNutricao) => db.meta.put({ key: CHAVE_METAS, value: m })
 
-/** Totais do dia. Da livre, o dia conta só o que a refeição normal teria; o extra
- *  vai para o espaço semanal (os dias normais não mudam por causa dela). */
+/** Totais do dia. `kcal` é tudo o que foi comido. Para a meta do dia, a livre conta
+ *  só o que a refeição normal teria (`kcalDia`); o extra vai para o espaço semanal
+ *  (os dias normais não mudam por causa dela). */
 export function totais(meals: Meal[]) {
+  const kcal = meals.reduce((t, m) => t + m.kcal, 0)
   const extraLivre = meals.reduce((t, m) => t + (m.free ? extraDaLivre(m) : 0), 0)
   return {
-    kcal: meals.reduce((t, m) => t + m.kcal, 0) - extraLivre,
+    kcal,
+    kcalDia: kcal - extraLivre,
     extraLivre,
     proteina: meals.reduce((t, m) => t + m.protein, 0),
   }

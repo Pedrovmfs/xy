@@ -2066,3 +2066,10 @@ button.nav-dia-data {
 .campo-linha .rotulo {
   flex: 1;
 }
+.nutricao-trilho {
+  display: flex;
+}
+.barra-neutra > span.nutricao-livre {
+  opacity: 0.4;
+  border-radius: 0 3px 3px 0;
+}

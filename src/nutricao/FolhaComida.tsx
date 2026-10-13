@@ -27,7 +27,11 @@ export function FolhaComida({ date, aoFechar }: { date: DataISO; aoFechar: () =>
         <div>
           <span className="comida-total">{formatarKcal(dia.kcal)}</span>
           <span className="rotulo">kcal · até {formatarKcal(metas.kcalMax)}</span>
-          {dia.extraLivre > 0 && <span className="rotulo">+{formatarKcal(dia.extraLivre)} da livre, no espaço da semana</span>}
+          {dia.extraLivre > 0 && (
+            <span className="rotulo">
+              {formatarKcal(dia.kcalDia)} do dia normal + {formatarKcal(dia.extraLivre)} da livre (no espaço da semana)
+            </span>
+          )}
         </div>
       </div>
 
