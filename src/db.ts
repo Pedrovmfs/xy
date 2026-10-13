@@ -2,6 +2,7 @@ import Dexie, { type EntityTable } from 'dexie'
 import type { DataISO } from './lib/datas'
 import { semear } from './seed'
 import { marcarItensDeTreino, moverMetaDoTreino, semearTreino } from './treino/semente'
+import { semearCardapio } from './nutricao/cardapio'
 
 export type TipoItem = 'block' | 'task'
 export type Horario = string // 'HH:MM'
@@ -189,6 +190,37 @@ export interface Cardio {
   createdAt: string
 }
 
+// ---------- Nutrição (versão 4) ----------
+
+/** Uma opção do cardápio (o que dá para registrar com um toque). */
+export interface Food {
+  id: string
+  name: string
+  kcal: number
+  /** proteína em gramas */
+  protein: number
+  /** almoço, jantar, pré-treino… (só para achar rápido; vale a qualquer hora) */
+  category: string
+  order: number
+  createdAt: string
+}
+
+/** O que foi comido num dia. */
+export interface Meal {
+  id: string
+  date: DataISO
+  /** hora do registro (ISO) */
+  at: string
+  name: string
+  kcal: number
+  protein: number
+  /** veio de uma opção do cardápio */
+  foodId?: string
+  /** refeição livre (calorias à mão; entra no saldo semanal numa versão futura) */
+  free?: boolean
+  createdAt: string
+}
+
 export interface Meta {
   key: string
   value: unknown
@@ -208,6 +240,8 @@ export class XyDB extends Dexie {
   workouts!: EntityTable<Workout, 'id'>
   sessions!: EntityTable<Session, 'id'>
   cardio!: EntityTable<Cardio, 'id'>
+  foods!: EntityTable<Food, 'id'>
+  meals!: EntityTable<Meal, 'id'>
 
   constructor() {
     super('xy')
@@ -245,11 +279,18 @@ export class XyDB extends Dexie {
       .upgrade(async (tx) => {
         await moverMetaDoTreino(tx)
       })
+    // Versão 4: nutrição (cardápio e registros do dia). Só tabelas novas.
+    this.version(4)
+      .stores({ foods: 'id, order', meals: 'id, date' })
+      .upgrade(async (tx) => {
+        await semearCardapio(tx)
+      })
     // Roda uma única vez, quando o banco é criado pela primeira vez no aparelho
     // (já na versão mais nova; nesse caso as funções de upgrade não rodam).
     this.on('populate', async (tx) => {
       await semear(tx)
       await semearTreino(tx)
+      await semearCardapio(tx)
     })
   }
 }

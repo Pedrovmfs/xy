@@ -106,7 +106,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - Registro rápido: "repetir ontem", favoritos, opções do banco como porção pronta. Pesagem: arroz pronto, proteína **crua**.
 - Alimentos avulsos pela **tabela TACO**, embutida no app (offline); produtos industrializados pelo rótulo.
 
-#### Primeira versão da Nutrição (v1, pode ser adiantada)
+#### Primeira versão da Nutrição (v1, pode ser adiantada) — feita
 1. No Hoje, uma barra discreta com **proteína e calorias do dia** (190–200 g; até ~1.960 kcal), mostrando quanto falta.
 2. Registrar o que comeu tocando numa opção do cardápio do `docs/dieta.md` (calorias e proteína de lá), ou digitando nome, kcal e proteína à mão.
 3. Marcar uma refeição como **"livre"**, com campo de calorias manual.
