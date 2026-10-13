@@ -1,5 +1,5 @@
-import { db, type RoutineItem } from '../db'
-import { exerciciosIniciais, treinosIniciais } from '../treino/semente'
+import { db, type Area, type RoutineItem } from '../db'
+import { exerciciosIniciais, METAS_PADRAO, treinosIniciais } from '../treino/semente'
 import { hoje, somarDias } from './datas'
 
 // Backup: um arquivo JSON com todas as tabelas do banco.
@@ -100,6 +100,20 @@ function migrar(b: Backup): Backup {
     dados.routine = (dados.routine as RoutineItem[] | undefined)?.map((r) =>
       r.areaId === 'treino' ? { ...r, opensWorkout: true } : r,
     ) ?? []
+  }
+  if (b.versao < 3) {
+    // v3: cardio (vazio) e meta de treinos sai da área Treino para as metas do treino
+    dados.cardio = []
+    const areas = (dados.areas as Area[] | undefined) ?? []
+    const treino = areas.find((a) => a.id === 'treino')
+    const meta = (dados.meta as { key: string; value: unknown }[] | undefined) ?? []
+    if (!meta.some((m) => m.key === 'treino:metas')) {
+      dados.meta = [
+        ...meta,
+        { key: 'treino:metas', value: { ...METAS_PADRAO, treinosPorSemana: treino?.weeklyGoal ?? METAS_PADRAO.treinosPorSemana } },
+      ]
+    }
+    dados.areas = areas.map((a) => (a.id === 'treino' ? { ...a, weeklyGoal: undefined } : a))
   }
   return { ...b, versao: db.verno, dados }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { db, type Exercise, type Session, type SessionEntry, type TipoSerie, type WorkoutSet } from '../db'
+import { db, type Cardio, type Exercise, type Session, type SessionEntry, type WorkoutSet } from '../db'
 import { avisar } from '../lib/aviso'
 import { useComAtraso } from '../lib/atraso'
 import { Folha } from '../componentes/Folha'
@@ -9,16 +9,24 @@ import { CartaoExercicio } from './CartaoExercicio'
 import { BarraDescanso } from './BarraDescanso'
 import { EscolherExercicio } from './EscolherExercicio'
 import { duracaoMin, entradaNova, exercicioFeito, recordesAnteriores, ultimaVez } from './calculos'
-import { DESCANSO_PADRAO, iniciarDescanso, pararDescanso } from './descanso'
+import { iniciarDescanso, pararDescanso } from './descanso'
+import { lerMetas } from './metas'
 import { fecharTreino } from './estado'
 import { finalizarTreino } from './finalizar'
 import { useTelaAcesa } from './telaAcesa'
+import { EditorCardio } from './EditorCardio'
+import { formatarKm, ritmo } from './cardio'
 
 // Tela do treino em andamento. A sessão fica num estado local (para digitar sem
 // atraso) e é gravada no banco meio segundo depois de cada mudança, na hora ao
 // marcar séries, e ao sair da tela. Se o iOS fechar o app, nada se perde.
 
-type Menu = { tipo: 'exercicio'; indice: number } | { tipo: 'trocar'; indice: number } | { tipo: 'adicionar' } | null
+type Menu =
+  | { tipo: 'exercicio'; indice: number }
+  | { tipo: 'trocar'; indice: number }
+  | { tipo: 'adicionar' }
+  | { tipo: 'cardio'; cardio?: Cardio }
+  | null
 
 export function TelaTreino({ sessaoId }: { sessaoId: string }) {
   const [sessao, setSessao] = useState<Session | null>(null)
@@ -29,16 +37,13 @@ export function TelaTreino({ sessaoId }: { sessaoId: string }) {
   useTelaAcesa()
 
   const dados = useLiveQuery(async () => {
-    const [exercicios, sessoes, descanso] = await Promise.all([
+    const [exercicios, sessoes, metas, cardio] = await Promise.all([
       db.exercises.toArray(),
       db.sessions.toArray(),
-      db.meta.get('treino:descanso'),
+      lerMetas(),
+      db.cardio.where('sessionId').equals(sessaoId).toArray(),
     ])
-    return {
-      exercicios: new Map(exercicios.map((e) => [e.id, e])),
-      sessoes,
-      descanso: { ...DESCANSO_PADRAO, ...(descanso?.value as Partial<Record<TipoSerie, number>> | undefined) },
-    }
+    return { exercicios: new Map(exercicios.map((e) => [e.id, e])), sessoes, descanso: metas.descanso, cardio }
   })
 
   // carrega a sessão uma vez
@@ -168,6 +173,22 @@ export function TelaTreino({ sessaoId }: { sessaoId: string }) {
 
         <button className="botao-novo" onClick={() => setMenu({ tipo: 'adicionar' })}>+ adicionar exercício</button>
 
+        {dados.cardio.length > 0 && (
+          <ul className="lista">
+            {dados.cardio.map((c) => (
+              <li key={c.id}>
+                <button className="linha" onClick={() => setMenu({ tipo: 'cardio', cardio: c })}>
+                  <span className="linha-texto">
+                    <span>{c.type} · {formatarKm(c.km)}{ritmo(c) ? ` · ${ritmo(c)}` : ''}</span>
+                    {c.minutes && <span className="linha-sub">{c.minutes} min</span>}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+        <button className="botao-novo" onClick={() => setMenu({ tipo: 'cardio' })}>+ cardio</button>
+
         <label className="campo">
           <span className="rotulo">Nota do treino</span>
           <textarea
@@ -240,6 +261,15 @@ export function TelaTreino({ sessaoId }: { sessaoId: string }) {
             mudarEntrada(i, (e) => entradaDe(ex, e), true)
             setMenu(null)
           }}
+        />
+      )}
+
+      {menu?.tipo === 'cardio' && (
+        <EditorCardio
+          cardio={menu.cardio}
+          sessionId={sessao.id}
+          dataInicial={sessao.date}
+          aoFechar={() => setMenu(null)}
         />
       )}
 

@@ -82,7 +82,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
   - Cartão de hoje: treino sugerido / em andamento / feito.
   - Frequência: treinos da semana, quantas vezes no último mês, **calendário de caixinhas** (dias treinados).
   - Meta semanal de treinos (5), flexível: faltou num dia, compensa em outro; nada de cobrança.
-  - **Cardio** com **meta semanal** (formato a refinar).
+  - **Cardio** = o que é feito de propósito (caminhada/corrida), medido em **km**, com **meta semanal em km** (flexível: faltou um pouco, dá uma caminhada e completa). Registro: tipo, km, minutos opcionais (mostra o **ritmo**, min/km), nota. Sem frequência cardíaca/calorias (pouco confiáveis, só dão trabalho). Pode ser registrado no fim do treino ou solto, em qualquer dia.
   - Histórico das sessões e progresso por exercício (carga, 1RM estimado, recordes, volume por grupo muscular).
   - Meus treinos e exercícios: **totalmente customizável**, como se qualquer pessoa pudesse usar (treinos, exercícios, tipos de série, faixa de reps, incremento de carga, descanso). Os A–E do app antigo são só o ponto de partida.
 - Sem bipe no descanso (o Pedro usa o iPhone no silencioso); o aviso é visual.
@@ -115,6 +115,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 
 ### Corpo
 - Água (contador), peso, sono.
+- **Passos** = movimento do dia inteiro (não é cardio): meta de **média de ~15 mil por dia ao longo da semana** (cada dia varia: dia só de academia anda menos, dia de mercado/faculdade anda mais). Vêm automáticos do app Saúde via Atalhos. O número do iPhone é um **piso** (não conta quando o celular não está junto).
 - Peso com média móvel de 7 dias (o peso diário oscila).
 - **Sem HealthKit** (exige conta paga da Apple). Sono/passos/peso podem vir depois via **app Atalhos do iOS** abrindo um link do app com os valores.
 - **Não registrar** humor nem energia (decisão do Pedro).

@@ -79,3 +79,9 @@ export const IconeEscrever = () => (
     <path d="M4 20h4L19 9a2.1 2.1 0 0 0-3-3L5 17v3ZM14 8l2.5 2.5" />
   </Svg>
 )
+
+export const IconeTreino = () => (
+  <Svg>
+    <path d="M6.5 8v8M17.5 8v8M4 10v4M20 10v4M6.5 12h11" />
+  </Svg>
+)
