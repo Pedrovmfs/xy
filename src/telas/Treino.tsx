@@ -13,6 +13,7 @@ import { salvarMetas, useMetasTreino } from '../treino/metas'
 import type { MetasTreino } from '../treino/semente'
 import { EditorTreino } from '../treino/EditorTreino'
 import { PaginaExercicios } from '../treino/Biblioteca'
+import { DetalheSessao, LinhaSessao, PaginaHistorico, PaginaProgresso, ProgressoExercicio } from '../treino/Progresso'
 import { useDeslizar } from '../lib/deslizar'
 import { novoId } from '../lib/id'
 import { IconeAvancar, IconeVoltar } from '../icones'
@@ -36,20 +37,34 @@ export function Treino() {
   const [cardioAberto, setCardioAberto] = useState<Cardio | 'novo' | null>(null)
   const [editandoMetas, setEditandoMetas] = useState(false)
   // páginas internas da aba (editar um treino, biblioteca de exercícios)
-  const [pagina, setPagina] = useState<{ tipo: 'treino'; id: string } | { tipo: 'exercicios' } | null>(null)
+  // pilha: Histórico → um treino → voltar volta para o Histórico
+  const [pilha, setPilha] = useState<Pagina[]>([])
+  const pagina = pilha[pilha.length - 1]
+  const setPagina = (p: Pagina | null) => setPilha(p ? [...pilha, p] : [])
+  const voltar = () => setPilha((x) => x.slice(0, -1))
 
   if (!dados || !metas) return null
 
   if (pagina) {
+    const exercicioNome = (id: string) =>
+      dados.sessoes.flatMap((s) => s.entries).find((e) => e.exerciseId === id)?.exerciseName ?? 'Exercício'
     const titulo =
-      pagina.tipo === 'exercicios' ? 'Exercícios' : (dados.treinos.find((t) => t.id === pagina.id)?.name ?? 'Treino')
+      pagina.tipo === 'exercicios' ? 'Exercícios'
+      : pagina.tipo === 'historico' ? 'Histórico'
+      : pagina.tipo === 'progresso' ? 'Progresso'
+      : pagina.tipo === 'sessao' ? (dados.sessoes.find((s) => s.id === pagina.id)?.workoutName ?? 'Treino')
+      : pagina.tipo === 'exercicio' ? exercicioNome(pagina.id)
+      : (dados.treinos.find((t) => t.id === pagina.id)?.name ?? 'Treino')
+    const anterior = pilha.length > 1 ? pilha[pilha.length - 2] : null
+    const nomeVoltar = anterior?.tipo === 'historico' ? 'Histórico' : anterior?.tipo === 'progresso' ? 'Progresso' : 'Treino'
     return (
-      <PaginaInterna titulo={titulo} aoVoltar={() => setPagina(null)}>
-        {pagina.tipo === 'treino' ? (
-          <EditorTreino key={pagina.id} treinoId={pagina.id} aoSair={() => setPagina(null)} />
-        ) : (
-          <PaginaExercicios />
-        )}
+      <PaginaInterna key={pilha.length} titulo={titulo} nomeVoltar={nomeVoltar} aoVoltar={voltar}>
+        {pagina.tipo === 'treino' && <EditorTreino key={pagina.id} treinoId={pagina.id} aoSair={voltar} />}
+        {pagina.tipo === 'exercicios' && <PaginaExercicios />}
+        {pagina.tipo === 'historico' && <PaginaHistorico aoAbrirSessao={(id) => setPagina({ tipo: 'sessao', id })} />}
+        {pagina.tipo === 'sessao' && <DetalheSessao sessaoId={pagina.id} aoSair={voltar} />}
+        {pagina.tipo === 'progresso' && <PaginaProgresso aoAbrirExercicio={(id) => setPagina({ tipo: 'exercicio', id })} />}
+        {pagina.tipo === 'exercicio' && <ProgressoExercicio exerciseId={pagina.id} />}
       </PaginaInterna>
     )
   }
@@ -126,6 +141,30 @@ export function Treino() {
 
       <Frequencia feitas={feitas} cardio={dados.cardio} />
 
+      <h2 className="secao-titulo">Histórico</h2>
+      {feitas.length === 0 ? (
+        <p className="nota-discreta">Os treinos finalizados aparecem aqui.</p>
+      ) : (
+        <ul className="lista">
+          {[...feitas]
+            .sort((a, b) => (b.date + b.startedAt).localeCompare(a.date + a.startedAt))
+            .slice(0, 3)
+            .map((s) => (
+              <LinhaSessao key={s.id} s={s} aoAbrir={() => setPagina({ tipo: 'sessao', id: s.id })} />
+            ))}
+        </ul>
+      )}
+      {feitas.length > 3 && (
+        <button className="botao-novo" onClick={() => setPagina({ tipo: 'historico' })}>ver todos ({feitas.length})</button>
+      )}
+      <button className="linha" onClick={() => setPagina({ tipo: 'progresso' })}>
+        <span className="linha-texto">
+          <span>Progresso</span>
+          <span className="linha-sub">evolução por exercício, recordes, séries por grupo muscular</span>
+        </span>
+        <IconeAvancar />
+      </button>
+
       <h2 className="secao-titulo">Meus treinos</h2>
       <ul className="lista">
         {dados.treinos.map((t) => (
@@ -173,13 +212,26 @@ export function Treino() {
 }
 
 /** Página dentro da aba, com voltar (botão ou deslizar da borda esquerda). */
-function PaginaInterna({ titulo, aoVoltar, children }: { titulo: string; aoVoltar: () => void; children: ReactNode }) {
+type Pagina =
+  | { tipo: 'treino'; id: string }
+  | { tipo: 'exercicios' }
+  | { tipo: 'historico' }
+  | { tipo: 'sessao'; id: string }
+  | { tipo: 'progresso' }
+  | { tipo: 'exercicio'; id: string }
+
+function PaginaInterna({ titulo, nomeVoltar, aoVoltar, children }: {
+  titulo: string
+  nomeVoltar: string
+  aoVoltar: () => void
+  children: ReactNode
+}) {
   const deslize = useDeslizar({ podeComecar: (e) => e.clientX < 40, sentidos: [1], aoConfirmar: aoVoltar })
   return (
     <section className="area-detalhe" {...deslize.handlers}>
       <div ref={deslize.alvo}>
         <button className="area-voltar" onClick={aoVoltar}>
-          <IconeVoltar /> Treino
+          <IconeVoltar /> {nomeVoltar}
         </button>
         <h2 className="area-titulo">{titulo}</h2>
         {children}

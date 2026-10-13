@@ -1774,3 +1774,189 @@ button.nav-dia-data {
 .fichas-rolaveis .ficha {
   flex: none;
 }
+
+/* ---------- Histórico e progresso ---------- */
+
+/* Cor dos gráficos: o verde do app, mais vivo, validado (contraste, croma e
+   claridade) contra o fundo claro e o escuro. Só para marcas de dado. */
+:root {
+  --grafico: #2e8456;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --grafico: #5aa87a;
+  }
+}
+
+.grafico {
+  margin: 8px 0 0;
+}
+.grafico-area {
+  position: relative;
+}
+.grafico svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  touch-action: pan-y; /* rolar a página na vertical; arrastar de lado percorre os pontos */
+}
+.grafico-grade {
+  stroke: var(--linha);
+  stroke-width: 1;
+}
+.grafico-eixo {
+  fill: var(--texto-suave);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.grafico-linha {
+  fill: none;
+  stroke: var(--grafico);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.grafico-area-preench {
+  fill: var(--grafico);
+  opacity: 0.1;
+}
+.grafico-ponto {
+  fill: var(--grafico);
+  stroke: var(--fundo);
+  stroke-width: 2;
+}
+.grafico-guia {
+  stroke: var(--texto-suave);
+  stroke-width: 1;
+}
+.grafico-valor {
+  fill: var(--texto);
+  font-size: 11px;
+  font-weight: 600;
+}
+.grafico-dica {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 12px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: var(--texto);
+  color: var(--fundo);
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.grafico-legenda {
+  margin-top: 8px;
+}
+
+.barras {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.barra-linha {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  grid-template-areas: 'rotulo trilho' '. antes';
+  align-items: center;
+  column-gap: 10px;
+  padding: 6px 0;
+}
+.barra-rotulo {
+  grid-area: rotulo;
+  font-size: 14px;
+}
+.barra-trilho {
+  grid-area: trilho;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.barra {
+  height: 10px;
+  border-radius: 0 4px 4px 0;
+  background: var(--grafico);
+}
+.barra-valor {
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.barra-antes {
+  grid-area: antes;
+  font-size: 11px;
+  color: var(--texto-suave);
+}
+
+.recordes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.recorde {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--superficie-2);
+}
+.recorde-rotulo,
+.recorde-data {
+  font-size: 11px;
+  color: var(--texto-suave);
+}
+.recorde-valor {
+  font-size: 17px;
+  font-weight: 600;
+}
+.vez {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--linha);
+}
+.vez-data {
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+.vez-series {
+  font-variant-numeric: tabular-nums;
+}
+.mes-titulo::first-letter {
+  text-transform: uppercase;
+}
+
+.detalhe-exercicio {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--linha);
+}
+.detalhe-series {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+}
+.detalhe-series li {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  font-size: 14px;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+.detalhe-series li[data-tipo='work'] {
+  color: var(--texto);
+}
+.detalhe-cardio,
+.detalhe-nota {
+  margin-top: 12px;
+  font-size: 14px;
+}
+.detalhe-nota {
+  color: var(--texto-suave);
+  white-space: pre-wrap;
+}

@@ -58,3 +58,12 @@ export function haQuantoTempo(s: DataISO): string {
   if (dias < 365) return rtf.format(-Math.round(dias / 30), 'month')
   return rtf.format(-Math.round(dias / 365), 'year')
 }
+
+/** "8 de out" (curta, para espaços pequenos); com ano se não for o ano atual. */
+export function formatarDataCurta(s: DataISO): string {
+  const d = deDataISO(s)
+  const mesmoAno = d.getFullYear() === new Date().getFullYear()
+  return d
+    .toLocaleDateString('pt-BR', { day: 'numeric', month: 'short', ...(mesmoAno ? {} : { year: 'numeric' }) })
+    .replace('.', '')
+}
