@@ -77,8 +77,15 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 
 ### Treino
 - Já existe um app de treino do Pedro: <https://github.com/Pedrovmfs/treino> (PWA em JS puro, IndexedDB). Serve de **referência de lógica** (registro de séries, tipos aquec/prep/válida, 1RM Epley, PRs, volume semanal, timer de descanso, backlog). O **layout/design dele não é referência**.
-- No xy, o bloco "Academia" abre o treino do dia. Terminou o treino, o bloco marca sozinho.
-- Meta semanal (5 treinos).
+- O bloco "Academia" **continua no calendário**: acima de tudo é um **compromisso do dia** (ocupa horário). Ele abre o treino; terminou o treino, o bloco marca sozinho.
+- **Aba própria "Treino"** (decidido em out/2026): academia na prática não se relaciona com o resto, então o **controle** dela mora lá, e não na Semana nem em Áreas. Na aba (estrutura aprovada como rascunho, **a refinar**):
+  - Cartão de hoje: treino sugerido / em andamento / feito.
+  - Frequência: treinos da semana, quantas vezes no último mês, **calendário de caixinhas** (dias treinados).
+  - Meta semanal de treinos (5), flexível: faltou num dia, compensa em outro; nada de cobrança.
+  - **Cardio** com **meta semanal** (formato a refinar).
+  - Histórico das sessões e progresso por exercício (carga, 1RM estimado, recordes, volume por grupo muscular).
+  - Meus treinos e exercícios: **totalmente customizável**, como se qualquer pessoa pudesse usar (treinos, exercícios, tipos de série, faixa de reps, incremento de carga, descanso). Os A–E do app antigo são só o ponto de partida.
+- Sem bipe no descanso (o Pedro usa o iPhone no silencioso); o aviso é visual.
 - O app antigo já é bem customizável; a ideia é **retrabalhar e aprimorar** essa base, não só copiar. Foco grande nessa parte.
 - **Não é preciso importar** os dados do app antigo (quase nada registrado).
 
@@ -138,6 +145,11 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 ### Semana
 - Visão de semanas: o que foi cumprido de cada coisa, faltas com e sem motivo, metas semanais.
 - É onde se edita a rotina-modelo.
+- O controle do treino (frequência, meta de treinos) fica na aba Treino; na Semana a Academia aparece só como compromisso do dia.
+
+### Navegação (em aberto)
+- Abas por enquanto: Hoje · Semana · Treino · Pensamentos · Áreas.
+- O Pedro quer repensar: Áreas e Pensamentos talvez não precisem de aba própria e possam virar **ramificações** (acessadas a partir de outro lugar). Rever depois.
 
 ## Rotina atual do Pedro (dados iniciais)
 
