@@ -106,6 +106,8 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - Registro rápido: "repetir ontem", favoritos, opções do banco como porção pronta. Pesagem: arroz pronto, proteína **crua**.
 - Alimentos avulsos pela **tabela TACO**, embutida no app (offline); produtos industrializados pelo rótulo.
 
+- **Refeições livres pelo déficit semanal** (modelo do Pedro): déficit mínimo de **4.500 kcal/semana**; o que sobra do déficit planejado é o **espaço de livres** (~1.000 kcal/semana no começo, com gasto conservador de 2.750/dia). Só conta o **extra** da livre sobre a refeição que ela substituiu. Passou do espaço → o excesso **sai do espaço da semana seguinte** (menos livres); os dias normais nunca mudam. O gasto real é calibrado depois pela tendência de peso. Detalhes em `docs/dieta.md`.
+
 #### Primeira versão da Nutrição (v1, pode ser adiantada) — feita
 1. No Hoje, uma barra discreta com **proteína e calorias do dia** (190–200 g; até ~1.960 kcal), mostrando quanto falta.
 2. Registrar o que comeu tocando numa opção do cardápio do `docs/dieta.md` (calorias e proteína de lá), ou digitando nome, kcal e proteína à mão.
