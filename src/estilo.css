@@ -996,3 +996,223 @@ button.nav-dia-data {
   opacity: 0;
   pointer-events: none;
 }
+
+/* ---------- Semana ---------- */
+
+.semana {
+  touch-action: pan-y;
+  overflow-x: clip;
+}
+.resumo-areas {
+  list-style: none;
+  margin: 4px 0 20px;
+  padding: 0;
+}
+.resumo-area {
+  display: grid;
+  grid-template-columns: 10px auto 1fr;
+  grid-template-areas:
+    'ponto nome meta'
+    '. conta conta';
+  align-items: center;
+  column-gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--linha);
+}
+.resumo-area .ponto-area {
+  grid-area: ponto;
+}
+.resumo-nome {
+  grid-area: nome;
+  font-weight: 500;
+}
+.resumo-meta {
+  grid-area: meta;
+  justify-self: end;
+  display: flex;
+  gap: 4px;
+}
+.meta-ponto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cor-area);
+}
+.meta-ponto[data-cheio] {
+  background: var(--cor-area);
+}
+.resumo-conta {
+  grid-area: conta;
+  font-size: 13px;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.grade {
+  margin-bottom: 8px;
+}
+.grade-linha {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(7, 34px);
+  align-items: center;
+  min-height: 44px;
+  border-bottom: 1px solid var(--linha);
+}
+.grade-cabecalho {
+  border-bottom: none;
+}
+.grade-dia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 44px;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--texto-suave);
+  border-radius: 10px;
+}
+.grade-num {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--texto);
+}
+.grade-dia[data-hoje] .grade-num {
+  color: var(--destaque);
+  font-weight: 700;
+}
+.grade-rotulo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-right: 6px;
+}
+.grade-titulo {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grade-conta {
+  font-size: 12px;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+.grade-celula {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+}
+.marca-pequena {
+  width: 18px;
+  height: 18px;
+  border-width: 1.5px;
+}
+.marca-pequena svg {
+  width: 11px;
+  height: 11px;
+}
+.habito-bolinha[data-feito] {
+  background: var(--texto-suave);
+}
+
+/* ---------- Áreas ---------- */
+
+.area-card {
+  border-bottom: 1px solid var(--linha);
+  padding-bottom: 6px;
+}
+.area-cabeca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 48px;
+  text-align: left;
+}
+.area-cabeca > svg {
+  margin-left: auto;
+  width: 18px;
+  height: 18px;
+  color: var(--texto-suave);
+}
+.area-nome {
+  font-weight: 500;
+}
+.area-passo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 44px;
+  justify-content: center;
+  padding: 6px 0 6px 20px;
+  text-align: left;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+.area-passo-rotulo {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--texto-suave);
+}
+.area-passo-texto {
+  color: var(--texto);
+  white-space: pre-wrap;
+}
+.area-passo[data-vazio] .area-passo-texto {
+  color: var(--texto-suave);
+}
+.area-detalhe {
+  touch-action: pan-y;
+  overflow-x: clip;
+  min-height: 70dvh;
+}
+.area-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 44px;
+  margin-left: -6px;
+  color: var(--texto-suave);
+  font-size: 15px;
+}
+.area-voltar svg {
+  width: 20px;
+  height: 20px;
+}
+.area-titulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  margin: 4px 0 12px;
+}
+.area-passo-grande {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--superficie-2);
+  font-size: 15px;
+}
+.notas-dia {
+  margin-top: 14px;
+}
+.notas-data {
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+.nota-area {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--linha);
+}
+.nota-item {
+  font-size: 12px;
+  color: var(--texto-suave);
+}
+.nota-texto {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
