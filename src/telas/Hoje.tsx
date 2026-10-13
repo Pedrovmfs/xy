@@ -15,8 +15,8 @@ import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
 // A partir de que hora aparece "anotar algo sobre hoje"
 const HORA_DA_NOITE = 18
 
-export function Hoje() {
-  const [data, setData] = useState<DataISO>(hoje)
+export function Hoje({ dataInicial }: { dataInicial?: DataISO }) {
+  const [data, setData] = useState<DataISO>(() => dataInicial ?? hoje())
   const [aberto, setAberto] = useState<ItemDoDia | null>(null)
   // false = fechado; true = sem horário escolhido; objeto = criado segurando na agenda
   const [novoAvulso, setNovoAvulso] = useState<boolean | { start: string; end: string }>(false)

@@ -7,6 +7,7 @@ import { Areas } from './telas/Areas'
 import { Ajustes } from './telas/Ajustes'
 import { CapturaPensamento } from './componentes/CapturaPensamento'
 import { Aviso } from './componentes/Aviso'
+import type { DataISO } from './lib/datas'
 
 type Aba = 'hoje' | 'semana' | 'pensamentos' | 'areas'
 
@@ -20,11 +21,14 @@ const ABAS: { id: Aba; nome: string; icone: () => ReactNode }[] = [
 export function App() {
   const [aba, setAba] = useState<Aba>('hoje')
   const [ajustesAbertos, setAjustesAbertos] = useState(false)
+  const [secaoAjustes, setSecaoAjustes] = useState<'rotina' | undefined>()
+  // dia que o Hoje deve abrir quando se chega por outra tela (ex.: tocar num dia da Semana)
+  const [diaHoje, setDiaHoje] = useState<DataISO | undefined>()
 
   if (ajustesAbertos) {
     return (
       <div className="app" data-abas={false}>
-        <Ajustes aoSair={() => setAjustesAbertos(false)} />
+        <Ajustes secaoInicial={secaoAjustes} aoSair={() => setAjustesAbertos(false)} />
         <CapturaPensamento />
         <Aviso />
       </div>
@@ -36,14 +40,26 @@ export function App() {
       <header className="topo">
         <span className="botao-icone" />
         <h1 className="topo-titulo">{ABAS.find((a) => a.id === aba)!.nome}</h1>
-        <button className="botao-icone" onClick={() => setAjustesAbertos(true)} aria-label="Ajustes">
+        <button className="botao-icone" onClick={() => { setSecaoAjustes(undefined); setAjustesAbertos(true) }} aria-label="Ajustes">
           <IconeAjustes />
         </button>
       </header>
 
       <main className="conteudo">
-        {aba === 'hoje' && <Hoje />}
-        {aba === 'semana' && <Semana />}
+        {/* a key recria o Hoje quando o dia pedido muda (ex.: tocar na aba Hoje volta para hoje) */}
+        {aba === 'hoje' && <Hoje key={diaHoje ?? 'hoje'} dataInicial={diaHoje} />}
+        {aba === 'semana' && (
+          <Semana
+            aoIrParaDia={(d) => {
+              setDiaHoje(d)
+              setAba('hoje')
+            }}
+            aoEditarRotina={() => {
+              setSecaoAjustes('rotina')
+              setAjustesAbertos(true)
+            }}
+          />
+        )}
         {aba === 'pensamentos' && <Pensamentos />}
         {aba === 'areas' && <Areas />}
       </main>
@@ -54,7 +70,10 @@ export function App() {
             key={id}
             className="aba"
             aria-current={aba === id ? 'page' : undefined}
-            onClick={() => setAba(id)}
+            onClick={() => {
+              setDiaHoje(undefined) // tocar na aba Hoje sempre volta para hoje
+              setAba(id)
+            }}
           >
             <Icone />
             <span>{nome}</span>

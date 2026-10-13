@@ -19,8 +19,8 @@ const SECOES: { id: Secao; nome: string; descricao: string }[] = [
   { id: 'areas', nome: 'Áreas', descricao: 'Nome, cor e meta semanal' },
 ]
 
-export function Ajustes({ aoSair }: { aoSair: () => void }) {
-  const [secao, setSecao] = useState<Secao | null>(null)
+export function Ajustes({ aoSair, secaoInicial }: { aoSair: () => void; secaoInicial?: Secao }) {
+  const [secao, setSecao] = useState<Secao | null>(secaoInicial ?? null)
   const atual = SECOES.find((s) => s.id === secao)
   const voltar = () => (secao ? setSecao(null) : aoSair())
   // deslizar da borda esquerda para a direita = voltar (como nos apps do iPhone)

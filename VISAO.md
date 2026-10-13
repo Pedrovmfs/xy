@@ -164,7 +164,7 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 ## Backlog de ideias pequenas
 
 - [ ] "Hoje eu…" — resumo automático do dia, dentro do comentário do dia (discreto)
-- [ ] Próximo passo por área
+- [x] Próximo passo por área
 - [ ] Lista de compras a partir da comida da semana
 - [ ] "Nesse dia, há um ano" — gostou, mas **precisa refinar** antes de fazer
 - [ ] Revisão mensal de hábitos ("isso te incomoda?")
