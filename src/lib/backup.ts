@@ -1,4 +1,5 @@
-import { db } from '../db'
+import { db, type RoutineItem } from '../db'
+import { exerciciosIniciais, treinosIniciais } from '../treino/semente'
 import { hoje, somarDias } from './datas'
 
 // Backup: um arquivo JSON com todas as tabelas do banco.
@@ -85,9 +86,22 @@ export function lerBackup(texto: string): Backup {
   return migrar(b as Backup)
 }
 
-/** Converte backups de versões antigas do schema para o formato atual (por enquanto só existe a 1). */
+/**
+ * Converte backups de versões antigas do schema para o formato atual. Faz o mesmo
+ * que as funções .upgrade() do db.ts fazem no aparelho, só que no arquivo.
+ */
 function migrar(b: Backup): Backup {
-  return b
+  const dados = { ...b.dados }
+  if (b.versao < 2) {
+    // v2: treino. Backup antigo não tem as tabelas: entram os treinos iniciais.
+    dados.exercises = exerciciosIniciais()
+    dados.workouts = treinosIniciais()
+    dados.sessions = []
+    dados.routine = (dados.routine as RoutineItem[] | undefined)?.map((r) =>
+      r.areaId === 'treino' ? { ...r, opensWorkout: true } : r,
+    ) ?? []
+  }
+  return { ...b, versao: db.verno, dados }
 }
 
 export function resumoBackup(b: Backup) {

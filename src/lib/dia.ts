@@ -12,6 +12,8 @@ export interface ItemDoDia {
   start?: string
   end?: string
   origem: 'rotina' | 'avulso'
+  /** tocar oferece "Começar treino" */
+  opensWorkout?: boolean
 }
 
 export const idEntry = (date: DataISO, itemId: string) => `${date}|${itemId}`

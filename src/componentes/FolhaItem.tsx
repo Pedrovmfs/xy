@@ -3,6 +3,7 @@ import type { Entry, Estado } from '../db'
 import { horarioDoDia, minutos, paraHorario, salvarEntry, type ItemDoDia } from '../lib/dia'
 import type { DataISO } from '../lib/datas'
 import { Folha } from './Folha'
+import { BotaoTreino } from '../treino/BotaoTreino'
 import { useComAtraso } from '../lib/atraso'
 
 const ATALHOS_MOTIVO = ['doente', 'trabalho', 'cansaço', 'imprevisto', 'sem vontade']
@@ -67,6 +68,8 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
       ) : (
         <p className="folha-sub">no dia{item.origem === 'avulso' ? ' · avulso' : ''}</p>
       )}
+
+      {item.opensWorkout && <BotaoTreino date={date} itemId={item.id} />}
 
       <div className="segmentado" role="group" aria-label="Estado">
         <button aria-pressed={status === 'done'} onClick={() => escolher('done')}>Feito</button>

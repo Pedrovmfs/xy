@@ -17,6 +17,7 @@ export function EditorItem(props: Props) {
   const [title, setTitle] = useState(item?.title ?? '')
   const [kind, setKind] = useState<TipoItem>(item?.kind ?? 'block')
   const [areaId, setAreaId] = useState(item?.areaId)
+  const [opensWorkout, setOpensWorkout] = useState(!!item?.opensWorkout)
   const inicial = props.tipo === 'avulso' ? props.horarioInicial : undefined
   const [start, setStart] = useState(item?.start ?? inicial?.start ?? '')
   const [end, setEnd] = useState(item?.end ?? inicial?.end ?? '')
@@ -45,6 +46,7 @@ export function EditorItem(props: Props) {
       title: title.trim(),
       kind,
       areaId,
+      opensWorkout: opensWorkout || undefined,
       start: kind === 'block' ? start : undefined,
       end: kind === 'block' ? end : undefined,
     }
@@ -126,6 +128,15 @@ export function EditorItem(props: Props) {
       <div className="campo">
         <span className="rotulo">Área</span>
         <SeletorArea valor={areaId} aoMudar={setAreaId} />
+      </div>
+
+      <div className="campo">
+        <div className="fichas">
+          <button type="button" className="ficha" aria-pressed={opensWorkout} onClick={() => setOpensWorkout(!opensWorkout)}>
+            abre o treino
+          </button>
+        </div>
+        <span className="nota-discreta">Tocar no item oferece “Começar treino”; ao terminar, ele marca sozinho.</span>
       </div>
 
       {problema && title && <p className="aviso">{problema}</p>}
