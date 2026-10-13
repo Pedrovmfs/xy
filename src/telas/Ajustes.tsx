@@ -9,14 +9,16 @@ import { EditorHabito } from '../componentes/EditorHabito'
 import { EditorArea } from '../componentes/EditorArea'
 import { IconeAvancar, IconeVoltar } from '../icones'
 import { useDeslizar } from '../lib/deslizar'
+import { SecaoBackup } from '../componentes/SecaoBackup'
 
-type Secao = 'rotina' | 'avulsos' | 'habitos' | 'areas'
+type Secao = 'rotina' | 'avulsos' | 'habitos' | 'areas' | 'backup'
 
 const SECOES: { id: Secao; nome: string; descricao: string }[] = [
   { id: 'rotina', nome: 'Rotina', descricao: 'Itens que se repetem na semana' },
   { id: 'avulsos', nome: 'Avulsos', descricao: 'Itens numa data só' },
   { id: 'habitos', nome: 'Hábitos', descricao: 'As bolinhas do Hoje' },
   { id: 'areas', nome: 'Áreas', descricao: 'Nome, cor e meta semanal' },
+  { id: 'backup', nome: 'Backup', descricao: 'Exportar e importar todos os dados' },
 ]
 
 export function Ajustes({ aoSair, secaoInicial }: { aoSair: () => void; secaoInicial?: Secao }) {
@@ -60,6 +62,7 @@ export function Ajustes({ aoSair, secaoInicial }: { aoSair: () => void; secaoIni
         {secao === 'avulsos' && <ListaAvulsos />}
         {secao === 'habitos' && <ListaHabitos />}
         {secao === 'areas' && <ListaAreas />}
+        {secao === 'backup' && <SecaoBackup />}
         </div>
       </main>
     </>
