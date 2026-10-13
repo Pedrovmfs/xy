@@ -74,10 +74,22 @@ export async function semearCardapio(tx: Transaction) {
   await tx.table('foods').bulkAdd(cardapioInicial())
 }
 
-/** Metas do dia (meta['nutricao:metas']): proteína é uma faixa, calorias um teto. */
+/** Metas (meta['nutricao:metas']): proteína é uma faixa, calorias um teto.
+ *  Gasto diário e déficit mínimo definem o espaço semanal de refeições livres. */
 export interface MetasNutricao {
   proteinaMin: number
   proteinaMax: number
   kcalMax: number
+  /** gasto estimado por dia (conservador no começo; calibrar depois pelo peso) */
+  gastoDiario: number
+  /** déficit da semana do qual não se abre mão */
+  deficitMinimo: number
 }
-export const METAS_NUTRICAO: MetasNutricao = { proteinaMin: 190, proteinaMax: 200, kcalMax: 1960 }
+export const METAS_NUTRICAO: MetasNutricao = { proteinaMin: 190, proteinaMax: 200, kcalMax: 1960, gastoDiario: 2750, deficitMinimo: 4500 }
+
+/** Refeições que uma livre costuma substituir. */
+export const REFEICOES_NORMAIS = ['almoço', 'jantar', 'pré-treino', 'ceia']
+/** "o almoço" / "a ceia" */
+export const comArtigo = (r: string) => `${r === 'ceia' ? 'a' : 'o'} ${r}`
+/** "do almoço" / "da ceia" */
+export const deArtigo = (r: string) => `${r === 'ceia' ? 'da' : 'do'} ${r}`

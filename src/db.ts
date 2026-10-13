@@ -216,8 +216,12 @@ export interface Meal {
   protein: number
   /** veio de uma opção do cardápio */
   foodId?: string
-  /** refeição livre (calorias à mão; entra no saldo semanal numa versão futura) */
+  /** refeição livre (calorias à mão; o extra entra no espaço semanal de livres) */
   free?: boolean
+  /** livre: kcal da refeição normal que ela substituiu (0 = foi a mais). Só o extra conta. */
+  replaces?: number
+  /** livre: qual refeição ela substituiu (almoço, jantar…) */
+  replacesLabel?: string
   createdAt: string
 }
 
