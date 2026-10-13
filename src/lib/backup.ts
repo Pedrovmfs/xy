@@ -1,5 +1,6 @@
 import { db, type Area, type RoutineItem } from '../db'
 import { exerciciosIniciais, METAS_PADRAO, treinosIniciais } from '../treino/semente'
+import { cardapioInicial } from '../nutricao/cardapio'
 import { hoje, somarDias } from './datas'
 
 // Backup: um arquivo JSON com todas as tabelas do banco.
@@ -115,6 +116,11 @@ function migrar(b: Backup): Backup {
     }
     dados.areas = areas.map((a) => (a.id === 'treino' ? { ...a, weeklyGoal: undefined } : a))
   }
+  if (b.versao < 4) {
+    // v4: nutrição. Backup antigo não tem as tabelas: entra o cardápio inicial.
+    dados.foods = cardapioInicial()
+    dados.meals = []
+  }
   return { ...b, versao: db.verno, dados }
 }
 
@@ -131,6 +137,9 @@ export function resumoBackup(b: Backup) {
       { nome: 'marcações de hábitos', qtd: n('habitLogs') },
       { nome: 'áreas', qtd: n('areas') },
       { nome: 'comentários do dia', qtd: n('days') },
+      { nome: 'treinos feitos', qtd: n('sessions') },
+      { nome: 'cardio', qtd: n('cardio') },
+      { nome: 'registros de comida', qtd: n('meals') },
     ],
   }
 }
