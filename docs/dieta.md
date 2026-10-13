@@ -90,6 +90,7 @@ Rápido, pouca louça, sem leite, sem whey bebido, leve pra digerir. Aprovadas p
 | **Creme de banana:** banana amassada + whey misturado, Snow Flakes por cima | ~285 kcal · ~22 g | pote e garfo |
 | Creme de whey com Snow Flakes + 1 banana | ~320 kcal · ~23 g | copo e colher |
 | Bolo de caneca de banana com canela | ~280 kcal · ~28 g | caneca e garfo |
+| **Tigela padrão de pré-treino:** iogurte 170 g + whey 30 g (1 dose) + Snow Flakes 40 g + chia 1 colher de chá (opcional) | ~380 kcal · ~30 g | tigela e colher |
 | **Mínimo (dia sem fome):** 1 banana + café | ~90 kcal · ~1 g | nenhuma |
 
 Café 30–40 min antes do treino funciona como pré-treino.
