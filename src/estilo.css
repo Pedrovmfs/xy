@@ -2046,3 +2046,30 @@ button.nav-dia-data {
 .busca-cardapio {
   margin-top: 12px;
 }
+.campo-linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.espaco-livres {
+  margin-top: 16px;
+}
+.espaco-numeros {
+  margin: 4px 0;
+  font-variant-numeric: tabular-nums;
+}
+.campo.campo-linha {
+  flex-direction: row;
+  text-align: left;
+}
+.campo-linha .rotulo {
+  flex: 1;
+}
+.nutricao-trilho {
+  display: flex;
+}
+.barra-neutra > span.nutricao-livre {
+  opacity: 0.4;
+  border-radius: 0 3px 3px 0;
+}

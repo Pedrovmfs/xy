@@ -4,6 +4,7 @@ import type { DataISO } from '../lib/datas'
 import { novoId } from '../lib/id'
 import { avisar } from '../lib/aviso'
 import { METAS_NUTRICAO, type MetasNutricao } from './cardapio'
+import { extraDaLivre } from './saldo'
 
 const CHAVE_METAS = 'nutricao:metas'
 
@@ -15,9 +16,16 @@ export function useMetasNutricao(): MetasNutricao | undefined {
 }
 export const salvarMetasNutricao = (m: MetasNutricao) => db.meta.put({ key: CHAVE_METAS, value: m })
 
+/** Totais do dia. `kcal` é tudo o que foi comido. Para a meta do dia, a livre conta
+ *  só o que a refeição normal teria (`kcalDia`); o extra vai para o espaço semanal
+ *  (os dias normais não mudam por causa dela). */
 export function totais(meals: Meal[]) {
+  const kcal = meals.reduce((t, m) => t + m.kcal, 0)
+  const extraLivre = meals.reduce((t, m) => t + (m.free ? extraDaLivre(m) : 0), 0)
   return {
-    kcal: meals.reduce((t, m) => t + m.kcal, 0),
+    kcal,
+    kcalDia: kcal - extraLivre,
+    extraLivre,
     proteina: meals.reduce((t, m) => t + m.protein, 0),
   }
 }
@@ -30,7 +38,7 @@ export function useComidaDoDia(date: DataISO) {
 }
 
 /** Registra uma refeição (do cardápio, à mão ou livre), com desfazer. */
-export async function registrar(date: DataISO, dados: { name: string; kcal: number; protein: number; foodId?: string; free?: boolean }) {
+export async function registrar(date: DataISO, dados: Omit<Meal, 'id' | 'date' | 'at' | 'createdAt'>) {
   const agora = new Date().toISOString()
   const meal: Meal = { id: novoId(), date, at: agora, createdAt: agora, ...dados }
   await db.meals.add(meal)

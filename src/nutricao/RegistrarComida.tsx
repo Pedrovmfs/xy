@@ -6,10 +6,17 @@ import { novoId } from '../lib/id'
 import { normalizar } from '../lib/pensamentos'
 import { Folha } from '../componentes/Folha'
 import { Segmentado } from '../componentes/Campos'
-import { CATEGORIAS } from './cardapio'
-import { formatarKcal, recentes, registrar } from './dados'
+import { CATEGORIAS, comArtigo, REFEICOES_NORMAIS } from './cardapio'
+import { formatarKcal, recentes, registrar, useMetasNutricao } from './dados'
+import { refeicaoTipica, useSemanaLivres } from './saldo'
 
 type Modo = 'cardapio' | 'mao' | 'livre'
+
+/** Palpite de qual refeição a livre substitui, pela hora (dá para trocar). */
+function refeicaoDaHora(): string {
+  const h = new Date().getHours()
+  return h < 15 ? 'almoço' : h < 17 ? 'pré-treino' : h < 22 ? 'jantar' : 'ceia'
+}
 
 const lerNumero = (v: string) => {
   const n = Number(v.replace(',', '.'))
@@ -17,7 +24,8 @@ const lerNumero = (v: string) => {
 }
 
 // Registrar comida: do cardápio (um toque), à mão (nome, kcal, proteína; pode guardar
-// no cardápio) ou refeição livre (só as calorias).
+// no cardápio) ou refeição livre (só as calorias; diz qual refeição ela substituiu,
+// porque só o extra sai do espaço semanal de livres).
 export function RegistrarComida({ date, aoFechar, aoRegistrar }: {
   date: DataISO
   aoFechar: () => void
@@ -32,6 +40,11 @@ export function RegistrarComida({ date, aoFechar, aoRegistrar }: {
   const [proteina, setProteina] = useState('')
   const [guardar, setGuardar] = useState(true)
   const [catNova, setCatNova] = useState('jantar')
+  // livre: qual refeição normal ela substituiu ('' = nenhuma, foi a mais) e quanto ela teria
+  const [substitui, setSubstitui] = useState(refeicaoDaHora)
+  const [normal, setNormal] = useState<string | null>(null)
+  const metas = useMetasNutricao()
+  const semana = useSemanaLivres(date, metas)
 
   const dados = useLiveQuery(async () => {
     const cardapio = await db.foods.orderBy('order').toArray()
@@ -60,10 +73,21 @@ export function RegistrarComida({ date, aoFechar, aoRegistrar }: {
   async function salvarLivre() {
     const k = lerNumero(kcal)
     if (k == null) return
-    await concluir({ name: nome.trim() || 'Refeição livre', kcal: k, protein: lerNumero(proteina) ?? 0, free: true })
+    await concluir({
+      name: nome.trim() || 'Refeição livre',
+      kcal: k,
+      protein: lerNumero(proteina) ?? 0,
+      free: true,
+      replaces: substitui ? kcalNormal : 0,
+      replacesLabel: substitui || undefined,
+    })
   }
 
   if (!dados) return null
+  const kcalNormal = lerNumero(normal ?? '') ?? (substitui ? refeicaoTipica(dados.cardapio, substitui) : 0)
+  const kcalLivre = lerNumero(kcal)
+  const extra = kcalLivre == null ? null : Math.max(0, kcalLivre - (substitui ? kcalNormal : 0))
+  const restam = semana ? semana.espaco - semana.usado : null
   const termo = normalizar(busca.trim())
   const lista = dados.cardapio.filter(
     (f) => (!categoria || f.category === categoria) && (!termo || normalizar(f.name).includes(termo)),
@@ -148,7 +172,27 @@ export function RegistrarComida({ date, aoFechar, aoRegistrar }: {
             <span className="rotulo">Nome (opcional)</span>
             <input className="entrada" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex.: pizza de calabresa" />
           </label>
-          <button className="botao-principal" disabled={lerNumero(kcal) == null} onClick={() => void salvarLivre()}>Registrar</button>
+          <span className="rotulo campo">No lugar de</span>
+          <div className="fichas fichas-rolaveis">
+            {REFEICOES_NORMAIS.map((r) => (
+              <button key={r} className="ficha ficha-pequena" aria-pressed={substitui === r} onClick={() => { setSubstitui(r); setNormal(null) }}>{r}</button>
+            ))}
+            <button className="ficha ficha-pequena" aria-pressed={substitui === ''} onClick={() => { setSubstitui(''); setNormal(null) }}>nenhuma (a mais)</button>
+          </div>
+          {substitui && (
+            <label className="campo campo-linha">
+              <span className="rotulo">{comArtigo(substitui).replace(/^./, (c) => c.toUpperCase())} normal teria (kcal)</span>
+              <input className="entrada entrada-curta" inputMode="numeric" value={normal ?? String(kcalNormal)} onChange={(e) => setNormal(e.target.value)} />
+            </label>
+          )}
+          {extra != null && (
+            <p className="nota-discreta campo">
+              Conta {formatarKcal(extra)} kcal no espaço da semana
+              {restam != null && ` · restam ${formatarKcal(Math.max(0, restam))}`}
+              {restam != null && extra > Math.max(0, restam) && ` · ${formatarKcal(extra - Math.max(0, restam))} saem da próxima semana`}
+            </p>
+          )}
+          <button className="botao-principal" disabled={kcalLivre == null} onClick={() => void salvarLivre()}>Registrar</button>
         </>
       )}
     </Folha>
