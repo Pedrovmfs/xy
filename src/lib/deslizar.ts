@@ -8,8 +8,12 @@ import { gestos } from './gestos'
 // aqui. Se o dedo começar a ir mais para cima/baixo do que para o lado, desistimos.
 
 const DECIDIR = 10 // px até decidir se o gesto é horizontal ou vertical
-const LIMITE = 70 // px arrastados para confirmar
-const VELOCIDADE = 0.45 // px/ms: deslize rápido confirma mesmo curto
+const LIMITE = 50 // px arrastados para confirmar, mesmo devagar
+const VELOCIDADE = 0.25 // px/ms no fim do gesto: um peteleco confirma mesmo curto…
+const MINIMO_PETELECO = 15 // …desde que tenha andado pelo menos isso
+const VELOCIDADE_MEDIA = 0.2 // px/ms no gesto todo: um arrasto decidido também vale…
+const MINIMO_DECIDIDO = 30 // …a partir dessa distância
+const JANELA = 100 // ms: a velocidade é medida nos últimos instantes do gesto
 const DURACAO = 160 // ms das animações
 
 interface Opcoes {
@@ -23,7 +27,8 @@ interface Opcoes {
 
 export function useDeslizar({ podeComecar, sentidos, aoConfirmar }: Opcoes) {
   const alvo = useRef<HTMLDivElement>(null)
-  const g = useRef<{ x0: number; y0: number; dx: number; t: number; v: number; horizontal: boolean | null } | null>(null)
+  // amostras = posições recentes do dedo (x, tempo), para medir a velocidade
+  const g = useRef<{ x0: number; y0: number; t0: number; dx: number; amostras: { x: number; t: number }[]; horizontal: boolean | null } | null>(null)
   const engolirClique = useRef(false)
 
   const estilo = (transform: string, opacidade: string, transicao: string) => {
@@ -38,7 +43,7 @@ export function useDeslizar({ podeComecar, sentidos, aoConfirmar }: Opcoes) {
     if (e.button !== 0 || gestos.ocupado || (podeComecar && !podeComecar(e))) return
     // eventos de dentro de uma folha "sobem" pela árvore do React até aqui: ignorar
     if ((e.target as Element).closest('.folha-fundo')) return
-    g.current = { x0: e.clientX, y0: e.clientY, dx: 0, t: e.timeStamp, v: 0, horizontal: null }
+    g.current = { x0: e.clientX, y0: e.clientY, t0: e.timeStamp, dx: 0, amostras: [{ x: e.clientX, t: e.timeStamp }], horizontal: null }
   }
 
   function onPointerMove(e: PointerEvent) {
@@ -60,25 +65,46 @@ export function useDeslizar({ podeComecar, sentidos, aoConfirmar }: Opcoes) {
         return
       }
     }
-    const dt = e.timeStamp - a.t
-    if (dt > 0) a.v = (dx - a.dx) / dt
-    a.t = e.timeStamp
-    a.dx = dx
+    registrar(a, e)
     // no sentido que não vale, o conteúdo resiste (anda só um pouquinho)
     const sentido = dx > 0 ? 1 : -1
     const efetivo = sentidos.includes(sentido) ? dx : dx * 0.15
     estilo(`translateX(${efetivo}px)`, String(1 - Math.min(0.5, Math.abs(efetivo) / 600)), 'none')
   }
 
-  function onPointerUp() {
+  /** Guarda a posição atual e descarta as amostras mais velhas que a janela. */
+  function registrar(a: NonNullable<typeof g.current>, e: PointerEvent) {
+    a.dx = e.clientX - a.x0
+    a.amostras.push({ x: e.clientX, t: e.timeStamp })
+    while (a.amostras.length > 2 && e.timeStamp - a.amostras[0].t > JANELA) a.amostras.shift()
+  }
+
+  /**
+   * Velocidade nos últimos ~100 ms (e não só entre os dois últimos eventos): no fim
+   * do gesto o dedo desacelera e o iPhone agrupa eventos de toque, e a medida
+   * "instantânea" saía baixa mesmo num peteleco rápido.
+   */
+  function velocidade(a: NonNullable<typeof g.current>) {
+    const primeira = a.amostras[0]
+    const ultima = a.amostras[a.amostras.length - 1]
+    const dt = ultima.t - primeira.t
+    return dt > 0 ? (ultima.x - primeira.x) / dt : 0
+  }
+
+  function onPointerUp(e: PointerEvent) {
     const a = g.current
     g.current = null
     if (!a?.horizontal) return
+    registrar(a, e) // a posição de quando o dedo saiu também conta
     engolirClique.current = true
     setTimeout(() => (engolirClique.current = false), 300)
     const sentido: 1 | -1 = a.dx > 0 ? 1 : -1
-    const confirmou =
-      sentidos.includes(sentido) && (Math.abs(a.dx) > LIMITE || (Math.abs(a.dx) > 20 && Math.abs(a.v) > VELOCIDADE))
+    const v = velocidade(a)
+    const media = Math.abs(a.dx) / Math.max(1, e.timeStamp - a.t0)
+    const distancia = Math.abs(a.dx)
+    const peteleco = distancia > MINIMO_PETELECO && Math.abs(v) > VELOCIDADE && Math.sign(v) === sentido
+    const decidido = distancia > MINIMO_DECIDIDO && media > VELOCIDADE_MEDIA
+    const confirmou = sentidos.includes(sentido) && (distancia > LIMITE || peteleco || decidido)
     if (!confirmou) {
       estilo('', '', `transform ${DURACAO}ms ease-out, opacity ${DURACAO}ms`)
       return

@@ -25,7 +25,7 @@ export function Ajustes({ aoSair }: { aoSair: () => void }) {
   const voltar = () => (secao ? setSecao(null) : aoSair())
   // deslizar da borda esquerda para a direita = voltar (como nos apps do iPhone)
   const deslize = useDeslizar({
-    podeComecar: (e) => e.clientX < 32,
+    podeComecar: (e) => e.clientX < 40,
     sentidos: [1],
     aoConfirmar: voltar,
   })
