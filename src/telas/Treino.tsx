@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type Cardio, type Session, type Workout } from '../db'
 import { deDataISO, formatarDataLonga, hoje, NOMES_DIAS_CURTOS, somarDias, type DataISO } from '../lib/datas'
@@ -11,6 +11,11 @@ import { EditorCardio } from '../treino/EditorCardio'
 import { formatarKm, ritmo, somaKm } from '../treino/cardio'
 import { salvarMetas, useMetasTreino } from '../treino/metas'
 import type { MetasTreino } from '../treino/semente'
+import { EditorTreino } from '../treino/EditorTreino'
+import { PaginaExercicios } from '../treino/Biblioteca'
+import { useDeslizar } from '../lib/deslizar'
+import { novoId } from '../lib/id'
+import { IconeAvancar, IconeVoltar } from '../icones'
 
 // Aba Treino: o controle da academia mora aqui (o bloco no calendário é só o
 // compromisso do dia). Tudo neutro: "3 de 5", sem sequência que quebra.
@@ -30,8 +35,32 @@ export function Treino() {
   const [escolhendo, setEscolhendo] = useState(false)
   const [cardioAberto, setCardioAberto] = useState<Cardio | 'novo' | null>(null)
   const [editandoMetas, setEditandoMetas] = useState(false)
+  // páginas internas da aba (editar um treino, biblioteca de exercícios)
+  const [pagina, setPagina] = useState<{ tipo: 'treino'; id: string } | { tipo: 'exercicios' } | null>(null)
 
   if (!dados || !metas) return null
+
+  if (pagina) {
+    const titulo =
+      pagina.tipo === 'exercicios' ? 'Exercícios' : (dados.treinos.find((t) => t.id === pagina.id)?.name ?? 'Treino')
+    return (
+      <PaginaInterna titulo={titulo} aoVoltar={() => setPagina(null)}>
+        {pagina.tipo === 'treino' ? (
+          <EditorTreino key={pagina.id} treinoId={pagina.id} aoSair={() => setPagina(null)} />
+        ) : (
+          <PaginaExercicios />
+        )}
+      </PaginaInterna>
+    )
+  }
+
+  async function novoTreino() {
+    const agora = new Date().toISOString()
+    const ultimo = dados!.treinos[dados!.treinos.length - 1]
+    const id = novoId()
+    await db.workouts.add({ id, name: 'Novo treino', order: (ultimo?.order ?? -1) + 1, items: [], createdAt: agora, updatedAt: agora })
+    setPagina({ tipo: 'treino', id })
+  }
 
   const h = hoje()
   const feitas = dados.sessoes.filter((s) => s.finishedAt)
@@ -97,6 +126,29 @@ export function Treino() {
 
       <Frequencia feitas={feitas} cardio={dados.cardio} />
 
+      <h2 className="secao-titulo">Meus treinos</h2>
+      <ul className="lista">
+        {dados.treinos.map((t) => (
+          <li key={t.id}>
+            <button className="linha" onClick={() => setPagina({ tipo: 'treino', id: t.id })}>
+              <span className="linha-texto">
+                <span>{t.name}</span>
+                <span className="linha-sub">{t.items.length} {t.items.length === 1 ? 'exercício' : 'exercícios'}</span>
+              </span>
+              <IconeAvancar />
+            </button>
+          </li>
+        ))}
+      </ul>
+      <button className="botao-novo" onClick={() => void novoTreino()}>+ novo treino</button>
+      <button className="linha" onClick={() => setPagina({ tipo: 'exercicios' })}>
+        <span className="linha-texto">
+          <span>Exercícios</span>
+          <span className="linha-sub">a biblioteca: grupo muscular, incremento da carga, nota fixa</span>
+        </span>
+        <IconeAvancar />
+      </button>
+
       <button className="linha treino-metas" onClick={() => setEditandoMetas(true)}>
         <span className="linha-texto">
           <span>Metas e descanso</span>
@@ -116,6 +168,22 @@ export function Treino() {
         />
       )}
       {editandoMetas && <EditorMetas metas={metas} aoFechar={() => setEditandoMetas(false)} />}
+    </section>
+  )
+}
+
+/** Página dentro da aba, com voltar (botão ou deslizar da borda esquerda). */
+function PaginaInterna({ titulo, aoVoltar, children }: { titulo: string; aoVoltar: () => void; children: ReactNode }) {
+  const deslize = useDeslizar({ podeComecar: (e) => e.clientX < 40, sentidos: [1], aoConfirmar: aoVoltar })
+  return (
+    <section className="area-detalhe" {...deslize.handlers}>
+      <div ref={deslize.alvo}>
+        <button className="area-voltar" onClick={aoVoltar}>
+          <IconeVoltar /> Treino
+        </button>
+        <h2 className="area-titulo">{titulo}</h2>
+        {children}
+      </div>
     </section>
   )
 }
