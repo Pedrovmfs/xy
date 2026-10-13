@@ -168,7 +168,7 @@ Obs.: Attual de segunda a sexta foi uma suposição, a confirmar. Spaço Eventos
 - [ ] Lista de compras a partir da comida da semana
 - [ ] "Nesse dia, há um ano" — gostou, mas **precisa refinar** antes de fazer
 - [ ] Revisão mensal de hábitos ("isso te incomoda?")
-- [ ] Lembrete discreto de backup
+- [x] Lembrete discreto de backup
 - [ ] Sono via Atalhos do iOS
 - [ ] Lista de "comidas pra experimentar" (ex.: salmão), pra abrir o paladar aos poucos
 - [ ] "O que cabe agora": filtrar o cardápio pelo que ainda resta de proteína e calorias no dia

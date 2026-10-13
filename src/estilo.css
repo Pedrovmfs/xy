@@ -889,7 +889,7 @@ button.nav-dia-rel {
 
 .aviso-barra {
   position: fixed;
-  z-index: 60;
+  z-index: 45; /* abaixo das folhas (50): não cobre o botão de uma folha aberta */
   left: max(16px, env(safe-area-inset-left));
   right: calc(max(16px, env(safe-area-inset-right)) + 56px);
   bottom: calc(var(--altura-abas) + env(safe-area-inset-bottom) + 12px);
@@ -1215,4 +1215,56 @@ button.nav-dia-data {
 .nota-texto {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+
+/* ---------- Backup ---------- */
+
+.texto-explicativo {
+  color: var(--texto-suave);
+  font-size: 15px;
+  margin: 4px 0 16px;
+}
+.backup-ultimo {
+  font-size: 14px;
+}
+.botao-secundario {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin-top: 10px;
+  border-radius: 12px;
+  border: 1px solid var(--linha);
+  font-weight: 500;
+}
+.botao-secundario:disabled {
+  opacity: 0.35;
+}
+.resumo-backup {
+  list-style: none;
+  margin: 12px 0;
+  padding: 0;
+}
+.resumo-backup li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--linha);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.lembrete-backup {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 12px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+.lembrete-backup button {
+  min-height: 44px;
+  font-size: 13px;
+}
+.lembrete-depois {
+  color: var(--texto-suave);
 }

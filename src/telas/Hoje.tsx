@@ -8,6 +8,7 @@ import { FolhaItem } from '../componentes/FolhaItem'
 import { EditorItem } from '../componentes/EditorItem'
 import { Resgates } from '../componentes/Resgates'
 import { CalendarioMes } from '../componentes/CalendarioMes'
+import { LembreteBackup } from '../componentes/LembreteBackup'
 import { useDeslizar } from '../lib/deslizar'
 import { useComAtraso } from '../lib/atraso'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
@@ -62,6 +63,8 @@ export function Hoje({ dataInicial }: { dataInicial?: DataISO }) {
       </button>
 
       <ComentarioDoDia data={data} diaDeHoje={diaDeHoje} />
+
+      {data === diaDeHoje && <LembreteBackup />}
       </div>
 
       {novoAvulso && (
