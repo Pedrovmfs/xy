@@ -1,6 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type { DataISO } from './lib/datas'
 import { semear } from './seed'
+import { marcarItensDeTreino, semearTreino } from './treino/semente'
 
 export type TipoItem = 'block' | 'task'
 export type Horario = string // 'HH:MM'
@@ -28,6 +29,8 @@ export interface RoutineItem {
    *  "Apagar" um item com histórico só preenche `until`, para os dias passados não mudarem. */
   startsOn?: DataISO
   until?: DataISO
+  /** Tocar no item oferece "Começar treino" (ex.: Academia). */
+  opensWorkout?: boolean
   createdAt: string
 }
 
@@ -39,6 +42,7 @@ export interface Oneoff {
   areaId?: string
   start?: Horario
   end?: Horario
+  opensWorkout?: boolean
   createdAt: string
 }
 
@@ -103,6 +107,73 @@ export interface Day {
   water?: number
 }
 
+// ---------- Treino (versão 2 do banco) ----------
+
+/** aquec = aquecimento; prep = preparatória; válida = a que conta nas análises */
+export type TipoSerie = 'warmup' | 'prep' | 'work'
+
+/** Biblioteca de exercícios. */
+export interface Exercise {
+  id: string
+  name: string
+  /** grupo muscular, texto livre (peito, costas…) */
+  muscle: string
+  /** quanto o +/− da carga anda, em kg */
+  increment: number
+  /** nota fixa que aparece sempre no treino (ex.: "banco no 3") */
+  note: string
+  createdAt: string
+}
+
+/** Um exercício dentro de um treino-modelo. */
+export interface WorkoutItem {
+  exerciseId: string
+  sets: TipoSerie[]
+  repMin?: number
+  repMax?: number
+}
+
+/** Treino-modelo (ex.: "Treino A — Push"). */
+export interface Workout {
+  id: string
+  name: string
+  order: number
+  items: WorkoutItem[]
+  createdAt: string
+  updatedAt: string
+}
+
+export interface WorkoutSet {
+  type: TipoSerie
+  weight: number | null
+  reps: number | null
+  /** "série feita": só séries feitas contam nas análises */
+  done: boolean
+}
+
+export interface SessionEntry {
+  exerciseId: string
+  /** guardado na sessão: se o exercício for renomeado/apagado, o histórico continua legível */
+  exerciseName: string
+  repMin?: number
+  repMax?: number
+  sets: WorkoutSet[]
+}
+
+/** Um treino feito (ou em andamento, enquanto não tem finishedAt). */
+export interface Session {
+  id: string
+  date: DataISO
+  workoutId?: string
+  workoutName: string
+  /** item do calendário que abriu o treino: ao finalizar, ele é marcado como feito */
+  itemId?: string
+  startedAt: string
+  finishedAt?: string
+  entries: SessionEntry[]
+  notes?: string
+}
+
 export interface Meta {
   key: string
   value: unknown
@@ -118,11 +189,14 @@ export class XyDB extends Dexie {
   thoughts!: EntityTable<Thought, 'id'>
   days!: EntityTable<Day, 'date'>
   meta!: EntityTable<Meta, 'key'>
+  exercises!: EntityTable<Exercise, 'id'>
+  workouts!: EntityTable<Workout, 'id'>
+  sessions!: EntityTable<Session, 'id'>
 
   constructor() {
     super('xy')
     // Só os campos usados em buscas/ordenação entram aqui; o resto é guardado igual.
-    // Mudou o schema? Crie this.version(2) com .upgrade(); nunca edite a versão 1.
+    // Mudou o schema? Crie uma versão nova com .upgrade(); nunca edite as anteriores.
     this.version(1).stores({
       areas: 'id, order',
       routine: 'id, areaId',
@@ -134,8 +208,25 @@ export class XyDB extends Dexie {
       days: 'date',
       meta: 'key',
     })
-    // Roda uma única vez, quando o banco é criado pela primeira vez no aparelho.
-    this.on('populate', (tx) => semear(tx))
+    // Versão 2: ramificação Treino. Só acrescenta tabelas; os dados existentes ficam
+    // como estão. Quem já tinha o app recebe os treinos iniciais e os itens da área
+    // Treino passam a abrir o treino.
+    this.version(2)
+      .stores({
+        exercises: 'id, name',
+        workouts: 'id, order',
+        sessions: 'id, date, workoutId',
+      })
+      .upgrade(async (tx) => {
+        await semearTreino(tx)
+        await marcarItensDeTreino(tx)
+      })
+    // Roda uma única vez, quando o banco é criado pela primeira vez no aparelho
+    // (já na versão mais nova; nesse caso as funções de upgrade não rodam).
+    this.on('populate', async (tx) => {
+      await semear(tx)
+      await semearTreino(tx)
+    })
   }
 }
 

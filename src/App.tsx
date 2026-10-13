@@ -8,6 +8,8 @@ import { Ajustes } from './telas/Ajustes'
 import { CapturaPensamento } from './componentes/CapturaPensamento'
 import { Aviso } from './componentes/Aviso'
 import type { DataISO } from './lib/datas'
+import { TelaTreino } from './treino/TelaTreino'
+import { useTreinoAberto } from './treino/estado'
 
 type Aba = 'hoje' | 'semana' | 'pensamentos' | 'areas'
 
@@ -21,9 +23,21 @@ const ABAS: { id: Aba; nome: string; icone: () => ReactNode }[] = [
 export function App() {
   const [aba, setAba] = useState<Aba>('hoje')
   const [ajustesAbertos, setAjustesAbertos] = useState(false)
+  const treinoAberto = useTreinoAberto()
   const [secaoAjustes, setSecaoAjustes] = useState<'rotina' | undefined>()
   // dia que o Hoje deve abrir quando se chega por outra tela (ex.: tocar num dia da Semana)
   const [diaHoje, setDiaHoje] = useState<DataISO | undefined>()
+
+  // treino aberto ocupa a tela toda (sem abas), como Ajustes
+  if (treinoAberto) {
+    return (
+      <div className="app" data-abas={false} data-treino>
+        <TelaTreino key={treinoAberto} sessaoId={treinoAberto} />
+        <CapturaPensamento />
+        <Aviso />
+      </div>
+    )
+  }
 
   if (ajustesAbertos) {
     return (

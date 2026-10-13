@@ -9,6 +9,7 @@ import { EditorItem } from '../componentes/EditorItem'
 import { Resgates } from '../componentes/Resgates'
 import { CalendarioMes } from '../componentes/CalendarioMes'
 import { LembreteBackup } from '../componentes/LembreteBackup'
+import { TreinoEmAndamento } from '../treino/TreinoEmAndamento'
 import { useDeslizar } from '../lib/deslizar'
 import { useComAtraso } from '../lib/atraso'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
@@ -39,6 +40,8 @@ export function Hoje({ dataInicial }: { dataInicial?: DataISO }) {
   return (
     <section className="hoje" {...deslize.handlers}>
       <NavegacaoDia data={data} diaDeHoje={diaDeHoje} setData={setData} />
+
+      <TreinoEmAndamento />
 
       <div ref={deslize.alvo} className="hoje-dia">
 

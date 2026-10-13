@@ -1268,3 +1268,242 @@ button.nav-dia-data {
 .lembrete-depois {
   color: var(--texto-suave);
 }
+
+/* ---------- Treino ---------- */
+
+.topo-centro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+.topo-centro .topo-titulo {
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.topo-sub {
+  font-size: 12px;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+.conteudo.treino {
+  /* espaço para a barra do descanso no rodapé */
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120px);
+}
+.app[data-treino] .botao-captura {
+  bottom: calc(env(safe-area-inset-bottom) + 84px);
+}
+
+.ex-cartao {
+  margin-bottom: 14px;
+  padding: 12px 12px 4px;
+  border-radius: 14px;
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+}
+.ex-topo {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+.ex-titulos {
+  flex: 1;
+  min-width: 0;
+}
+.ex-nome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.ex-check svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.4;
+  color: var(--destaque);
+}
+.ex-sub {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+.ex-nota {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--texto-suave);
+  font-style: italic;
+}
+.ex-menu {
+  margin: -8px -8px 0 0;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.series {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+.serie {
+  display: grid;
+  grid-template-columns: 54px 1fr 58px 44px;
+  align-items: center;
+  gap: 6px;
+  min-height: 52px;
+  border-top: 1px solid var(--linha);
+}
+.serie-tipo {
+  min-height: 44px;
+  font-size: 12px;
+  color: var(--texto-suave);
+  text-align: left;
+}
+.serie[data-tipo='work'] .serie-tipo {
+  color: var(--texto);
+  font-weight: 600;
+}
+.serie-carga {
+  display: grid;
+  grid-template-columns: 40px 1fr 40px;
+  align-items: center;
+  min-width: 0;
+}
+.serie-passo {
+  min-height: 44px;
+  font-size: 20px;
+  color: var(--texto-suave);
+}
+.serie-campo {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--superficie-2);
+  color: var(--texto);
+  font: inherit;
+  font-size: 17px; /* ≥ 16px: sem zoom ao focar no Safari */
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.serie-campo:focus {
+  outline: none;
+  border-color: var(--linha);
+}
+.serie-campo::placeholder {
+  color: var(--texto-suave);
+  font-size: 13px;
+}
+.serie-ok {
+  display: grid;
+  place-items: center;
+  min-height: 44px;
+  --cor-area: var(--destaque);
+}
+.serie-ok:disabled {
+  opacity: 0.35;
+}
+.serie[data-feita] .serie-campo {
+  background: transparent;
+}
+.serie-recorde {
+  grid-column: 2 / -1;
+  margin: -6px 0 6px;
+  font-size: 12px;
+  color: var(--destaque);
+}
+.ex-mais-serie {
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+.botao-treino {
+  margin: 14px 0 4px;
+}
+
+/* Barra do descanso */
+.descanso {
+  position: fixed;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px max(12px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  background: var(--superficie);
+  border-top: 1px solid var(--linha);
+  box-shadow: 0 -4px 14px rgb(0 0 0 / 0.06);
+}
+.descanso-meio {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.descanso-tempo {
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.descanso[data-acabou] .descanso-tempo {
+  font-size: 16px;
+  color: var(--destaque);
+}
+.descanso-trilho {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--superficie-2);
+  overflow: hidden;
+}
+.descanso-preenchido {
+  display: block;
+  height: 100%;
+  background: var(--destaque);
+  transition: width 0.25s linear;
+}
+.descanso-botao {
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 14px;
+  color: var(--texto-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Treino em andamento (no Hoje) */
+.treino-andamento {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 6px;
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--superficie-2);
+  font-size: 14px;
+  text-align: left;
+}
+.treino-andamento .link {
+  margin-left: auto;
+}
+.treino-andamento-ponto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--destaque);
+}
+.lista-rolavel {
+  max-height: 50dvh;
+  overflow-y: auto;
+  margin-top: 8px;
+}
