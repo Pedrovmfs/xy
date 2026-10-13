@@ -1,8 +1,9 @@
 import { useState, type ReactNode } from 'react'
-import { IconeAjustes, IconeAreas, IconeHoje, IconePensamentos, IconeSemana } from './icones'
+import { IconeAjustes, IconeAreas, IconeHoje, IconePensamentos, IconeSemana, IconeTreino } from './icones'
 import { Hoje } from './telas/Hoje'
 import { Semana } from './telas/Semana'
 import { Pensamentos } from './telas/Pensamentos'
+import { Treino } from './telas/Treino'
 import { Areas } from './telas/Areas'
 import { Ajustes } from './telas/Ajustes'
 import { CapturaPensamento } from './componentes/CapturaPensamento'
@@ -11,11 +12,12 @@ import type { DataISO } from './lib/datas'
 import { TelaTreino } from './treino/TelaTreino'
 import { useTreinoAberto } from './treino/estado'
 
-type Aba = 'hoje' | 'semana' | 'pensamentos' | 'areas'
+type Aba = 'hoje' | 'semana' | 'treino' | 'pensamentos' | 'areas'
 
 const ABAS: { id: Aba; nome: string; icone: () => ReactNode }[] = [
   { id: 'hoje', nome: 'Hoje', icone: IconeHoje },
   { id: 'semana', nome: 'Semana', icone: IconeSemana },
+  { id: 'treino', nome: 'Treino', icone: IconeTreino },
   { id: 'pensamentos', nome: 'Pensamentos', icone: IconePensamentos },
   { id: 'areas', nome: 'Áreas', icone: IconeAreas },
 ]
@@ -74,6 +76,7 @@ export function App() {
             }}
           />
         )}
+        {aba === 'treino' && <Treino />}
         {aba === 'pensamentos' && <Pensamentos />}
         {aba === 'areas' && <Areas />}
       </main>

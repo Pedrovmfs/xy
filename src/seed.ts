@@ -9,7 +9,7 @@ const agora = () => new Date().toISOString()
 // ids fixos e legíveis para o seed; itens criados pelo usuário usam novoId()
 const areas: Area[] = [
   { id: 'faculdade', name: 'Faculdade', color: '#6f8fb0', nextStep: '', order: 0 },
-  { id: 'treino', name: 'Treino', color: '#7fa383', nextStep: '', weeklyGoal: 5, order: 1 },
+  { id: 'treino', name: 'Treino', color: '#7fa383', nextStep: '', order: 1 },
   { id: 'attual', name: 'Attual', color: '#b08a6f', nextStep: '', order: 2 },
   { id: 'spaco', name: 'Spaço Eventos', color: '#a383a8', nextStep: '', order: 3 },
   { id: 'pai', name: 'Pai', color: '#a8a07a', nextStep: '', order: 4 },

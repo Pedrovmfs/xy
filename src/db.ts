@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie'
 import type { DataISO } from './lib/datas'
 import { semear } from './seed'
-import { marcarItensDeTreino, semearTreino } from './treino/semente'
+import { marcarItensDeTreino, moverMetaDoTreino, semearTreino } from './treino/semente'
 
 export type TipoItem = 'block' | 'task'
 export type Horario = string // 'HH:MM'
@@ -174,6 +174,21 @@ export interface Session {
   notes?: string
 }
 
+/** Cardio (versão 3): caminhada/corrida medida em km. */
+export interface Cardio {
+  id: string
+  date: DataISO
+  /** 'caminhada' | 'corrida' | outro nome livre */
+  type: string
+  km: number
+  /** opcional: com ele o app mostra o ritmo (min/km) */
+  minutes?: number
+  note?: string
+  /** se foi feito junto de um treino */
+  sessionId?: string
+  createdAt: string
+}
+
 export interface Meta {
   key: string
   value: unknown
@@ -192,6 +207,7 @@ export class XyDB extends Dexie {
   exercises!: EntityTable<Exercise, 'id'>
   workouts!: EntityTable<Workout, 'id'>
   sessions!: EntityTable<Session, 'id'>
+  cardio!: EntityTable<Cardio, 'id'>
 
   constructor() {
     super('xy')
@@ -220,6 +236,14 @@ export class XyDB extends Dexie {
       .upgrade(async (tx) => {
         await semearTreino(tx)
         await marcarItensDeTreino(tx)
+      })
+    // Versão 3: cardio (tabela nova) e o controle do treino passa a morar na aba
+    // Treino: a meta semanal de treinos sai da área Treino e vai para as
+    // configurações do treino (meta 'treino:metas'), com o mesmo valor.
+    this.version(3)
+      .stores({ cardio: 'id, date, sessionId' })
+      .upgrade(async (tx) => {
+        await moverMetaDoTreino(tx)
       })
     // Roda uma única vez, quando o banco é criado pela primeira vez no aparelho
     // (já na versão mais nova; nesse caso as funções de upgrade não rodam).

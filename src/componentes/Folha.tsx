@@ -5,6 +5,19 @@ const DURACAO_SAIDA = 220 // ms
 const DISTANCIA_PARA_FECHAR = 110 // px puxados para baixo
 const VELOCIDADE_PARA_FECHAR = 0.6 // px/ms: um "peteleco" rápido também fecha
 
+// Trava da rolagem da página enquanto houver folha aberta. É um contador (e não
+// "guardar o valor antigo e devolver"): com duas folhas abertas uma dentro da outra
+// fechando juntas, devolver o valor antigo na ordem errada deixava a página travada.
+let folhasAbertas = 0
+function travarRolagem() {
+  folhasAbertas++
+  document.body.style.overflow = 'hidden'
+}
+function destravarRolagem() {
+  folhasAbertas = Math.max(0, folhasAbertas - 1)
+  if (folhasAbertas === 0) document.body.style.overflow = ''
+}
+
 // "Folha" (bottom sheet): painel que sobe de baixo, padrão do iOS.
 // Fecha tocando fora ou segurando o topo (alça + título) e puxando para baixo.
 // Fica acima do teclado graças à variável --teclado (ver iniciarAjusteDoTeclado).
@@ -25,11 +38,8 @@ export function Folha({ aberta, aoFechar, titulo, children }: {
     if (!aberta) return
     fechando.current = false
     abertaEm.current = performance.now()
-    const antes = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = antes
-    }
+    travarRolagem()
+    return destravarRolagem
   }, [aberta])
 
   // Desliza para baixo e só então avisa o pai (que desmonta a folha).

@@ -1,5 +1,5 @@
 import type { Transaction } from 'dexie'
-import type { Exercise, RoutineItem, TipoSerie, Workout } from '../db'
+import type { Area, Exercise, RoutineItem, TipoSerie, Workout } from '../db'
 
 // Treinos iniciais: os A–E do app antigo do Pedro (Pedrovmfs/treino, src/seed.js).
 // São só o ponto de partida: tudo é editável no app (treinos, exercícios, séries).
@@ -117,4 +117,34 @@ export async function marcarItensDeTreino(tx: Transaction) {
     .modify((r: RoutineItem) => {
       r.opensWorkout = true
     })
+}
+
+/** Metas e ajustes do treino, guardados em meta['treino:metas']. */
+export interface MetasTreino {
+  treinosPorSemana: number
+  kmPorSemana: number
+  descanso: Record<TipoSerie, number>
+}
+
+export const METAS_PADRAO: MetasTreino = {
+  treinosPorSemana: 5,
+  kmPorSemana: 15,
+  descanso: { warmup: 45, prep: 75, work: 120 },
+}
+
+/**
+ * v3: a meta semanal de treinos sai da área Treino (onde aparecia na Semana) e vai
+ * para as metas do treino, com o mesmo valor. O descanso, se já tinha sido ajustado,
+ * vem junto.
+ */
+export async function moverMetaDoTreino(tx: Transaction) {
+  const area = (await tx.table('areas').get('treino')) as Area | undefined
+  const descanso = (await tx.table('meta').get('treino:descanso'))?.value
+  const metas: MetasTreino = {
+    ...METAS_PADRAO,
+    treinosPorSemana: area?.weeklyGoal ?? METAS_PADRAO.treinosPorSemana,
+    descanso: { ...METAS_PADRAO.descanso, ...(descanso ?? {}) },
+  }
+  if (!(await tx.table('meta').get('treino:metas'))) await tx.table('meta').put({ key: 'treino:metas', value: metas })
+  if (area?.weeklyGoal) await tx.table('areas').update('treino', { weeklyGoal: undefined })
 }
