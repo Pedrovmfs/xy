@@ -75,7 +75,7 @@ export function FolhaComida({ date, aoFechar }: { date: DataISO; aoFechar: () =>
 }
 
 /** Espaço de livres da semana: quanto tem, quanto foi usado, o que passa pra próxima. */
-function EspacoDaSemana({ semana }: { semana: NonNullable<ReturnType<typeof useSemanaLivres>> }) {
+export function EspacoDaSemana({ semana }: { semana: NonNullable<ReturnType<typeof useSemanaLivres>> }) {
   const restam = semana.espaco - semana.usado
   const n = semana.livres.length
   return (
@@ -94,7 +94,7 @@ function EspacoDaSemana({ semana }: { semana: NonNullable<ReturnType<typeof useS
   )
 }
 
-function EditorMetas({ metas, aoFechar }: { metas: MetasNutricao; aoFechar: () => void }) {
+export function EditorMetas({ metas, aoFechar }: { metas: MetasNutricao; aoFechar: () => void }) {
   const [c, setC] = useState({
     min: String(metas.proteinaMin),
     max: String(metas.proteinaMax),

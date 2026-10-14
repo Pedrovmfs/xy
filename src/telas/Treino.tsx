@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useState } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db, type Cardio, type Session, type Workout } from '../db'
 import { deDataISO, formatarDataLonga, hoje, NOMES_DIAS_CURTOS, somarDias, type DataISO } from '../lib/datas'
@@ -14,9 +14,9 @@ import type { MetasTreino } from '../treino/semente'
 import { EditorTreino } from '../treino/EditorTreino'
 import { PaginaExercicios } from '../treino/Biblioteca'
 import { DetalheSessao, LinhaSessao, PaginaHistorico, PaginaProgresso, ProgressoExercicio } from '../treino/Progresso'
-import { useDeslizar } from '../lib/deslizar'
+import { PaginaInterna } from '../componentes/PaginaInterna'
 import { novoId } from '../lib/id'
-import { IconeAvancar, IconeVoltar } from '../icones'
+import { IconeAvancar } from '../icones'
 
 // Aba Treino: o controle da academia mora aqui (o bloco no calendário é só o
 // compromisso do dia). Tudo neutro: "3 de 5", sem sequência que quebra.
@@ -211,7 +211,7 @@ export function Treino() {
   )
 }
 
-/** Página dentro da aba, com voltar (botão ou deslizar da borda esquerda). */
+/** Páginas internas da aba. */
 type Pagina =
   | { tipo: 'treino'; id: string }
   | { tipo: 'exercicios' }
@@ -219,26 +219,6 @@ type Pagina =
   | { tipo: 'sessao'; id: string }
   | { tipo: 'progresso' }
   | { tipo: 'exercicio'; id: string }
-
-function PaginaInterna({ titulo, nomeVoltar, aoVoltar, children }: {
-  titulo: string
-  nomeVoltar: string
-  aoVoltar: () => void
-  children: ReactNode
-}) {
-  const deslize = useDeslizar({ podeComecar: (e) => e.clientX < 40, sentidos: [1], aoConfirmar: aoVoltar })
-  return (
-    <section className="area-detalhe" {...deslize.handlers}>
-      <div ref={deslize.alvo}>
-        <button className="area-voltar" onClick={aoVoltar}>
-          <IconeVoltar /> {nomeVoltar}
-        </button>
-        <h2 className="area-titulo">{titulo}</h2>
-        {children}
-      </div>
-    </section>
-  )
-}
 
 /** "Treino A — Push" → "A"; se não seguir esse padrão, a primeira letra. */
 function letraDoTreino(s: Session): string {
