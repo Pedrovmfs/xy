@@ -151,7 +151,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - O controle do treino (frequência, meta de treinos) fica na aba Treino; na Semana a Academia aparece só como compromisso do dia.
 
 ### Navegação (em aberto)
-- Abas por enquanto: Hoje · Semana · Treino · Pensamentos · Áreas.
+- Abas por enquanto: Hoje · Semana · Treino · Nutrição · Pensamentos · Áreas. A Nutrição tem aba própria (como o Treino): hoje, semana, dias anteriores, cardápio, metas; depois receitas. A barra discreta continua no Hoje.
 - O Pedro quer repensar: Áreas e Pensamentos talvez não precisem de aba própria e possam virar **ramificações** (acessadas a partir de outro lugar). Rever depois.
 
 ## Rotina atual do Pedro (dados iniciais)

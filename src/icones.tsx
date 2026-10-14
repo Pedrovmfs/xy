@@ -80,6 +80,13 @@ export const IconeEscrever = () => (
   </Svg>
 )
 
+export const IconeNutricao = () => (
+  <Svg>
+    <path d="M12 7.5c-1.8-1.6-6-1.4-6 3.2C6 14.6 8.7 20 12 20s6-5.4 6-9.3c0-4.6-4.2-4.8-6-3.2Z" />
+    <path d="M12 7.5c0-2 .8-3.5 2.5-4.5" />
+  </Svg>
+)
+
 export const IconeTreino = () => (
   <Svg>
     <path d="M6.5 8v8M17.5 8v8M4 10v4M20 10v4M6.5 12h11" />
