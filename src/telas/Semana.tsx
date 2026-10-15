@@ -5,10 +5,12 @@ import { hoje, NOMES_DIAS_CURTOS, somarDias, type DataISO } from '../lib/datas'
 import { diasDaSemana, formatarSemana, inicioDaSemana, useSemana, type LinhaSemana } from '../lib/semana'
 import { useDeslizar } from '../lib/deslizar'
 import { FolhaItem } from '../componentes/FolhaItem'
+import { DetalheArea, ListaAreas } from './Areas'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
 
 // A semana como ela foi: o que aconteceu em cada dia, contagem por área e metas.
 // Tudo neutro: "3 de 5", sem cores de alarme para o que não foi feito.
+// No fim, as Áreas (próximo passo e notas de cada uma).
 
 export function Semana({ aoIrParaDia, aoEditarRotina }: {
   aoIrParaDia: (d: DataISO) => void
@@ -19,9 +21,11 @@ export function Semana({ aoIrParaDia, aoEditarRotina }: {
   // guarda só a posição (linha, dia): o item e o estado são lidos de novo a cada mudança
   const [aberto, setAberto] = useState<{ chave: string; i: number } | null>(null)
   const deslize = useDeslizar({ sentidos: [1, -1], aoConfirmar: (s) => setInicio((i) => somarDias(i, -7 * s)) })
+  const [areaAberta, setAreaAberta] = useState<string | null>(null)
 
   const dados = useSemana(inicio)
   const areas = useLiveQuery(async () => new Map((await db.areas.toArray()).map((a) => [a.id, a])))
+  if (areaAberta) return <DetalheArea areaId={areaAberta} nomeVoltar="Semana" aoVoltar={() => setAreaAberta(null)} />
   if (!dados || !areas) return null
 
   const datas = diasDaSemana(inicio)
@@ -93,6 +97,9 @@ export function Semana({ aoIrParaDia, aoEditarRotina }: {
         )}
 
         <button className="adicionar-no-dia" onClick={aoEditarRotina}>editar a rotina</button>
+
+        <h2 className="secao-titulo">Áreas</h2>
+        <ListaAreas aoAbrir={setAreaAberta} />
       </div>
 
       {celula && (

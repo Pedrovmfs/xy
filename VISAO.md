@@ -123,7 +123,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - **Não registrar** humor nem energia (decisão do Pedro).
 
 ### Áreas / Projetos
-- Abas por área: Attual Camisetas, Spaço Eventos, trabalhos do pai, faculdade, casa...
+- Uma página por área (a lista fica no fim da Semana): Attual Camisetas, Spaço Eventos, trabalhos do pai, faculdade, casa...
 - Cada área mostra o histórico de notas dos itens dela — para **reconhecer os próprios trabalhos**.
 - **Próximo passo** por área: guarda só a próxima ação, para nunca abrir e pensar "onde parei?".
 
@@ -132,7 +132,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - O Pedro faz **terapia**. A captura também serve pra anotar, ao longo da semana, **sensações, dores e pensamentos** que ele quer levar pra sessão.
 - **Captura em 1 toque de qualquer tela** (botão pequeno fixo → só um campo de texto). Opcional na hora: um **tipo** (pensamento / sentimento / sensação / dor) e uma marquinha **"levar pra terapia"**. Dor é **só texto** (sem local ou intensidade).
 - Cada registro guarda data/hora e fica ligado ao dia.
-- Aba própria com busca e etiquetas opcionais.
+- Tela própria (ícone no topo) com busca e etiquetas opcionais.
 - **Resgate opcional, escolhido na hora de salvar**: "me lembra disso em 1 semana / 1 mês / 3 meses / 6 meses / 1 ano". Quando chega a data, o pensamento aparece discreto no Hoje (uma linha pequena, que some se ignorar).
 - **Modo terapia:** uma tela pra abrir **durante a sessão**, com tudo desde a última sessão, agrupado por dia, com os marcados "levar pra terapia" em destaque. Depois da sessão, dá pra marcar o que foi conversado e anotar algo da sessão. A sessão de terapia é um item recorrente no calendário (**toda quarta, 17:00–18:00**), e "desde a última sessão" sai dele.
 - Na terapia o Pedro fala da **cabeça e dos sentimentos**, não da semana prática: **nada de resumo de treino/hábitos/sono** no modo terapia.
@@ -150,9 +150,11 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - É onde se edita a rotina-modelo.
 - O controle do treino (frequência, meta de treinos) fica na aba Treino; na Semana a Academia aparece só como compromisso do dia.
 
-### Navegação (em aberto)
-- Abas por enquanto: Hoje · Semana · Treino · Nutrição · Pensamentos · Áreas. A Nutrição tem aba própria (como o Treino): hoje, semana, dias anteriores, cardápio, metas; depois receitas. A barra discreta continua no Hoje.
-- O Pedro quer repensar: Áreas e Pensamentos talvez não precisem de aba própria e possam virar **ramificações** (acessadas a partir de outro lugar). Rever depois.
+### Navegação (decidida em 15/10/2026)
+- Abas: **Hoje · Semana · Treino · Nutrição**. Cada ramificação com necessidade real ganha espaço próprio (Treino, Nutrição; a Faculdade é a próxima candidata).
+- **Pensamentos:** ícone no canto superior esquerdo do topo (a captura continua no lápis de qualquer tela).
+- **Áreas:** no fim da Semana (próximo passo e notas de cada uma).
+- A Nutrição tem aba própria (como o Treino): hoje, semana, dias anteriores, cardápio, metas; depois receitas. A barra discreta continua no Hoje.
 
 ## Rotina atual do Pedro (dados iniciais)
 

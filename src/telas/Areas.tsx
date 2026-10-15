@@ -7,44 +7,38 @@ import { useDeslizar } from '../lib/deslizar'
 import { Folha } from '../componentes/Folha'
 import { IconeAvancar, IconeVoltar } from '../icones'
 
-// Áreas: o "próximo passo" de cada uma (para nunca abrir e pensar "onde parei?")
+// Áreas (moram na Semana): o "próximo passo" de cada uma (para nunca abrir e pensar "onde parei?")
 // e o histórico das notas dos itens dela, para reconhecer o próprio trabalho.
 
-export function Areas() {
+/** Lista das áreas com o próximo passo de cada uma (mora na Semana). */
+export function ListaAreas({ aoAbrir }: { aoAbrir: (id: string) => void }) {
   const areas = useLiveQuery(() => db.areas.orderBy('order').toArray())
-  const [abertaId, setAbertaId] = useState<string | null>(null)
   const [editandoPasso, setEditandoPasso] = useState<Area | null>(null)
-
   if (!areas) return null
-  const aberta = areas.find((a) => a.id === abertaId)
 
   return (
     <>
-      {aberta ? (
-        <DetalheArea area={aberta} aoVoltar={() => setAbertaId(null)} aoEditarPasso={() => setEditandoPasso(aberta)} />
-      ) : (
-        <ul className="lista">
-          {areas.map((a) => (
-            <li key={a.id} className="area-card">
-              <button className="area-cabeca" onClick={() => setAbertaId(a.id)}>
-                <span className="ponto-area" style={{ background: a.color }} />
-                <span className="area-nome">{a.name}</span>
-                <IconeAvancar />
-              </button>
-              <button className="area-passo" data-vazio={!a.nextStep || undefined} onClick={() => setEditandoPasso(a)}>
-                {a.nextStep ? (
-                  <>
-                    <span className="area-passo-rotulo">próximo passo</span>
-                    <span className="area-passo-texto">{a.nextStep}</span>
-                  </>
-                ) : (
-                  '+ próximo passo'
-                )}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className="lista">
+        {areas.map((a) => (
+          <li key={a.id} className="area-card">
+            <button className="area-cabeca" onClick={() => aoAbrir(a.id)}>
+              <span className="ponto-area" style={{ background: a.color }} />
+              <span className="area-nome">{a.name}</span>
+              <IconeAvancar />
+            </button>
+            <button className="area-passo" data-vazio={!a.nextStep || undefined} onClick={() => setEditandoPasso(a)}>
+              {a.nextStep ? (
+                <>
+                  <span className="area-passo-rotulo">próximo passo</span>
+                  <span className="area-passo-texto">{a.nextStep}</span>
+                </>
+              ) : (
+                '+ próximo passo'
+              )}
+            </button>
+          </li>
+        ))}
+      </ul>
       {editandoPasso && <FolhaProximoPasso key={editandoPasso.id} area={editandoPasso} aoFechar={() => setEditandoPasso(null)} />}
     </>
   )
@@ -115,11 +109,14 @@ function useNotasDaArea(areaId: string) {
   }, [areaId])
 }
 
-function DetalheArea({ area, aoVoltar, aoEditarPasso }: { area: Area; aoVoltar: () => void; aoEditarPasso: () => void }) {
-  const notas = useNotasDaArea(area.id)
+export function DetalheArea({ areaId, nomeVoltar, aoVoltar }: { areaId: string; nomeVoltar: string; aoVoltar: () => void }) {
+  const area = useLiveQuery(() => db.areas.get(areaId), [areaId])
+  const notas = useNotasDaArea(areaId)
+  const [editandoPasso, setEditandoPasso] = useState(false)
   // deslizar da borda esquerda volta para a lista, como em Ajustes
   const deslize = useDeslizar({ podeComecar: (e) => e.clientX < 40, sentidos: [1], aoConfirmar: aoVoltar })
 
+  if (!area) return null
   // agrupa por dia (já vem do mais recente para o mais antigo)
   const grupos: { date: string; itens: NotaDaArea[] }[] = []
   for (const n of notas ?? []) {
@@ -132,14 +129,14 @@ function DetalheArea({ area, aoVoltar, aoEditarPasso }: { area: Area; aoVoltar: 
     <section className="area-detalhe" {...deslize.handlers}>
       <div ref={deslize.alvo}>
         <button className="area-voltar" onClick={aoVoltar}>
-          <IconeVoltar /> Áreas
+          <IconeVoltar /> {nomeVoltar}
         </button>
         <h2 className="area-titulo">
           <span className="ponto-area" style={{ background: area.color }} />
           {area.name}
         </h2>
 
-        <button className="area-passo area-passo-grande" data-vazio={!area.nextStep || undefined} onClick={aoEditarPasso}>
+        <button className="area-passo area-passo-grande" data-vazio={!area.nextStep || undefined} onClick={() => setEditandoPasso(true)}>
           <span className="area-passo-rotulo">próximo passo</span>
           <span className="area-passo-texto">{area.nextStep || 'tocar para anotar'}</span>
         </button>
@@ -167,6 +164,7 @@ function DetalheArea({ area, aoVoltar, aoEditarPasso }: { area: Area; aoVoltar: 
           </div>
         ))}
       </div>
+      {editandoPasso && <FolhaProximoPasso area={area} aoFechar={() => setEditandoPasso(false)} />}
     </section>
   )
 }

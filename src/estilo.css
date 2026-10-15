@@ -101,7 +101,7 @@ p {
   bottom: 0;
   z-index: 10;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   padding-bottom: env(safe-area-inset-bottom);
   background: var(--fundo);
   border-top: 1px solid var(--linha);
@@ -2115,4 +2115,16 @@ button.nav-dia-data {
   padding: 0 4px;
   border: 1px solid var(--linha);
   border-radius: 5px;
+}
+.pular-treino {
+  display: block;
+  min-height: 44px;
+  margin: 4px auto 0;
+  font-size: 14px;
+  color: var(--texto-suave);
+}
+
+.botao-icone[aria-pressed='true'] {
+  color: var(--texto);
+  background: var(--superficie-2);
 }

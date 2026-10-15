@@ -111,13 +111,17 @@ export function novaSessao(
 }
 
 /** Sugestão de qual treino fazer: o seguinte ao último feito, na ordem (A → B → … → A). */
-export function proximoTreino(treinos: Workout[], sessoes: Session[]): Workout | undefined {
+export function proximoTreino(treinos: Workout[], sessoes: Session[], pulos: { workoutId: string; at: string }[] = []): Workout | undefined {
   if (treinos.length === 0) return undefined
   const ordenados = [...treinos].sort((a, b) => a.order - b.order)
-  const ultima = sessoes
-    .filter((s) => s.finishedAt && s.workoutId)
-    .sort((a, b) => (b.date + b.startedAt).localeCompare(a.date + a.startedAt))[0]
-  const i = ultima ? ordenados.findIndex((t) => t.id === ultima.workoutId) : -1
+  // o último acontecimento da sequência: um treino feito (pela hora em que começou;
+  // reabrir para corrigir não muda isso) ou um treino pulado
+  const eventos = [
+    ...sessoes.filter((s) => s.finishedAt && s.workoutId).map((s) => ({ workoutId: s.workoutId!, at: s.startedAt })),
+    ...pulos,
+  ].filter((e) => ordenados.some((t) => t.id === e.workoutId))
+  const ultimo = eventos.sort((a, b) => b.at.localeCompare(a.at))[0]
+  const i = ultimo ? ordenados.findIndex((t) => t.id === ultimo.workoutId) : -1
   return ordenados[(i + 1) % ordenados.length]
 }
 
