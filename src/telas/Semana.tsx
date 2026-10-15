@@ -111,7 +111,8 @@ export function Semana({ aoIrParaDia, aoEditarRotina }: {
 }
 
 function contar(linha: LinhaSemana) {
-  const dias = linha.dias.filter((d) => d !== null)
+  // aula que "não teve" não conta como prevista
+  const dias = linha.dias.filter((d) => d !== null && d.entry?.classMode !== 'cancelada')
   return {
     previstos: dias.length,
     feitos: dias.filter((d) => d!.entry?.status === 'done').length,

@@ -14,6 +14,8 @@ export interface ItemDoDia {
   origem: 'rotina' | 'avulso'
   /** tocar oferece "Começar treino" */
   opensWorkout?: boolean
+  /** aula de uma matéria */
+  subjectId?: string
 }
 
 export const idEntry = (date: DataISO, itemId: string) => `${date}|${itemId}`
@@ -73,7 +75,7 @@ export function horarioDoDia(item: ItemDoDia, entry?: Entry): { start?: string; 
   return { start: item.start, end: item.end, ajustado: false }
 }
 
-type CamposEntry = Pick<Entry, 'status' | 'reason' | 'note' | 'start' | 'end'>
+type CamposEntry = Pick<Entry, 'status' | 'reason' | 'note' | 'start' | 'end' | 'classMode'>
 
 /**
  * Altera só os campos passados do estado de um item no dia (o resto continua como
@@ -90,6 +92,7 @@ export async function salvarEntry(date: DataISO, itemId: string, mudancas: Parti
       note: m.note?.trim() || undefined,
       start: m.start || undefined,
       end: m.start ? m.end : undefined,
+      classMode: m.classMode,
     }
     if (Object.values(campos).every((v) => v === undefined)) {
       await db.entries.delete(id)
@@ -106,7 +109,9 @@ export async function salvarEntry(date: DataISO, itemId: string, mudancas: Parti
 export async function alternarFeito(date: DataISO, item: ItemDoDia, entry?: Entry) {
   const anterior = entry ? { ...entry } : undefined
   const novo = entry?.status === 'done' ? undefined : 'done'
-  await salvarEntry(date, item.id, { status: novo })
+  // aula: o círculo marca "presencial" (o jeito mais comum); online etc. pela folha
+  const modo = entry?.classMode === 'online' ? 'online' : 'presencial'
+  await salvarEntry(date, item.id, { status: novo, classMode: item.subjectId && novo ? modo : undefined })
   avisar(novo ? `${item.title}: feito` : `${item.title}: desmarcado`, async () => {
     if (anterior) await db.entries.put(anterior)
     else await db.entries.delete(idEntry(date, item.id))

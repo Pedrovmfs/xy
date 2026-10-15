@@ -32,6 +32,8 @@ export interface RoutineItem {
   until?: DataISO
   /** Tocar no item oferece "Começar treino" (ex.: Academia). */
   opensWorkout?: boolean
+  /** É aula desta matéria (Faculdade). */
+  subjectId?: string
   createdAt: string
 }
 
@@ -44,6 +46,7 @@ export interface Oneoff {
   start?: Horario
   end?: Horario
   opensWorkout?: boolean
+  subjectId?: string
   createdAt: string
 }
 
@@ -60,8 +63,13 @@ export interface Entry {
   /** Horário só deste dia (o bloco foi arrastado/editado); a rotina-modelo não muda. */
   start?: Horario
   end?: Horario
+  /** Aula: como foi (presencial/online contam como feito; faltei como não feito;
+   *  "não teve" não conta nem como feito nem como falta). */
+  classMode?: ModoAula
   updatedAt: string
 }
+
+export type ModoAula = 'presencial' | 'online' | 'cancelada' | 'falta'
 
 export interface Habit {
   id: string
@@ -225,6 +233,39 @@ export interface Meal {
   createdAt: string
 }
 
+// ---------- Faculdade (versão 5) ----------
+
+/** Uma matéria do semestre. As aulas são itens da rotina ligados a ela (subjectId). */
+export interface Subject {
+  id: string
+  name: string
+  color: string
+  /** limite de faltas (opcional; o app só mostra "2 de 15") */
+  maxAbsences?: number
+  /** fim do semestre/arquivada: some da lista principal, mas o histórico fica */
+  archived?: boolean
+  order: number
+  createdAt: string
+}
+
+export type TipoEntrega = 'prova' | 'trabalho' | 'atividade'
+
+/** Prova, trabalho ou atividade com data. */
+export interface Coursework {
+  id: string
+  subjectId: string
+  kind: TipoEntrega
+  title: string
+  /** data da prova ou da entrega */
+  due: DataISO
+  done?: boolean
+  /** nota (opcional) e o valor máximo dela */
+  grade?: number
+  maxGrade?: number
+  note?: string
+  createdAt: string
+}
+
 export interface Meta {
   key: string
   value: unknown
@@ -246,6 +287,8 @@ export class XyDB extends Dexie {
   cardio!: EntityTable<Cardio, 'id'>
   foods!: EntityTable<Food, 'id'>
   meals!: EntityTable<Meal, 'id'>
+  subjects!: EntityTable<Subject, 'id'>
+  coursework!: EntityTable<Coursework, 'id'>
 
   constructor() {
     super('xy')
@@ -289,6 +332,9 @@ export class XyDB extends Dexie {
       .upgrade(async (tx) => {
         await semearCardapio(tx)
       })
+    // Versão 5: faculdade (matérias e provas/trabalhos). Só tabelas novas e vazias:
+    // as matérias são criadas pelo Pedro e ligadas às aulas da rotina.
+    this.version(5).stores({ subjects: 'id, order', coursework: 'id, subjectId, due' })
     // Roda uma única vez, quando o banco é criado pela primeira vez no aparelho
     // (já na versão mais nova; nesse caso as funções de upgrade não rodam).
     this.on('populate', async (tx) => {

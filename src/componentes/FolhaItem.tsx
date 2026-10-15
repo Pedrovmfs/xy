@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import type { Entry, Estado } from '../db'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db, type Entry, type Estado, type ModoAula } from '../db'
 import { horarioDoDia, minutos, paraHorario, salvarEntry, type ItemDoDia } from '../lib/dia'
 import type { DataISO } from '../lib/datas'
 import { Folha } from './Folha'
 import { BotaoTreino } from '../treino/BotaoTreino'
 import { useComAtraso } from '../lib/atraso'
+import { abrirMateria, MODOS, modoDaEntry, statusDoModo } from '../faculdade/dados'
 
 const ATALHOS_MOTIVO = ['doente', 'trabalho', 'cansaço', 'imprevisto', 'sem vontade']
 
@@ -19,6 +21,8 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
   const [status, setStatus] = useState<Estado | undefined>(entry?.status)
   const [reason, setReason] = useState(entry?.reason ?? '')
   const [note, setNote] = useState(entry?.note ?? '')
+  const [modo, setModo] = useState<ModoAula | undefined>(modoDaEntry(entry))
+  const materia = useLiveQuery(async () => (item.subjectId ? db.subjects.get(item.subjectId) : undefined), [item.subjectId])
   const horario = horarioDoDia(item, entry)
 
   // O estado é salvo na hora do toque; motivo e nota, ao sair do campo e ao fechar.
@@ -31,6 +35,14 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
   function escolher(novo: Estado | undefined) {
     setStatus(novo)
     void salvar({ status: novo })
+  }
+
+  // aula: o modo define o estado (presencial/online = feito, faltei = não feito, não teve = nada)
+  function escolherModo(novo: ModoAula | undefined) {
+    const status = statusDoModo(novo)
+    setModo(novo)
+    setStatus(status)
+    void salvarEntry(date, item.id, { status, classMode: novo, reason, note })
   }
 
   function fechar() {
@@ -71,11 +83,28 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
 
       {item.opensWorkout && <BotaoTreino date={date} itemId={item.id} />}
 
-      <div className="segmentado" role="group" aria-label="Estado">
-        <button aria-pressed={status === 'done'} onClick={() => escolher('done')}>Feito</button>
-        <button aria-pressed={status === 'skipped'} onClick={() => escolher('skipped')}>Não feito</button>
-        <button aria-pressed={!status} onClick={() => escolher(undefined)}>Limpar</button>
-      </div>
+      {item.subjectId ? (
+        <>
+          <div className="segmentado segmentado-aula" role="group" aria-label="Como foi a aula">
+            {MODOS.map((m) => (
+              <button key={m.valor} aria-pressed={modo === m.valor} onClick={() => escolherModo(modo === m.valor ? undefined : m.valor)}>
+                {m.nome}
+              </button>
+            ))}
+          </div>
+          {materia && (
+            <button className="link ver-materia" onClick={() => { fechar(); abrirMateria(materia.id) }}>
+              ver {materia.name} →
+            </button>
+          )}
+        </>
+      ) : (
+        <div className="segmentado" role="group" aria-label="Estado">
+          <button aria-pressed={status === 'done'} onClick={() => escolher('done')}>Feito</button>
+          <button aria-pressed={status === 'skipped'} onClick={() => escolher('skipped')}>Não feito</button>
+          <button aria-pressed={!status} onClick={() => escolher(undefined)}>Limpar</button>
+        </div>
+      )}
 
       {status === 'skipped' && (
         <div className="campo">
@@ -114,7 +143,7 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
         <textarea
           className="entrada"
           rows={3}
-          placeholder={`Ex.: ${item.title}: o que rolou hoje`}
+          placeholder={item.subjectId ? 'O que foi visto na aula' : `Ex.: ${item.title}: o que rolou hoje`}
           value={note}
           onChange={(e) => {
             setNote(e.target.value)
