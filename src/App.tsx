@@ -1,11 +1,10 @@
 import { useState, type ReactNode } from 'react'
-import { IconeAjustes, IconeAreas, IconeHoje, IconeNutricao, IconePensamentos, IconeSemana, IconeTreino } from './icones'
+import { IconeAjustes, IconeHoje, IconeNutricao, IconePensamentos, IconeSemana, IconeTreino } from './icones'
 import { Hoje } from './telas/Hoje'
 import { Semana } from './telas/Semana'
 import { Pensamentos } from './telas/Pensamentos'
 import { Treino } from './telas/Treino'
 import { Nutricao } from './telas/Nutricao'
-import { Areas } from './telas/Areas'
 import { Ajustes } from './telas/Ajustes'
 import { CapturaPensamento } from './componentes/CapturaPensamento'
 import { Aviso } from './componentes/Aviso'
@@ -13,19 +12,20 @@ import type { DataISO } from './lib/datas'
 import { TelaTreino } from './treino/TelaTreino'
 import { useTreinoAberto } from './treino/estado'
 
-type Aba = 'hoje' | 'semana' | 'treino' | 'nutricao' | 'pensamentos' | 'areas'
+type Aba = 'hoje' | 'semana' | 'treino' | 'nutricao'
+// Pensamentos não é aba: abre pelo ícone no canto do topo (a captura continua no lápis).
+// As Áreas moram no fim da Semana.
+type Tela = Aba | 'pensamentos'
 
 const ABAS: { id: Aba; nome: string; icone: () => ReactNode }[] = [
   { id: 'hoje', nome: 'Hoje', icone: IconeHoje },
   { id: 'semana', nome: 'Semana', icone: IconeSemana },
   { id: 'treino', nome: 'Treino', icone: IconeTreino },
   { id: 'nutricao', nome: 'Nutrição', icone: IconeNutricao },
-  { id: 'pensamentos', nome: 'Pensamentos', icone: IconePensamentos },
-  { id: 'areas', nome: 'Áreas', icone: IconeAreas },
 ]
 
 export function App() {
-  const [aba, setAba] = useState<Aba>('hoje')
+  const [aba, setAba] = useState<Tela>('hoje')
   const [ajustesAbertos, setAjustesAbertos] = useState(false)
   const treinoAberto = useTreinoAberto()
   const [secaoAjustes, setSecaoAjustes] = useState<'rotina' | undefined>()
@@ -56,8 +56,15 @@ export function App() {
   return (
     <div className="app">
       <header className="topo">
-        <span className="botao-icone" />
-        <h1 className="topo-titulo">{ABAS.find((a) => a.id === aba)!.nome}</h1>
+        <button
+          className="botao-icone"
+          aria-pressed={aba === 'pensamentos'}
+          onClick={() => setAba('pensamentos')}
+          aria-label="Pensamentos"
+        >
+          <IconePensamentos />
+        </button>
+        <h1 className="topo-titulo">{aba === 'pensamentos' ? 'Pensamentos' : ABAS.find((a) => a.id === aba)!.nome}</h1>
         <button className="botao-icone" onClick={() => { setSecaoAjustes(undefined); setAjustesAbertos(true) }} aria-label="Ajustes">
           <IconeAjustes />
         </button>
@@ -81,7 +88,6 @@ export function App() {
         {aba === 'treino' && <Treino />}
         {aba === 'nutricao' && <Nutricao />}
         {aba === 'pensamentos' && <Pensamentos />}
-        {aba === 'areas' && <Areas />}
       </main>
 
       <nav className="abas">
