@@ -112,9 +112,14 @@ export type TipoPensamento = 'pensamento' | 'sentimento' | 'sensacao' | 'dor'
 export interface Day {
   date: DataISO
   comment?: string
+  /** horas dormidas (ex.: 7.5) */
   sleep?: number
+  /** kg */
   weight?: number
+  /** ml */
   water?: number
+  /** passos do dia (o do iPhone é um piso) */
+  steps?: number
 }
 
 // ---------- Treino (versão 2 do banco) ----------
