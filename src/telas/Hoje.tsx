@@ -7,6 +7,7 @@ import { Agenda } from '../componentes/Agenda'
 import { FolhaItem } from '../componentes/FolhaItem'
 import { EditorItem } from '../componentes/EditorItem'
 import { Resgates } from '../componentes/Resgates'
+import { Prazos } from '../faculdade/Prazos'
 import { CalendarioMes } from '../componentes/CalendarioMes'
 import { LembreteBackup } from '../componentes/LembreteBackup'
 import { TreinoEmAndamento } from '../treino/TreinoEmAndamento'
@@ -51,6 +52,8 @@ export function Hoje({ dataInicial }: { dataInicial?: DataISO }) {
       {data <= diaDeHoje && <BarraNutricao date={data} />}
 
       {data === diaDeHoje && <Resgates />}
+
+      {data === diaDeHoje && <Prazos />}
 
       {tarefas.length > 0 && (
         <ul className="tarefas" aria-label="No dia, sem horário">

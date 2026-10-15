@@ -74,7 +74,21 @@ export function proximaAula(subject: Subject, rotina: RoutineItem[], avulsos: On
   return undefined
 }
 
-export const contarFaltas = (aulas: Aula[]) => aulas.filter((a) => modoDaEntry(a.entry) === 'falta').length
+/**
+ * Faltas da matéria, pela regra do Pedro: cada aula perdida vale `absencesPerClass`
+ * faltas; o limite é `maxAbsencePct` da carga horária, e aula que "não teve" sai da
+ * carga (80 h com 2 aulas canceladas de 3 h → 74 h → limite 18).
+ */
+export function faltasDaMateria(subject: Subject, aulas: Aula[]) {
+  const perdidas = aulas.filter((a) => modoDaEntry(a.entry) === 'falta').length
+  const canceladas = aulas.filter((a) => a.entry?.classMode === 'cancelada').length
+  const faltas = (subject.priorAbsences ?? 0) + perdidas * subject.absencesPerClass
+  if (!subject.workload) return { faltas, perdidas, canceladas }
+  const carga = subject.workload - canceladas * subject.absencesPerClass
+  const limite = Math.floor((carga * subject.maxAbsencePct) / 100)
+  const restam = limite - faltas
+  return { faltas, perdidas, canceladas, carga, limite, restam, aulasRestantes: Math.floor(Math.max(0, restam) / subject.absencesPerClass) }
+}
 
 // ---------- abrir uma matéria de qualquer lugar (ex.: "ver matéria" na folha da aula) ----------
 

@@ -85,7 +85,7 @@ export function FolhaItem({ item, date, entry, aoFechar }: {
 
       {item.subjectId ? (
         <>
-          <div className="segmentado segmentado-aula" role="group" aria-label="Como foi a aula">
+          <div className="segmentado" style={{ gridTemplateColumns: `repeat(${MODOS.length}, 1fr)` }} role="group" aria-label="Como foi a aula">
             {MODOS.map((m) => (
               <button key={m.valor} aria-pressed={modo === m.valor} onClick={() => escolherModo(modo === m.valor ? undefined : m.valor)}>
                 {m.nome}

@@ -101,7 +101,7 @@ p {
   bottom: 0;
   z-index: 10;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   padding-bottom: env(safe-area-inset-bottom);
   background: var(--fundo);
   border-top: 1px solid var(--linha);
@@ -2127,4 +2127,62 @@ button.nav-dia-data {
 .botao-icone[aria-pressed='true'] {
   color: var(--texto);
   background: var(--superficie-2);
+}
+
+/* ---------- Faculdade ---------- */
+.ver-materia {
+  display: block;
+  min-height: 44px;
+  margin-top: 4px;
+  font-size: 15px;
+}
+.prazos {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+.prazo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  text-align: left;
+  font-size: 14px;
+}
+.prazo-quando {
+  flex: none;
+  min-width: 64px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.prazo-materia {
+  color: var(--texto-suave);
+}
+.faltas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--superficie-2);
+}
+.faltas-numero {
+  font-size: 22px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.faltas-de {
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--texto-suave);
+}
+.aula-modo {
+  margin-left: 8px;
+  font-size: 13px;
+  color: var(--texto-suave);
+}
+.aula-linha .linha-sub {
+  white-space: pre-wrap;
 }

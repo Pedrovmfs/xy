@@ -3,6 +3,7 @@ import type { DataISO } from './lib/datas'
 import { semear } from './seed'
 import { marcarItensDeTreino, moverMetaDoTreino, semearTreino } from './treino/semente'
 import { semearCardapio } from './nutricao/cardapio'
+import { semearFaculdade } from './faculdade/semente'
 
 export type TipoItem = 'block' | 'task'
 export type Horario = string // 'HH:MM'
@@ -240,8 +241,16 @@ export interface Subject {
   id: string
   name: string
   color: string
-  /** limite de faltas (opcional; o app só mostra "2 de 15") */
-  maxAbsences?: number
+  /** dia da semana das aulas (0 = domingo … 6 = sábado), só para referência */
+  weekday?: number
+  /** carga horária total (ex.: 80). Sem ela, o app só conta as faltas. */
+  workload?: number
+  /** quantas faltas cada aula perdida vale (ex.: 3) */
+  absencesPerClass: number
+  /** máximo de faltas em % da carga horária (ex.: 25) */
+  maxAbsencePct: number
+  /** faltas de antes de usar o app (para o semestre já começado) */
+  priorAbsences?: number
   /** fim do semestre/arquivada: some da lista principal, mas o histórico fica */
   archived?: boolean
   order: number
@@ -332,15 +341,21 @@ export class XyDB extends Dexie {
       .upgrade(async (tx) => {
         await semearCardapio(tx)
       })
-    // Versão 5: faculdade (matérias e provas/trabalhos). Só tabelas novas e vazias:
-    // as matérias são criadas pelo Pedro e ligadas às aulas da rotina.
-    this.version(5).stores({ subjects: 'id, order', coursework: 'id, subjectId, due' })
+    // Versão 5: faculdade (matérias e provas/trabalhos). Entram as matérias do semestre
+    // e cada "Aula" da rotina é ligada à matéria do dia (quarta e quinta eram um item
+    // só: vira dois, e as marcações de quinta passam para o item novo).
+    this.version(5)
+      .stores({ subjects: 'id, order', coursework: 'id, subjectId, due' })
+      .upgrade(async (tx) => {
+        await semearFaculdade(tx)
+      })
     // Roda uma única vez, quando o banco é criado pela primeira vez no aparelho
     // (já na versão mais nova; nesse caso as funções de upgrade não rodam).
     this.on('populate', async (tx) => {
       await semear(tx)
       await semearTreino(tx)
       await semearCardapio(tx)
+      await semearFaculdade(tx)
     })
   }
 }
