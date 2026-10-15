@@ -2186,3 +2186,73 @@ button.nav-dia-data {
 .aula-linha .linha-sub {
   white-space: pre-wrap;
 }
+
+/* ---------- Corpo ---------- */
+.corpo-barra {
+  margin-top: 2px;
+}
+.corpo-agua {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.corpo-agua-linha {
+  flex: 1;
+  min-width: 0;
+}
+.corpo-copo {
+  flex: none;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--destaque);
+}
+.corpo-copo:active {
+  background: var(--superficie-2);
+}
+.corpo-registros {
+  display: block;
+  min-height: 32px;
+  font-size: 13px;
+  color: var(--texto-suave);
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+.corpo-agua-grande {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--superficie-2);
+}
+.corpo-agua-grande > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.corpo-agua-grande .botao-secundario {
+  width: auto;
+  margin: 0;
+  min-height: 44px;
+  padding: 0 14px;
+}
+.corpo-semana {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.corpo-semana li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--linha);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.corpo-semana li > span:first-child {
+  color: var(--texto-suave);
+}

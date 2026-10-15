@@ -124,6 +124,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 5. Sem estoque, lista de compras ou saldo semanal nesta versão. Tudo no backup JSON. Nada de vermelho ao passar da meta.
 
 ### Corpo
+- **v1 feita (15/10/2026):** no Hoje, água com "+ copo" e uma linha com peso, sono e passos; a folha do corpo tem os campos do dia, as médias da semana e o gráfico do peso pela média de 7 dias (90 dias). Metas: água 3 L, copo 250 ml, passos 15 mil/dia. Registro à mão por enquanto.
 - Água (contador), peso, sono.
 - **Passos** = movimento do dia inteiro (não é cardio): meta de **média de ~15 mil por dia ao longo da semana** (cada dia varia: dia só de academia anda menos, dia de mercado/faculdade anda mais). Vêm automáticos do app Saúde via Atalhos. O número do iPhone é um **piso** (não conta quando o celular não está junto).
 - Peso com média móvel de 7 dias (o peso diário oscila).

@@ -12,6 +12,7 @@ import { CalendarioMes } from '../componentes/CalendarioMes'
 import { LembreteBackup } from '../componentes/LembreteBackup'
 import { TreinoEmAndamento } from '../treino/TreinoEmAndamento'
 import { BarraNutricao } from '../nutricao/BarraNutricao'
+import { BarraCorpo } from '../corpo/BarraCorpo'
 import { useDeslizar } from '../lib/deslizar'
 import { useComAtraso } from '../lib/atraso'
 import { IconeAvancar, IconeFeito, IconeVoltar } from '../icones'
@@ -50,6 +51,8 @@ export function Hoje({ dataInicial }: { dataInicial?: DataISO }) {
       <LinhaHabitos data={data} />
 
       {data <= diaDeHoje && <BarraNutricao date={data} />}
+
+      {data <= diaDeHoje && <BarraCorpo date={data} />}
 
       {data === diaDeHoje && <Resgates />}
 
