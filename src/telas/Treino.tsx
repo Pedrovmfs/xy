@@ -6,6 +6,7 @@ import { diasDaSemana, inicioDaSemana } from '../lib/semana'
 import { Folha } from '../componentes/Folha'
 import { duracaoMin, proximoTreino } from '../treino/calculos'
 import { abrirTreino } from '../treino/estado'
+import { pularTreino, usePulos } from '../treino/sequencia'
 import { EscolherTreino } from '../treino/EscolherTreino'
 import { EditorCardio } from '../treino/EditorCardio'
 import { formatarKm, ritmo, somaKm } from '../treino/cardio'
@@ -241,6 +242,7 @@ function CartaoHoje({ sessoes, treinos, aoEscolher }: {
   treinos: Workout[]
   aoEscolher: () => void
 }) {
+  const pulos = usePulos()
   const h = hoje()
   const emAndamento = sessoes.filter((s) => !s.finishedAt).sort((a, b) => b.startedAt.localeCompare(a.startedAt))[0]
   const deHoje = sessoes.filter((s) => s.finishedAt && s.date === h)
@@ -255,7 +257,7 @@ function CartaoHoje({ sessoes, treinos, aoEscolher }: {
     )
   }
 
-  const sugerido = proximoTreino(treinos, sessoes)
+  const sugerido = proximoTreino(treinos, sessoes, pulos)
   return (
     <div className="cartao-hoje">
       {deHoje.length > 0 && (
@@ -268,6 +270,9 @@ function CartaoHoje({ sessoes, treinos, aoEscolher }: {
           <span className="cartao-rotulo">{deHoje.length ? 'próximo da sequência' : 'próximo treino'}</span>
           <span className="cartao-titulo">{sugerido.name}</span>
           <button className="botao-principal" onClick={aoEscolher}>Começar</button>
+          <button className="link pular-treino" onClick={() => void pularTreino(sugerido.id, sugerido.name)}>
+            pular este e ir para o seguinte
+          </button>
         </>
       ) : (
         <button className="botao-principal" onClick={aoEscolher}>Começar treino</button>

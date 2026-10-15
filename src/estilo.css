@@ -2116,3 +2116,10 @@ button.nav-dia-data {
   border: 1px solid var(--linha);
   border-radius: 5px;
 }
+.pular-treino {
+  display: block;
+  min-height: 44px;
+  margin: 4px auto 0;
+  font-size: 14px;
+  color: var(--texto-suave);
+}

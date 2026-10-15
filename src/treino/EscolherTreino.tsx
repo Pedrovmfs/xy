@@ -5,20 +5,23 @@ import { novoId } from '../lib/id'
 import { Folha } from '../componentes/Folha'
 import { novaSessao, proximoTreino } from './calculos'
 import { abrirTreino } from './estado'
+import { lerPulos, pularTreino } from './sequencia'
 
 // Escolher qual treino fazer. O próximo da sequência (A → B → …) vem destacado,
 // mas qualquer um pode ser escolhido, inclusive um treino livre, sem modelo.
+// "Pular" avança a sequência sem treinar (ex.: faltou dias e quer ir direto ao seguinte).
 export function EscolherTreino({ date, itemId, aoFechar }: { date: DataISO; itemId?: string; aoFechar: () => void }) {
   const dados = useLiveQuery(async () => {
-    const [treinos, exercicios, sessoes] = await Promise.all([
+    const [treinos, exercicios, sessoes, pulos] = await Promise.all([
       db.workouts.orderBy('order').toArray(),
       db.exercises.toArray(),
       db.sessions.toArray(),
+      lerPulos(),
     ])
-    return { treinos, exercicios: new Map(exercicios.map((e) => [e.id, e])), sessoes }
+    return { treinos, exercicios: new Map(exercicios.map((e) => [e.id, e])), sessoes, pulos }
   })
   if (!dados) return null
-  const sugerido = proximoTreino(dados.treinos, dados.sessoes)
+  const sugerido = proximoTreino(dados.treinos, dados.sessoes, dados.pulos)
 
   async function comecar(workoutId: string | null) {
     const treino = dados!.treinos.find((t) => t.id === workoutId)
@@ -54,6 +57,11 @@ export function EscolherTreino({ date, itemId, aoFechar }: { date: DataISO; item
           </button>
         </li>
       </ul>
+      {sugerido && dados.treinos.length > 1 && (
+        <button className="link pular-treino" onClick={() => void pularTreino(sugerido.id, sugerido.name)}>
+          pular {sugerido.name} na sequência
+        </button>
+      )}
     </Folha>
   )
 }
