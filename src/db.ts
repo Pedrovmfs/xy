@@ -3,6 +3,7 @@ import type { DataISO } from './lib/datas'
 import { semear } from './seed'
 import { marcarItensDeTreino, moverMetaDoTreino, semearTreino } from './treino/semente'
 import { semearCardapio } from './nutricao/cardapio'
+import { semearFaculdade } from './faculdade/semente'
 
 export type TipoItem = 'block' | 'task'
 export type Horario = string // 'HH:MM'
@@ -32,6 +33,8 @@ export interface RoutineItem {
   until?: DataISO
   /** Tocar no item oferece "Começar treino" (ex.: Academia). */
   opensWorkout?: boolean
+  /** É aula desta matéria (Faculdade). */
+  subjectId?: string
   createdAt: string
 }
 
@@ -44,6 +47,7 @@ export interface Oneoff {
   start?: Horario
   end?: Horario
   opensWorkout?: boolean
+  subjectId?: string
   createdAt: string
 }
 
@@ -60,8 +64,13 @@ export interface Entry {
   /** Horário só deste dia (o bloco foi arrastado/editado); a rotina-modelo não muda. */
   start?: Horario
   end?: Horario
+  /** Aula: como foi (presencial/online contam como feito; faltei como não feito;
+   *  "não teve" não conta nem como feito nem como falta). */
+  classMode?: ModoAula
   updatedAt: string
 }
+
+export type ModoAula = 'presencial' | 'online' | 'cancelada' | 'falta'
 
 export interface Habit {
   id: string
@@ -225,6 +234,47 @@ export interface Meal {
   createdAt: string
 }
 
+// ---------- Faculdade (versão 5) ----------
+
+/** Uma matéria do semestre. As aulas são itens da rotina ligados a ela (subjectId). */
+export interface Subject {
+  id: string
+  name: string
+  color: string
+  /** dia da semana das aulas (0 = domingo … 6 = sábado), só para referência */
+  weekday?: number
+  /** carga horária total (ex.: 80). Sem ela, o app só conta as faltas. */
+  workload?: number
+  /** quantas faltas cada aula perdida vale (ex.: 3) */
+  absencesPerClass: number
+  /** máximo de faltas em % da carga horária (ex.: 25) */
+  maxAbsencePct: number
+  /** faltas de antes de usar o app (para o semestre já começado) */
+  priorAbsences?: number
+  /** fim do semestre/arquivada: some da lista principal, mas o histórico fica */
+  archived?: boolean
+  order: number
+  createdAt: string
+}
+
+export type TipoEntrega = 'prova' | 'trabalho' | 'atividade'
+
+/** Prova, trabalho ou atividade com data. */
+export interface Coursework {
+  id: string
+  subjectId: string
+  kind: TipoEntrega
+  title: string
+  /** data da prova ou da entrega */
+  due: DataISO
+  done?: boolean
+  /** nota (opcional) e o valor máximo dela */
+  grade?: number
+  maxGrade?: number
+  note?: string
+  createdAt: string
+}
+
 export interface Meta {
   key: string
   value: unknown
@@ -246,6 +296,8 @@ export class XyDB extends Dexie {
   cardio!: EntityTable<Cardio, 'id'>
   foods!: EntityTable<Food, 'id'>
   meals!: EntityTable<Meal, 'id'>
+  subjects!: EntityTable<Subject, 'id'>
+  coursework!: EntityTable<Coursework, 'id'>
 
   constructor() {
     super('xy')
@@ -289,12 +341,21 @@ export class XyDB extends Dexie {
       .upgrade(async (tx) => {
         await semearCardapio(tx)
       })
+    // Versão 5: faculdade (matérias e provas/trabalhos). Entram as matérias do semestre
+    // e cada "Aula" da rotina é ligada à matéria do dia (quarta e quinta eram um item
+    // só: vira dois, e as marcações de quinta passam para o item novo).
+    this.version(5)
+      .stores({ subjects: 'id, order', coursework: 'id, subjectId, due' })
+      .upgrade(async (tx) => {
+        await semearFaculdade(tx)
+      })
     // Roda uma única vez, quando o banco é criado pela primeira vez no aparelho
     // (já na versão mais nova; nesse caso as funções de upgrade não rodam).
     this.on('populate', async (tx) => {
       await semear(tx)
       await semearTreino(tx)
       await semearCardapio(tx)
+      await semearFaculdade(tx)
     })
   }
 }

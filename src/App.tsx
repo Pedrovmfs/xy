@@ -1,10 +1,12 @@
-import { useState, type ReactNode } from 'react'
-import { IconeAjustes, IconeHoje, IconeNutricao, IconePensamentos, IconeSemana, IconeTreino } from './icones'
+import { useEffect, useState, type ReactNode } from 'react'
+import { IconeAjustes, IconeFaculdade, IconeHoje, IconeNutricao, IconePensamentos, IconeSemana, IconeTreino } from './icones'
 import { Hoje } from './telas/Hoje'
 import { Semana } from './telas/Semana'
 import { Pensamentos } from './telas/Pensamentos'
 import { Treino } from './telas/Treino'
 import { Nutricao } from './telas/Nutricao'
+import { Faculdade } from './telas/Faculdade'
+import { useMateriaPedida } from './faculdade/dados'
 import { Ajustes } from './telas/Ajustes'
 import { CapturaPensamento } from './componentes/CapturaPensamento'
 import { Aviso } from './componentes/Aviso'
@@ -12,7 +14,7 @@ import type { DataISO } from './lib/datas'
 import { TelaTreino } from './treino/TelaTreino'
 import { useTreinoAberto } from './treino/estado'
 
-type Aba = 'hoje' | 'semana' | 'treino' | 'nutricao'
+type Aba = 'hoje' | 'semana' | 'treino' | 'faculdade' | 'nutricao'
 // Pensamentos não é aba: abre pelo ícone no canto do topo (a captura continua no lápis).
 // As Áreas moram no fim da Semana.
 type Tela = Aba | 'pensamentos'
@@ -21,6 +23,7 @@ const ABAS: { id: Aba; nome: string; icone: () => ReactNode }[] = [
   { id: 'hoje', nome: 'Hoje', icone: IconeHoje },
   { id: 'semana', nome: 'Semana', icone: IconeSemana },
   { id: 'treino', nome: 'Treino', icone: IconeTreino },
+  { id: 'faculdade', nome: 'Faculdade', icone: IconeFaculdade },
   { id: 'nutricao', nome: 'Nutrição', icone: IconeNutricao },
 ]
 
@@ -31,6 +34,11 @@ export function App() {
   const [secaoAjustes, setSecaoAjustes] = useState<'rotina' | undefined>()
   // dia que o Hoje deve abrir quando se chega por outra tela (ex.: tocar num dia da Semana)
   const [diaHoje, setDiaHoje] = useState<DataISO | undefined>()
+  // "ver matéria" (na folha de uma aula, em qualquer tela) leva para a aba Faculdade
+  const materiaPedida = useMateriaPedida()
+  useEffect(() => {
+    if (materiaPedida) setAba('faculdade')
+  }, [materiaPedida])
 
   // treino aberto ocupa a tela toda (sem abas), como Ajustes
   if (treinoAberto) {
@@ -86,6 +94,7 @@ export function App() {
           />
         )}
         {aba === 'treino' && <Treino />}
+        {aba === 'faculdade' && <Faculdade />}
         {aba === 'nutricao' && <Nutricao />}
         {aba === 'pensamentos' && <Pensamentos />}
       </main>

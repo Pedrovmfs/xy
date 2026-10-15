@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, type PointerEvent } from 'react'
+import { nomeDoModo } from '../faculdade/dados'
 import type { Area, Entry } from '../db'
 import { alternarFeito, horarioDoDia, minutos, paraHorario, salvarEntry, type ItemDoDia } from '../lib/dia'
 import { gestos } from '../lib/gestos'
@@ -325,7 +326,9 @@ export function Agenda({ date, blocos, entries, areas, ehHoje, aoAbrir, aoCriar 
               <span className="bloco-sub">
                 {paraHorario(ini)}–{paraHorario(f)}
                 {entry?.start && !arrastando && <span title="horário mudado só hoje"> · mudado</span>}
-                {entry?.status === 'skipped' && ` · não feito${entry.reason ? `: ${entry.reason}` : ''}`}
+                {item.subjectId && entry?.classMode && entry.classMode !== 'presencial'
+                  ? ` · ${nomeDoModo(entry.classMode)}`
+                  : entry?.status === 'skipped' && ` · não feito${entry.reason ? `: ${entry.reason}` : ''}`}
               </span>
               {entry?.note && altura >= 72 && <span className="bloco-nota">{entry.note}</span>}
               <button

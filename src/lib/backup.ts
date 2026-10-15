@@ -1,6 +1,8 @@
 import { db, type Area, type RoutineItem } from '../db'
 import { exerciciosIniciais, METAS_PADRAO, treinosIniciais } from '../treino/semente'
 import { cardapioInicial } from '../nutricao/cardapio'
+import { ligarAulas, materiasIniciais } from '../faculdade/semente'
+import type { Entry } from '../db'
 import { hoje, somarDias } from './datas'
 
 // Backup: um arquivo JSON com todas as tabelas do banco.
@@ -121,6 +123,15 @@ function migrar(b: Backup): Backup {
     dados.foods = cardapioInicial()
     dados.meals = []
   }
+  if (b.versao < 5) {
+    // v5: faculdade. Entram as matérias e as aulas da rotina são ligadas a elas.
+    const materias = materiasIniciais()
+    const r = ligarAulas((dados.routine as RoutineItem[] | undefined) ?? [], (dados.entries as Entry[] | undefined) ?? [], materias)
+    dados.subjects = materias
+    dados.coursework = []
+    dados.routine = r.rotina
+    dados.entries = r.entries
+  }
   return { ...b, versao: db.verno, dados }
 }
 
@@ -140,6 +151,8 @@ export function resumoBackup(b: Backup) {
       { nome: 'treinos feitos', qtd: n('sessions') },
       { nome: 'cardio', qtd: n('cardio') },
       { nome: 'registros de comida', qtd: n('meals') },
+      { nome: 'matérias', qtd: n('subjects') },
+      { nome: 'provas e trabalhos', qtd: n('coursework') },
     ],
   }
 }

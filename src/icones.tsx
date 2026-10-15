@@ -87,6 +87,14 @@ export const IconeNutricao = () => (
   </Svg>
 )
 
+export const IconeFaculdade = () => (
+  <Svg>
+    <path d="M3 9.5 12 5l9 4.5-9 4.5-9-4.5Z" />
+    <path d="M7 11.5V16c1.5 1.5 3 2 5 2s3.5-.5 5-2v-4.5" />
+    <path d="M21 9.5V14" />
+  </Svg>
+)
+
 export const IconeTreino = () => (
   <Svg>
     <path d="M6.5 8v8M17.5 8v8M4 10v4M20 10v4M6.5 12h11" />

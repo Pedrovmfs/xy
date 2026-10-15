@@ -89,6 +89,14 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - O app antigo já é bem customizável; a ideia é **retrabalhar e aprimorar** essa base, não só copiar. Foco grande nessa parte.
 - **Não é preciso importar** os dados do app antigo (quase nada registrado).
 
+### Faculdade (aba própria)
+- **Matérias** do semestre (Redes de Computadores na terça, Laboratório de Banco de Dados na quarta, Profissão, Competências e Habilidades na quinta, Programação Orientada a Objetos na sexta). Cada aula da rotina é ligada a uma matéria.
+- **Como foi a aula:** presencial · online · não teve · faltei. Pelo círculo do Hoje, marca presencial.
+- **Faltas** (regra da UCB, segundo o Pedro): cada aula perdida vale **3 faltas**; o limite é **25% da carga horária** (80 h → 20). Aula que **não teve** sai da carga, então o limite diminui junto. Mostrado como número ("3 de 19"), sem alarme.
+- **Provas, trabalhos e atividades** com data, "feito" e nota opcional (média da matéria). Aparecem no Hoje **3 dias antes**, com quanto falta.
+- A nota de cada aula vira "o que foi visto"; a página da matéria junta todas.
+- Semestres: dois por ano, sem data fixa. "Encerrar o semestre" arquiva as matérias (o histórico fica).
+
 ### Nutrição
 > Plano alimentar completo, gostos e regras de estoque: **[`docs/dieta.md`](docs/dieta.md)** (seed da Nutrição).
 
@@ -151,7 +159,7 @@ O calendário sugere os dias, mas se o Pedro faltar na segunda, pode compensar n
 - O controle do treino (frequência, meta de treinos) fica na aba Treino; na Semana a Academia aparece só como compromisso do dia.
 
 ### Navegação (decidida em 15/10/2026)
-- Abas: **Hoje · Semana · Treino · Nutrição**. Cada ramificação com necessidade real ganha espaço próprio (Treino, Nutrição; a Faculdade é a próxima candidata).
+- Abas: **Hoje · Semana · Treino · Faculdade · Nutrição**. Por necessidade, só o Hoje precisaria ser aba; as outras são por conveniência, por enquanto. A ideia de "espaços" (área = espaço, com módulos; abrir pelo contexto, lista de espaços, fixar na barra) fica para refinar depois.
 - **Pensamentos:** ícone no canto superior esquerdo do topo (a captura continua no lápis de qualquer tela).
 - **Áreas:** no fim da Semana (próximo passo e notas de cada uma).
 - A Nutrição tem aba própria (como o Treino): hoje, semana, dias anteriores, cardápio, metas; depois receitas. A barra discreta continua no Hoje.
