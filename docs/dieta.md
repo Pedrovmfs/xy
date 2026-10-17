@@ -117,6 +117,7 @@ Pra quando o dia está chegando ao fim e falta proteína:
 |---|---|---|---|
 | Whey com água (junto de qualquer refeição; ele não curte muito) | ~20 g | ~120 kcal | 0 (coqueteleira) |
 | Creme de whey (de colher) | ~20 g | ~120 kcal | 1 |
+| *Se tiver leite:* Nescau Protein 30 g (3 colheres de sopa) + leite 200 ml | ~15 g (+~3 g de fibra) | ~230 kcal | 0 |
 | +50 g de frango desfiado no sanduíche | ~16 g | ~80 kcal | 0 |
 | +50 g de proteína crua no almoço | ~10–12 g | ~60–85 kcal | 0 |
 
